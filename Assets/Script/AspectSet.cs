@@ -53,6 +53,7 @@ public class AspectSet : MonoBehaviour
     void exitSetting () {
         if (Input.GetKeyDown(KeyCode.Escape)) {
             //Instantiate();//return to menu prefab
+            Destroy(gameObject);
         }
     }
 }
