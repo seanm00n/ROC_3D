@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    bool sitContinue = false;
     public bool waitingAnimation = false;
     public bool DoJump = false;
 
@@ -68,7 +69,11 @@ public class PlayerMovement : MonoBehaviour
         }
         if (currenJumpSpeed > 0) currenJumpSpeed -= levitateMinusTime * Time.deltaTime; else currenJumpSpeed = 0;
 
-        if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && isJumping == true) speed = Slowspeed;
+        if (Input.GetKeyDown(KeyCode.C)) 
+        {
+            if (sitContinue) { sitContinue = false; } else { sitContinue = true; } 
+        } 
+        if (((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) || sitContinue == true) && isJumping == true) speed = Slowspeed;
         else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && isJumping == true) speed = Dashspeed;
         else if(isJumping == true)speed = OriginalSpeed;
 
