@@ -9,6 +9,7 @@ public class Camera_manager : MonoBehaviour
     public Camera c3;
 
     public float upperAngle = 0;
+    public bool fpsMode = false;
     //////////////////////////////////////////
     Transform target;
     public int targetNum = 1;
@@ -29,7 +30,7 @@ public class Camera_manager : MonoBehaviour
     ////////////////////////
     
 
-    public float topAngle = 30;
+    public float topAngle = 50;
     public float DownAngle = 0;
 
     public float maxAngle = 80;
@@ -47,16 +48,32 @@ public class Camera_manager : MonoBehaviour
         if (!target) return;
         CameraMove();
         CameraRotate();
+
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            if (fpsMode) fpsMode = false; else fpsMode = true;
+        }
     }
 
     void CameraMove()
     {
-        Vector3 destination = new Vector3(targetPosition.position.x, targetPosition.position.y, targetPosition.position.z);
-        Vector3 pVector = Vector3.Lerp(transform.position, destination,cameraMoveSpeed * Time.deltaTime);
-        transform.position = pVector;
+        if (!fpsMode)
+        {
+            Vector3 destination = new Vector3(targetPosition.position.x, targetPosition.position.y, targetPosition.position.z);
+            Vector3 pVector = Vector3.Lerp(transform.position, destination, cameraMoveSpeed * Time.deltaTime);
+            transform.position = pVector;
 
-        float pointY = transform.eulerAngles.y + Input.GetAxisRaw("Mouse X") * cameraRotSpeed * Time.deltaTime;
-        target.eulerAngles = new Vector3(target.rotation.x, pointY, target.rotation.z);
+            float pointY = transform.eulerAngles.y + Input.GetAxisRaw("Mouse X") * cameraRotSpeed * Time.deltaTime;
+            target.eulerAngles = new Vector3(target.rotation.x, pointY, target.rotation.z);
+        }
+        else
+        {
+            Vector3 destination = new Vector3(targetPosition.position.x, targetPosition.position.y, targetPosition.position.z);
+            transform.position = destination;
+
+            float pointY = transform.eulerAngles.y + Input.GetAxisRaw("Mouse X") * cameraRotSpeed * Time.deltaTime;
+            target.eulerAngles = new Vector3(target.rotation.x, pointY, target.rotation.z);
+        }
     }
 
     void CameraRotate()
@@ -83,39 +100,47 @@ public class Camera_manager : MonoBehaviour
             }
         }
 
-
-        if (targetNum == 1)
+        if (!fpsMode)
         {
-            float Value = CameraReset(c1);
+            if (targetNum == 1)
+            {
+                float Value = CameraReset(c1);
 
-            if (Value == 0) targetPosition = targetPositions[0]; else { targetPosition = targetPositions[3]; }
+                if (Value == 0) targetPosition = targetPositions[0]; else { targetPosition = targetPositions[3]; }
 
-            if (transform.localEulerAngles.x > topAngle) targetNum = 3; else if (pointX < DownAngle) targetNum = 2;
-            RoteteVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
-            transform.eulerAngles = RoteteVelocity;
+                if (transform.localEulerAngles.x > topAngle) targetNum = 3; else if (pointX < DownAngle) targetNum = 2;
+                RoteteVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
+                transform.eulerAngles = RoteteVelocity;
+            }
+            else if (targetNum == 2)
+            {
+                float Value = CameraReset(c2);
+
+                if (Value == 0) targetPosition = targetPositions[1]; else { targetPosition = targetPositions[4]; }
+                currentAngle = transform.eulerAngles.x;
+                if (minAngle + 360 > (pointX)) pointX = -40;
+                RoteteVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
+                transform.eulerAngles = RoteteVelocity;
+                if (40 > transform.eulerAngles.x) targetNum = 1;
+
+            }
+            else if (targetNum == 3)
+            {
+                float Value = CameraReset(c3);
+
+                if (Value == 0) targetPosition = targetPositions[2]; else { targetPosition = targetPositions[5]; }
+                currentAngle = transform.eulerAngles.x;
+                if (maxAngle < transform.eulerAngles.x) pointX = maxAngle;
+                RoteteVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
+                transform.eulerAngles = RoteteVelocity;
+                if (30 > transform.eulerAngles.x) targetNum = 1;
+            }
         }
-        else if (targetNum == 2)
+        else
         {
-            float Value = CameraReset(c2);
-
-            if (Value == 0) targetPosition = targetPositions[1]; else { targetPosition = targetPositions[4]; }
-            currentAngle = transform.eulerAngles.x;
-            if (minAngle + 360 > (pointX)) pointX = - 40;
+            targetPosition = targetPositions[6];
             RoteteVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
             transform.eulerAngles = RoteteVelocity;
-            if (40 > transform.eulerAngles.x) targetNum = 1;
-
-        }
-        else if (targetNum == 3)
-        {
-            float Value = CameraReset(c3);
-
-            if (Value == 0) targetPosition = targetPositions[2]; else { targetPosition = targetPositions[5]; }
-            currentAngle = transform.eulerAngles.x;
-            if (maxAngle < transform.eulerAngles.x) pointX =  maxAngle;
-            RoteteVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
-            transform.eulerAngles = RoteteVelocity;
-            if (30 > transform.eulerAngles.x) targetNum = 1; 
         }
         if (upperAngle == 1)
         {

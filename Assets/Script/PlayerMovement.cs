@@ -68,9 +68,9 @@ public class PlayerMovement : MonoBehaviour
         }
         if (currenJumpSpeed > 0) currenJumpSpeed -= levitateMinusTime * Time.deltaTime; else currenJumpSpeed = 0;
 
-        if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) speed = Slowspeed;
-        else if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) speed = Dashspeed;
-        else speed = OriginalSpeed;
+        if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && isJumping == true) speed = Slowspeed;
+        else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && isJumping == true) speed = Dashspeed;
+        else if(isJumping == true)speed = OriginalSpeed;
 
         float moveX = (horizontalMove + airSpeed_x / Anti_Inertia);
         float moveZ = (verticalMove + airSpeed_z / Anti_Inertia);
