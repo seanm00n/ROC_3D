@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float Slowspeed = 2;
 
     float OriginalSpeed;
+    public float stopSpeed;
 
     [SerializeField] float jumpSpeed = 0.08f;
     public bool isJumping = false;
@@ -48,11 +49,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (airSpeed_x > 0) airSpeed_x -= Time.deltaTime; else if (airSpeed_x < 0) airSpeed_x -= Time.deltaTime; 
-        else airSpeed_x = 0;
+        if (airSpeed_x > 0) airSpeed_x -= Time.deltaTime; else if (airSpeed_x < 0) airSpeed_x += Time.deltaTime; 
 
-        if (airSpeed_z > 0) airSpeed_z -= Time.deltaTime; else if (airSpeed_z < 0) airSpeed_z -= Time.deltaTime;
-        else airSpeed_z = 0;
+        if (airSpeed_z > 0) airSpeed_z -= Time.deltaTime; else if (airSpeed_z < 0) airSpeed_z += Time.deltaTime;
 
         float horizontalMove = Input.GetAxisRaw("Horizontal");
         float verticalMove = Input.GetAxisRaw("Vertical");
@@ -77,8 +76,34 @@ public class PlayerMovement : MonoBehaviour
         else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && isJumping == true) speed = Dashspeed;
         else if(isJumping == true)speed = OriginalSpeed;
 
-        float moveX = (horizontalMove + airSpeed_x / Anti_Inertia);
-        float moveZ = (verticalMove + airSpeed_z / Anti_Inertia);
+        float moveX, moveZ;
+
+        if (airSpeed_x > 0)
+
+            moveX = (airSpeed_x / Anti_Inertia) - (-horizontalMove * stopSpeed) * Time.deltaTime;
+        
+        else if (airSpeed_x < 0)
+
+            moveX = (airSpeed_x / Anti_Inertia) + (-horizontalMove * stopSpeed) * Time.deltaTime;
+
+        else
+            moveX = (horizontalMove);
+        
+        ////////////////////////////////////
+        ///
+
+        if (airSpeed_z > 0)
+
+            moveZ = (airSpeed_z / Anti_Inertia) - (-verticalMove * stopSpeed) * Time.deltaTime;
+
+        else if (airSpeed_z < 0)
+
+            moveZ = (airSpeed_z / Anti_Inertia) + (-verticalMove * stopSpeed) * Time.deltaTime;
+
+        else
+            moveZ = (verticalMove);
+
+
 
         if (speed > OriginalSpeed) PlayerAnimControl.instance.Player.SetBool("Dash", true); 
         else PlayerAnimControl.instance.Player.SetBool("Dash", false);
