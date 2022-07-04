@@ -80,11 +80,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (airSpeed_x > 0)
 
-            moveX = (airSpeed_x / Anti_Inertia) - (-horizontalMove * stopSpeed) * Time.deltaTime;
+            moveX = airSpeed_x - (horizontalMove * stopSpeed) * Time.deltaTime;
         
         else if (airSpeed_x < 0)
 
-            moveX = (airSpeed_x / Anti_Inertia) + (-horizontalMove * stopSpeed) * Time.deltaTime;
+            moveX = airSpeed_x + (horizontalMove * stopSpeed) * Time.deltaTime;
 
         else
             moveX = (horizontalMove);
@@ -94,11 +94,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (airSpeed_z > 0)
 
-            moveZ = (airSpeed_z / Anti_Inertia) - (-verticalMove * stopSpeed) * Time.deltaTime;
+            moveZ = airSpeed_z - (verticalMove * stopSpeed) * Time.deltaTime;
 
         else if (airSpeed_z < 0)
 
-            moveZ = (airSpeed_z / Anti_Inertia) + (-verticalMove * stopSpeed) * Time.deltaTime;
+            moveZ = airSpeed_z + (verticalMove * stopSpeed) * Time.deltaTime;
 
         else
             moveZ = (verticalMove);
@@ -135,9 +135,18 @@ public class PlayerMovement : MonoBehaviour
                 var velocity = new Vector3(horizontalMove * speed * Time.deltaTime, jumpSpeed, verticalMove * speed * Time.deltaTime);
                 currenJumpSpeed = jumpSpeed;
                 mybody.Move(velocity);
-                
-                airSpeed_x = (int)mybody.velocity.x;
-                airSpeed_z = (int)mybody.velocity.z;
+
+                if (speed == Dashspeed)
+                {
+                    airSpeed_x = (int)mybody.velocity.x / Anti_Inertia;
+                    airSpeed_z = (int)mybody.velocity.z / Anti_Inertia;
+                }
+                else
+                {
+                    airSpeed_x = 0;
+                    airSpeed_z = 0;
+
+                }
             }
         }
         else
