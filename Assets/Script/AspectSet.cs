@@ -54,4 +54,10 @@ public class AspectSet : MonoBehaviour
     public void FullScreenBtn (bool isFull) {
         _screenMode = isFull ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
     }
+
+    //Used in inspector
+    public void ExitAspectSet () {
+        Debug.Log("exit setting");
+        Destroy(gameObject);
+    }
 }
