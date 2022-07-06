@@ -116,7 +116,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 myVelocity = Vector3.Normalize(transform.right * moveX) * speed * Time.deltaTime;
         myVelocity += Vector3.Normalize(transform.forward * moveZ) * speed * Time.deltaTime;
 
-        mybody.Move(new Vector3(myVelocity.x, (-gravity + currenJumpSpeed), myVelocity.z)); 
+        mybody.Move(new Vector3(myVelocity.x, (-gravity + currenJumpSpeed), myVelocity.z) * 200 * Time.deltaTime); 
 
     }
 
@@ -132,9 +132,9 @@ public class PlayerMovement : MonoBehaviour
                 waitingAnimation = true;
                 DoJump = true;
                 PlayerAnimControl.instance.Jump();
-                var velocity = new Vector3(horizontalMove * speed * Time.deltaTime, jumpSpeed, verticalMove * speed * Time.deltaTime);
+                var velocity = new Vector3(horizontalMove * speed, jumpSpeed , verticalMove * speed);
                 currenJumpSpeed = jumpSpeed;
-                mybody.Move(velocity);
+                mybody.Move(velocity * Time.deltaTime);
 
                 if (speed == Dashspeed)
                 {
