@@ -123,31 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &38731824 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7920001953888836634, guid: 169c663e9a68c324eb10ffda961eb31b, type: 3}
-  m_PrefabInstance: {fileID: 7920001953919048746}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &38731831
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 38731824}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &109611033
 GameObject:
   m_ObjectHideFlags: 0
@@ -615,7 +590,7 @@ GameObject:
   - component: {fileID: 993761390}
   - component: {fileID: 993761389}
   m_Layer: 0
-  m_Name: HQEx
+  m_Name: HQ
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -910,10 +885,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7920001953888836632, guid: 169c663e9a68c324eb10ffda961eb31b, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 33ac4c11669ae174481259c5c11dff7b, type: 2}
     - target: {fileID: 7920001953888836634, guid: 169c663e9a68c324eb10ffda961eb31b, type: 3}
       propertyPath: m_Name
       value: MonsterPref
