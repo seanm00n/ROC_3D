@@ -16,13 +16,13 @@ public class notWall : MonoBehaviour
     }
     void OnTriggerStay(Collider other)
     {
-        if(other.CompareTag("Player") == false)
+        if(other.gameObject.layer != cam.target.gameObject.layer)
         Camera_manager.instance.Value = 2;
     }
     void OnTriggerExit(Collider other)
     {
-        
-        if (other.CompareTag("Player") == false)
+
+        if (other.gameObject.layer != cam.target.gameObject.layer)
         Camera_manager.instance.Value = 0;
     }
 }

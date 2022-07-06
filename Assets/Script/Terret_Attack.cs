@@ -27,7 +27,6 @@ public class Terret_Attack : MonoBehaviour
 
         if (other.layer == targetLayerNumber) 
         {
-            Debug.Log(targetLayerNumber);    
             Destroy(other); 
         }
         int numCollisionEvents = part.GetCollisionEvents(other, collisionEvents);     

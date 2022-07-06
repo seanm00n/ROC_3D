@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 #if UNITY_EDITOR
 
@@ -10,6 +11,9 @@ using UnityEditor;
 
 public class Terret : MonoBehaviour
 {
+    public bool isLive = false;
+    public Slider Hpbar;
+    public float HP = 100;
     public GameObject AttackPrefab;
     public GameObject target;
     public GameObject Attack;
@@ -29,14 +33,27 @@ public class Terret : MonoBehaviour
 #endif
 
     // Start is called before the first frame update
-    void Start()
+    public void OnDamaged(int damage)
     {
-        
+        HP -= damage;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (isLive)
+        {
+            if (Hpbar && Hpbar.value != HP)
+            {
+                Hpbar.value = HP;
+            }
+        }
+
+        if(HP == 0)
+        {
+            Destroy(transform.parent.gameObject);
+        }
+
         var scopeEntity = Physics.OverlapSphere(scope.position, radius,targetName);
 
         if (target != null)
