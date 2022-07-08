@@ -21,6 +21,8 @@ public class Terret_Attack : MonoBehaviour
     void Start()
     {
         part = GetComponent<ParticleSystem>();
+
+        Destroy(gameObject, DestroyTimeDelay + 0.5f);
     }
     void OnParticleCollision(GameObject other)
     {

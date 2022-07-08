@@ -11,6 +11,8 @@ using UnityEditor;
 
 public class Terret : MonoBehaviour
 {
+    public GameObject ParentObject;
+    public Transform FirePosition;
     public bool isLive = false;
     public Slider Hpbar;
     public float HP = 100;
@@ -51,14 +53,14 @@ public class Terret : MonoBehaviour
 
         if(HP == 0)
         {
-            Destroy(transform.parent.gameObject);
+            Destroy(ParentObject);
         }
 
         var scopeEntity = Physics.OverlapSphere(scope.position, radius,targetName);
 
         if (target != null)
         {
-            transform.LookAt(target.transform.position);
+            transform.LookAt(new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z));
             Debug.DrawLine(transform.position, target.transform.position, Color.blue);
             Physics.Linecast(transform.position,target.transform.position);
             if (Attack != null)
@@ -68,7 +70,7 @@ public class Terret : MonoBehaviour
             if (Time.time > currentTime + attackCycleTime)
             {
                 currentTime = Time.time;
-                Attack = Instantiate(AttackPrefab, transform.position, transform.rotation);
+                Attack = Instantiate(AttackPrefab, FirePosition.position, transform.rotation);
             }
             return;
         }
