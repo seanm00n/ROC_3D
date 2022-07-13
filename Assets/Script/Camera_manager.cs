@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Camera_manager : MonoBehaviour
 {
+    public int[] ExceptLayerNum;
     public float Value; //카메라 벽 넘기 방지
     public static Camera_manager instance;
     //////////////////////////////////////////
@@ -154,7 +155,6 @@ public class Camera_manager : MonoBehaviour
             else if (pointX < 200 && pointX > 73) pointX = 73;
             RoteteVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
             transform.eulerAngles = RoteteVelocity;
-            Debug.Log(pointX + " : " + transform.eulerAngles.x);
         }
         if (upperAngle >= 1)
         {
@@ -169,6 +169,13 @@ public class Camera_manager : MonoBehaviour
         var ray = c.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         if (Physics.Linecast(ray.origin, target.position, out hit, ~target.GetComponent<PlayerMovement>().playerLayer))
         {
+            for (int i = 0; i < ExceptLayerNum.Length; i++) 
+            {
+                if (hit.collider.gameObject.layer == ExceptLayerNum[i]) 
+                { 
+                    return Value; 
+                }
+            }
             Value = 1;
         }
         else Value = 0;

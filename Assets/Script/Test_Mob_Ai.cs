@@ -10,10 +10,10 @@ public class Test_Mob_Ai : MonoBehaviour
     {
         if (other.gameObject.layer == gameObject.layer)
         {
-            Terret terret = other.gameObject.GetComponentInChildren<Terret>();
-            if (terret)
+            Turret turret = other.gameObject.GetComponentInChildren<Turret>();
+            if (turret)
             {
-                terret.OnDamaged(1);
+                turret.OnDamaged(1);
             }
         }
     }

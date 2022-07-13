@@ -1,15 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StructureSpawn_Test : MonoBehaviour
 {
+    public GameObject LiveParent;
+
     public LayerMask TestLayer;
     GameObject target;
 
     public int selectNumber = 0;
     public GameObject[] Selected_Prefab;
     public GameObject[] Prefab;
+    public GameObject[] PrefabHUI;
+
+    public int TurretNum = 0;
 
     Color color;
     // Start is called before the first frame update
@@ -60,9 +66,18 @@ public class StructureSpawn_Test : MonoBehaviour
 
                 if (Input.GetKeyDown(KeyCode.Mouse2))
                 {
-                
+
                     //////// ¼³Ä¡ ///////////////
-                    Instantiate(Prefab[selectNumber], hit.point, Quaternion.identity);
+                    GameObject install = Instantiate(Prefab[selectNumber], hit.point, Quaternion.identity);
+                    Turret t = install.GetComponentInChildren<Turret>();
+                    if (t != null)
+                    {
+                        GameObject installHUI = Instantiate(PrefabHUI[TurretNum], LiveParent.transform);
+                        t.Hui = installHUI;
+                        Slider Turret_s = install.GetComponentInChildren<Turret>().Hpbar = installHUI.GetComponentInChildren<Slider>();
+                        Turret_s.maxValue = t.HP;
+                        Turret_s.value = t.HP;
+                    }
                 }
             }
             else
