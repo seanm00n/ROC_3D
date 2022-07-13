@@ -2083,7 +2083,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 122318302}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 508.17374, y: 63.52, z: 657.4021}
+  m_LocalPosition: {x: 448.9, y: 86.57, z: 689.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12401,6 +12401,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11ff345e4e2124248ae3224d635e45d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LiveParent: {fileID: 0}
   TestLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -12413,6 +12414,8 @@ MonoBehaviour:
   - {fileID: 5151253315898664023, guid: e00a81a3abd46eb41876c24bb30b048c, type: 3}
   - {fileID: 6821777712680376044, guid: 57ef6637db36e3b449c11f548877424d, type: 3}
   - {fileID: 8486257703457057009, guid: ca4ed68e48834044a88f1775cfd19b98, type: 3}
+  PrefabHUI: []
+  TurretNum: 0
 --- !u!114 &764622888
 MonoBehaviour:
   m_ObjectHideFlags: 0
