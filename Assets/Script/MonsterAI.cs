@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -12,8 +13,8 @@ public class MonsterAI : MonoBehaviour
     bool m_isInRange = false;
     GameObject m_target;
     NavMeshAgent m_agent;
-    GameObject HQ;
-    GameObject Player;
+    [SerializeField] GameObject HQ;
+    [SerializeField] GameObject Player;
     [SerializeField] LayerMask Alliance;
     [SerializeField] float m_SightDistance = 0f;
     void Start(){
@@ -24,13 +25,11 @@ public class MonsterAI : MonoBehaviour
         CheckDeath();
         SelectTarget();
         Move();
-        
+        Debug.Log("Target : " + m_target);
+        GameObject.Find("").transform.GetChild(0);
     }
 
     void Init () {
-
-        Player = GameObject.Find("Test_Player").transform.GetChild(0).gameObject;
-        HQ = GameObject.Find("HQ");
         m_target = HQ;
         m_agent = GetComponent<NavMeshAgent>();
         m_agent.speed = m_stage * 1.6f;
@@ -46,8 +45,7 @@ public class MonsterAI : MonoBehaviour
     void SelectTarget () {
         m_target = HQ;
         if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, m_SightDistance)) {
-            Debug.DrawRay(transform.position, transform.forward * m_SightDistance, Color.blue);
-            if (hit.transform.CompareTag("Player")) {
+            if (hit.transform.name == "Player") {
                 if (Vector3.Distance(transform.position, HQ.transform.position) <=
                     Vector3.Distance(transform.position, Player.transform.position)) {
                     m_target = HQ;
@@ -64,7 +62,6 @@ public class MonsterAI : MonoBehaviour
                 }
             }
         }
-        Debug.Log(m_target);
     }
 
     void Move () {
