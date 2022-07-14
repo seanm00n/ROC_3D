@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,8 +12,8 @@ public class MonsterAI : MonoBehaviour
     bool m_isInRange = false;
     GameObject m_target;
     NavMeshAgent m_agent;
-    [SerializeField] GameObject HQ;
-    [SerializeField] GameObject Player;
+    GameObject HQ;
+    GameObject Player;
     [SerializeField] LayerMask Alliance;
     [SerializeField] float m_SightDistance = 0f;
     void Start(){
@@ -25,11 +24,13 @@ public class MonsterAI : MonoBehaviour
         CheckDeath();
         SelectTarget();
         Move();
-        Debug.Log("Target : " + m_target);
-        GameObject.Find("").transform.GetChild(0);
+        
     }
 
     void Init () {
+
+        Player = GameObject.Find("Test_Player").transform.GetChild(0).gameObject;
+        HQ = GameObject.Find("HQ");
         m_target = HQ;
         m_agent = GetComponent<NavMeshAgent>();
         m_agent.speed = m_stage * 1.6f;
@@ -44,24 +45,31 @@ public class MonsterAI : MonoBehaviour
 
     void SelectTarget () {
         m_target = HQ;
-        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, m_SightDistance)) {
-            if (hit.transform.name == "Player") {
+        Collider[] result = new Collider[1];
+        //Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, m_SightDistance)
+        Physics.OverlapSphereNonAlloc(transform.position, m_SightDistance, result, Alliance);
+
+        Debug.Log(transform.position);
+            if (result[0] && result[0].transform.CompareTag("Player")) 
+            {
                 if (Vector3.Distance(transform.position, HQ.transform.position) <=
                     Vector3.Distance(transform.position, Player.transform.position)) {
                     m_target = HQ;
-                } else {
+                } 
+                else 
+                {
                     m_target = Player;
                 }
             }
-            if (hit.transform.CompareTag("Turret")) {
+            if (result[0] && result[0].transform.CompareTag("Turret")) {
                 if (Vector3.Distance(transform.position, HQ.transform.position) <=
-                    Vector3.Distance(transform.position, hit.transform.position)) {
+                    Vector3.Distance(transform.position, result[0].transform.position)) {
                     m_target = HQ;
                 } else {
-                    m_target = hit.transform.gameObject;
+                    m_target = result[0].transform.gameObject;
                 }
             }
-        }
+        Debug.Log(m_target);
     }
 
     void Move () {
