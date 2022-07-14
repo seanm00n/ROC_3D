@@ -16,6 +16,10 @@ public class PlayerAnimControl : MonoBehaviour
     public Animator Player;
     public static PlayerAnimControl instance;
 
+    public void Hit(float damage)
+    {
+
+    }
     void Awake()
     {
         Player = GetComponent<Animator>();
