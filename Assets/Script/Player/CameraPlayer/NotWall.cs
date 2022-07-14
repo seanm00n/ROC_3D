@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class notWall : MonoBehaviour
+public class NotWall : MonoBehaviour
 {
     public bool FPS = false;
     Camera_manager cam;

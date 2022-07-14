@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class PlayerAnimControl : MonoBehaviour
 {
+    public enum AnimationState
+    {
+        Normal, Jump
+    }
+
+    public AnimationState State;
 
     PlayerMovement P;
 
@@ -39,6 +45,8 @@ public class PlayerAnimControl : MonoBehaviour
     }
     public void Jump()
     {
+        if (State == AnimationState.Jump)
+            return;
         Player.ResetTrigger("OnAir");
         Player.SetTrigger("Jump");
     }
