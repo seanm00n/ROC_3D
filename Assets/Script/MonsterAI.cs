@@ -45,25 +45,30 @@ public class MonsterAI : MonoBehaviour
 
     void SelectTarget () {
         m_target = HQ;
-        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, m_SightDistance)) {
-            Debug.DrawRay(transform.position, transform.forward * m_SightDistance, Color.blue);
-            if (hit.transform.CompareTag("Player")) {
+        Collider[] result = new Collider[1];
+        //Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, m_SightDistance)
+        Physics.OverlapSphereNonAlloc(transform.position, m_SightDistance, result, Alliance);
+
+        Debug.Log(transform.position);
+            if (result[0] && result[0].transform.CompareTag("Player")) 
+            {
                 if (Vector3.Distance(transform.position, HQ.transform.position) <=
                     Vector3.Distance(transform.position, Player.transform.position)) {
                     m_target = HQ;
-                } else {
+                } 
+                else 
+                {
                     m_target = Player;
                 }
             }
-            if (hit.transform.CompareTag("Turret")) {
+            if (result[0] && result[0].transform.CompareTag("Turret")) {
                 if (Vector3.Distance(transform.position, HQ.transform.position) <=
-                    Vector3.Distance(transform.position, hit.transform.position)) {
+                    Vector3.Distance(transform.position, result[0].transform.position)) {
                     m_target = HQ;
                 } else {
-                    m_target = hit.transform.gameObject;
+                    m_target = result[0].transform.gameObject;
                 }
             }
-        }
         Debug.Log(m_target);
     }
 
