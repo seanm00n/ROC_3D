@@ -14,15 +14,10 @@ public class TestSpawner : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
         }
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.B))
         {
             GameObject newObject = Instantiate(TestPrefab, transform.position, transform.rotation);
-            if (AttackTarget)
-            {
-                newObject.transform.LookAt(new Vector3(AttackTarget.transform.position.x, newObject.transform.position.y, AttackTarget.transform.position.z));
-                newObject.GetComponentInChildren<Test_Mob_Ai>().target = AttackTarget;
-            }
-            newObject.GetComponent<Rigidbody>().AddForce(newObject.transform.forward * 300);
+            
         }
         if (Input.GetKey(KeyCode.UpArrow))
         {

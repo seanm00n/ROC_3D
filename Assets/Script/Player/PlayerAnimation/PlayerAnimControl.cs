@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerAnimControl : MonoBehaviour
 {
+    public float Hp = 100;
     public enum AnimationState
     {
         Normal, Jump
@@ -16,9 +17,20 @@ public class PlayerAnimControl : MonoBehaviour
     public Animator Player;
     public static PlayerAnimControl instance;
 
+    public GameObject hitEffect;
+
     public void Hit(float damage)
     {
-
+        if(Hp > 0)
+        {
+            Hp -= damage;
+            GameObject effect = Instantiate(hitEffect, transform.position, Quaternion.identity);
+            Destroy(effect, 2f);
+        }
+        if(Hp < 0)
+        {
+            Hp = 0;
+        }
     }
     void Awake()
     {
