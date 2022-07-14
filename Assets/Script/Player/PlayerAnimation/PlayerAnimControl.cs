@@ -25,7 +25,7 @@ public class PlayerAnimControl : MonoBehaviour
         {
             Hp -= damage;
             GameObject effect = Instantiate(hitEffect, transform.position, Quaternion.identity);
-            Destroy(effect, 2f);
+            Destroy(effect, 0.5f);
         }
         if(Hp < 0)
         {

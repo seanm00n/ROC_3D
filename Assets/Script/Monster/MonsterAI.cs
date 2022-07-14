@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -16,6 +17,7 @@ public class MonsterAI : MonoBehaviour
     GameObject Player;
     [SerializeField] LayerMask Alliance;
     [SerializeField] float m_SightDistance = 0f;
+
     void Start(){
         Init();
     }
@@ -43,33 +45,39 @@ public class MonsterAI : MonoBehaviour
         }
     }
 
-    void SelectTarget () {
-        m_target = HQ;
+    void SelectTarget()
+    {
+        if (m_target == null)
+            m_target = HQ;
         Collider[] result = new Collider[1];
-        //Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, m_SightDistance)
-        Physics.OverlapSphereNonAlloc(transform.position, m_SightDistance, result, Alliance);
 
-        Debug.Log(transform.position);
-            if (result[0] && result[0].transform.CompareTag("Player")) 
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, m_SightDistance))
+        {
+            if (hit.transform.CompareTag("Player"))
             {
                 if (Vector3.Distance(transform.position, HQ.transform.position) <=
-                    Vector3.Distance(transform.position, Player.transform.position)) {
+                    Vector3.Distance(transform.position, Player.transform.position))
+                {
                     m_target = HQ;
-                } 
-                else 
+                }
+                else
                 {
                     m_target = Player;
                 }
             }
-            if (result[0] && result[0].transform.CompareTag("Turret")) {
+            if (hit.transform.CompareTag("Turret"))
+            {
                 if (Vector3.Distance(transform.position, HQ.transform.position) <=
-                    Vector3.Distance(transform.position, result[0].transform.position)) {
+                    Vector3.Distance(transform.position, hit.transform.position))
+                {
                     m_target = HQ;
-                } else {
+                }
+                else
+                {
                     m_target = result[0].transform.gameObject;
                 }
             }
-        Debug.Log(m_target);
+        }
     }
 
     void Move () {

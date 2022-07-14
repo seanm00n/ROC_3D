@@ -35,6 +35,7 @@ public class Turret : MonoBehaviour
     public float attackCycleTime = 2f;
 
     float currentTime;
+
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
