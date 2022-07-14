@@ -72,9 +72,12 @@ public class MonsterAI : MonoBehaviour
 
     void Attack () {
         //GetComponent<Animator>().SetBool("Attack", true);
+        //0.5초 뒤 공격 실행
+        //1초마다 데미지 입힘Hit
+        Player.GetComponent<PlayerAnimControl>().Hit(m_attack);
     }
 
-    void GetHit (GameObject enemy) {
+    void GetHit (float damage) {
         //GetComponent<Animator>().SetBool("Hit", true);
         //enemy.GetComponent<Player>().m_attackPoint - m_health;
     }
@@ -89,20 +92,15 @@ public class MonsterAI : MonoBehaviour
     IEnumerator DestroyDelay () {
         yield return new WaitForSeconds(3f);
     }
-
-    private void OnCollisionEnter (Collision collision) {//change to other method
-        if (collision.gameObject == m_target) {
+    private void OnTriggerStay (Collider other) {
+        if(other.gameObject.tag == "Player") {
             m_isInRange = true;
             Attack();
-            Debug.Log("enter");
         }
-        
     }
-
-    private void OnCollisionExit (Collision collision) {
-        if (collision.gameObject == m_target) {
+    private void OnTriggerExit (Collider other) {
+        if(other.gameObject.tag == "Player") {
             m_isInRange = false;
-            Debug.Log("exit");
         }
     }
 }
