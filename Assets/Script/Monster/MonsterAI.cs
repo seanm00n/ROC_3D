@@ -18,12 +18,13 @@ public class MonsterAI : MonoBehaviour
     int m_stage = 3; //Get value on Instantiate
     float m_health;
     float m_attack;
-    bool m_isBoss = false;
+    bool m_isBoss = true;
     public bool m_isInRange = false;
     GameObject m_target;
     NavMeshAgent m_agent;
     GameObject HQ;
     GameObject Player;
+    [SerializeField] GameObject DropItem;
     [SerializeField] LayerMask Alliance;
     [SerializeField] float m_SightDistance = 0f;
     void Start(){
@@ -100,6 +101,9 @@ public class MonsterAI : MonoBehaviour
     void CheckDeath () {
         if (m_health <= 0) {
             //GetComponent<Animator>().SetBool("Death", true);
+            if (m_isBoss) {
+                GameObject dropItem = Instantiate(DropItem,transform.position, transform.rotation);
+            }
             StartCoroutine("DestroyDelay");
             Destroy(gameObject);
         }
