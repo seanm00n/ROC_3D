@@ -7,7 +7,7 @@ public class PlayerAnimControl : MonoBehaviour
     public float Hp = 100;
     public enum AnimationState
     {
-        Normal, Jump
+        Normal, Jump, Air
     }
 
     public AnimationState State;
@@ -51,6 +51,11 @@ public class PlayerAnimControl : MonoBehaviour
     }
     public void air()
     {
+        if (State == AnimationState.Jump || State == AnimationState.Air)
+        {
+            Player.ResetTrigger("OnAir");
+            return;
+        }
         Player.SetTrigger("OnAir");
     }
 
@@ -61,6 +66,7 @@ public class PlayerAnimControl : MonoBehaviour
     }
     public void Jump()
     {
+        Player.ResetTrigger("JumpWaiting");
         if (State == AnimationState.Jump)
             return;
         Player.ResetTrigger("OnAir");
