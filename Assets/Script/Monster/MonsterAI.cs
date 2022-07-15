@@ -49,7 +49,6 @@ public class MonsterAI : MonoBehaviour
     {
         if (m_target == null)
             m_target = HQ;
-        Collider[] result = new Collider[1];
 
         if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, m_SightDistance))
         {
@@ -74,7 +73,7 @@ public class MonsterAI : MonoBehaviour
                 }
                 else
                 {
-                    m_target = result[0].transform.gameObject;
+                    m_target = hit.transform.gameObject;
                 }
             }
         }
