@@ -178,7 +178,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 125300246, guid: ca9700c4047e3c346a08cf95f8e360bc, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ca9700c4047e3c346a08cf95f8e360bc, type: 3}
 --- !u!1 &155923282
 GameObject:
@@ -607,7 +608,7 @@ MonoBehaviour:
   m_text: 'Move : Arrow Key
 
 
-    Monster Spawn : Space   |   Reset : R'
+    Monster Spawn : B   |   Reset : R'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
