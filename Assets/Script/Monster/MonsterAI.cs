@@ -38,7 +38,6 @@ public class MonsterAI : MonoBehaviour
     }
 
     void Init () {
-
         Player = GameObject.Find("Test_Player").transform.GetChild(0).gameObject;
         HQ = GameObject.Find("HQ");
         m_target = HQ;
@@ -89,6 +88,7 @@ public class MonsterAI : MonoBehaviour
     public void Attack () {
         //GetComponent<Animator>().SetBool("Attack", true);
         //0.5초 뒤 공격 실행
+        
         //1초마다 데미지 입힘Hit
         Player.GetComponent<PlayerAnimControl>().Hit(m_attack);
         Debug.Log("Attack Player");
