@@ -4356,7 +4356,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7081795253046363556, guid: 4c233e68c1e1dff438daf9af2e3bec0d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.002456665
+      value: 0.0059509277
       objectReference: {fileID: 0}
     - target: {fileID: 8066624235831582232, guid: 4c233e68c1e1dff438daf9af2e3bec0d, type: 3}
       propertyPath: m_Name
@@ -4368,7 +4368,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8927523804068062025, guid: 4c233e68c1e1dff438daf9af2e3bec0d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.0035095215
+      value: -0.0010375977
       objectReference: {fileID: 0}
     - target: {fileID: 8927523804119421326, guid: 4c233e68c1e1dff438daf9af2e3bec0d, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4392,7 +4392,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8927523804694319408, guid: 4c233e68c1e1dff438daf9af2e3bec0d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.0049362183
+      value: -0.009296417
       objectReference: {fileID: 0}
     - target: {fileID: 8927523804802834133, guid: 4c233e68c1e1dff438daf9af2e3bec0d, type: 3}
       propertyPath: m_AnchorMax.y
@@ -9951,7 +9951,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 109611038}
+      - m_Target: {fileID: 7883633326147846332}
         m_TargetAssemblyTypeName: StructureSpawn_Test, Assembly-CSharp
         m_MethodName: ChangeNext
         m_Mode: 1
