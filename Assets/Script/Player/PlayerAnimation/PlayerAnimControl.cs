@@ -42,6 +42,14 @@ public class PlayerAnimControl : MonoBehaviour
     private void Update()
     {
         Player.SetBool("Onground", P.isJumping);
+        if (Camera_manager.fpsMode == true)
+        {
+            Player.SetBool("Fps", true);
+        }
+        else
+        {
+            Player.SetBool("Fps", false);
+        }
     }
     // Update is called once per frame
     public void waitngJump()

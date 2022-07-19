@@ -2126,7 +2126,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19409eef9574ed2458cc82e00f4c7cd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Hp: 100
+  State: 0
   Player: {fileID: 0}
+  hitEffect: {fileID: 0}
 --- !u!114 &122318306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2139,6 +2142,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fdc9342270fd43488568cab8b2141b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slideSpeedX: 0
+  slideSpeedZ: 0
+  Test: 0
+  isGround_New: 0
   waitingAnimation: 1
   DoJump: 0
   playerLayer:
@@ -12401,10 +12408,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11ff345e4e2124248ae3224d635e45d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  changePosValue: {x: 0, y: 0, z: 0}
   LiveParent: {fileID: 0}
-  TestLayer:
+  installLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   selectNumber: 0
   Selected_Prefab:
   - {fileID: 5151253315898664023, guid: 7e202205634b0d34e8ce286f164c93ba, type: 3}
@@ -12447,7 +12455,6 @@ MonoBehaviour:
   - {fileID: 1457815675}
   - {fileID: 1457815675}
   cameraRotSpeed: 200
-  smoothSpeed: 50
   topAngle: 50
   DownAngle: 0
   maxAngle: 80
@@ -34402,7 +34409,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2030631186}
   m_LocalRotation: {x: -0.000000053437205, y: 0.7071069, z: 0.70710677, w: 0.000000053448666}
-  m_LocalPosition: {x: 0.28, y: 0.066, z: 0.46}
+  m_LocalPosition: {x: 0.136, y: 0.215, z: 0.73}
   m_LocalScale: {x: 1.4606572, y: 1.4879892, z: 0.71688724}
   m_ConstrainProportionsScale: 0
   m_Children: []
