@@ -17,9 +17,9 @@ public class PlayerMovement : MonoBehaviour
 
     public LayerMask playerLayer;
 
-    [SerializeField] float speed = 3;
+    public float speed = 3;
     [SerializeField] float Dashspeed = 10;
-    [SerializeField] float Slowspeed = 2;
+    public float Slowspeed = 2;
 
     float OriginalSpeed;
     public float stopSpeed;
@@ -83,20 +83,20 @@ public class PlayerMovement : MonoBehaviour
         {
             if (slideSpeedX == 0 && slideSpeedZ == 0 &&  isJumping == true)
             {
-                if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + mybody.height / 2, transform.position.z), -transform.forward, (mybody.height / 2), ~playerLayer))
+                if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z), -transform.forward, (mybody.height / 2), ~playerLayer))
                 {
                     slideSpeedZ = 5;
                 }
-                else
+                else if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.forward, (mybody.height / 2), ~playerLayer))
                 {
                     slideSpeedZ = -5;
                 }
 
-                if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + mybody.height / 2, transform.position.z), -transform.right, (mybody.height / 2), ~playerLayer))
+                if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z), -transform.right, (mybody.height / 2), ~playerLayer))
                 {
                     slideSpeedX = 5;
                 }
-                else
+                else if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.right, (mybody.height / 2), ~playerLayer))
                 {
                     slideSpeedX = -5;
                 }

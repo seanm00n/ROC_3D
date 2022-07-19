@@ -25,7 +25,6 @@ public class Camera_manager : MonoBehaviour
     float cameraMoveSpeed = 8f;
     Vector3 cameraMoveVelocity;
 
-    public float smoothSpeed = 50;
     float currentAngle;
 
     ////////////////////////
@@ -39,6 +38,9 @@ public class Camera_manager : MonoBehaviour
 
     public float maxAngle = 80;
     public float minAngle = -40f;
+
+
+    Ray rayEarly;
 
     private void Awake()
     {
@@ -60,8 +62,10 @@ public class Camera_manager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.V))
         {
             if (fpsMode) {fpsMode = false; Camera.main.nearClipPlane = 0.01f;}
-        else { fpsMode = true;}
+            else { fpsMode = true;}
         }
+
+        
     }
 
     void CameraMove()
@@ -70,7 +74,11 @@ public class Camera_manager : MonoBehaviour
         {
             Vector3 destination = new Vector3(targetPosition.position.x, targetPosition.position.y, targetPosition.position.z);
             Vector3 pVector = Vector3.Lerp(transform.position, destination, cameraMoveSpeed * Time.deltaTime);
-            transform.position = pVector;
+            if (targetNum == 1)
+            {
+                transform.position = destination;
+            }
+            else transform.position = pVector;
 
             float pointY = transform.eulerAngles.y + Input.GetAxisRaw("Mouse X") * cameraRotSpeed * Time.deltaTime;
             target.eulerAngles = new Vector3(target.rotation.x, pointY, target.rotation.z);
@@ -81,7 +89,7 @@ public class Camera_manager : MonoBehaviour
             transform.position = destination;
 
             float pointY = transform.eulerAngles.y + Input.GetAxisRaw("Mouse X") * cameraRotSpeed * Time.deltaTime;
-            target.eulerAngles = new Vector3(target.rotation.x, pointY, target.rotation.z);
+            target.eulerAngles = new Vector3(target.rotation.x, pointY, target.rotation.z);            
         }
     }
 
@@ -113,7 +121,7 @@ public class Camera_manager : MonoBehaviour
         {
             if (targetNum == 1)
             {
-                if(Value != 2)
+                if (Value != 2)
                 Value = CameraReset(c1);
 
                 if (Value == 0) targetPosition = targetPositions[0]; else { targetPosition = targetPositions[3]; }
@@ -166,14 +174,14 @@ public class Camera_manager : MonoBehaviour
     {
         RaycastHit hit;
         float Value = 0;
-        var ray = c.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        var ray = c.ViewportPointToRay(new Vector3(0.5f, 0.5f, -3));
         if (Physics.Linecast(ray.origin, target.position, out hit, ~target.GetComponent<PlayerMovement>().playerLayer))
         {
             for (int i = 0; i < ExceptLayerNum.Length; i++) 
             {
                 if (hit.collider.gameObject.layer == ExceptLayerNum[i]) 
                 { 
-                    return Value; 
+                    return Value;
                 }
             }
             Value = 1;

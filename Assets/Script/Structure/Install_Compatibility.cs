@@ -12,6 +12,12 @@ public class Install_Compatibility : MonoBehaviour
         if(other.gameObject.layer != ExceptLayer)
             Compatibility = false;
     }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.layer != ExceptLayer)
+            Compatibility = false;
+
+    }
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.layer != ExceptLayer)
