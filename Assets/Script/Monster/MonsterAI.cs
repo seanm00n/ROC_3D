@@ -14,11 +14,12 @@ public class MonsterAI : MonoBehaviour
         Handles.DrawSolidDisc(transform.position, transform.up, m_SightDistance);
     }
 #endif
-    //Do not change values with inspector
     int m_stage = 3; //Get value on Instantiate
     float m_health;
     float m_attack;
+    float timer = 0f;
     bool m_isBoss = true;
+    
     public bool m_isInRange = false;
     GameObject m_target;
     NavMeshAgent m_agent;
@@ -27,6 +28,10 @@ public class MonsterAI : MonoBehaviour
     [SerializeField] GameObject DropItem;
     [SerializeField] LayerMask Alliance;
     [SerializeField] float m_SightDistance = 0f;
+
+    
+    
+
     void Start(){
         Init();
     }
@@ -83,15 +88,6 @@ public class MonsterAI : MonoBehaviour
             //GetComponent<Animator>().SetBool("Run", true);
             m_agent.SetDestination(m_target.transform.position);
         }
-    }
-
-    public void Attack () {
-        //GetComponent<Animator>().SetBool("Attack", true);
-        //0.5초 뒤 공격 실행
-        
-        //1초마다 데미지 입힘Hit
-        Player.GetComponent<PlayerAnimControl>().Hit(m_attack);
-        Debug.Log("Attack Player");
     }
 
     void GetHit (float damage) {

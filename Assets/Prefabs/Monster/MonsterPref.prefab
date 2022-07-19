@@ -93,7 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6972911929328443494}
   - component: {fileID: 6314527896256539348}
-  - component: {fileID: 3993187629952062072}
+  - component: {fileID: 8955461488705995793}
   m_Layer: 0
   m_Name: Collider
   m_TagString: Untagged
@@ -130,7 +130,7 @@ CapsuleCollider:
   m_Height: 3
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3993187629952062072
+--- !u!114 &8955461488705995793
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -275,10 +275,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_isInRange: 0
+  DropItem: {fileID: 0}
   Alliance:
     serializedVersion: 2
     m_Bits: 8
   m_SightDistance: 10
+  isDelay: 0
+  delayTime: 2
 --- !u!95 &38731831
 Animator:
   serializedVersion: 4
