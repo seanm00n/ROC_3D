@@ -14,23 +14,21 @@ public class MonsterAI : MonoBehaviour
         Handles.DrawSolidDisc(transform.position, transform.up, m_SightDistance);
     }
 #endif
-    int m_stage = 3; //Get value on Instantiate
+    public int m_stage = 3; //Get value on Instantiate
+    public bool m_isInRange = false;
+    public int myIndex;
     float m_health;
     float m_attack;
     float timer = 0f;
-    bool m_isBoss = true;
-    
-    public bool m_isInRange = false;
+    bool isDeath = false;
     GameObject m_target;
     NavMeshAgent m_agent;
     GameObject HQ;
     GameObject Player;
-    [SerializeField] GameObject DropItem;
+    GameObject MController;
+    [SerializeField] bool m_isBoss = false;
     [SerializeField] LayerMask Alliance;
     [SerializeField] float m_SightDistance = 0f;
-
-    
-    
 
     void Start(){
         Init();
@@ -43,8 +41,9 @@ public class MonsterAI : MonoBehaviour
     }
 
     void Init () {
-        Player = GameObject.Find("Test_Player").transform.GetChild(0).gameObject;
-        HQ = GameObject.Find("HQ");
+        Player = GameObject.Find("Test_Player").transform.GetChild(0).gameObject;//추후 수정
+        MController = GameObject.Find("MonsterController");
+        HQ = GameObject.Find("HQ");//추후 수정
         m_target = HQ;
         m_agent = GetComponent<NavMeshAgent>();
         m_agent.speed = m_stage * 1.6f;
@@ -58,6 +57,8 @@ public class MonsterAI : MonoBehaviour
     }
 
     void SelectTarget () {
+        if (isDeath)
+            return;
         if(m_target == null)
             m_target = HQ;
         Collider[] result = new Collider[1];
@@ -84,29 +85,30 @@ public class MonsterAI : MonoBehaviour
     }
 
     void Move () {
+        if (isDeath) {
+            m_agent.enabled = false;
+            return;
+        }
+            
         if (!m_isInRange) {
-            //GetComponent<Animator>().SetBool("Run", true);
+            GetComponent<Animator>().SetBool("Run", true);
             m_agent.SetDestination(m_target.transform.position);
         }
     }
-
-    void GetHit (float damage) {
-        //GetComponent<Animator>().SetBool("Hit", true);
-        //enemy.GetComponent<Player>().m_attackPoint - m_health;
-    }
     void CheckDeath () {
         if (m_health <= 0) {
-            //GetComponent<Animator>().SetBool("Death", true);
-            if (m_isBoss) {
-                GameObject dropItem = Instantiate(DropItem,transform.position, transform.rotation);
-            }
-            StartCoroutine("DestroyDelay");
-            Destroy(gameObject);
+            GetComponent<Animator>().SetBool("Death", true);
+            MController.GetComponent<MonsterController>().ItemGen(myIndex);
+            Destroy(gameObject, 5f);
+            isDeath = true;
         }
-    }
-
-    IEnumerator DestroyDelay () {
-        yield return new WaitForSeconds(3f);
+        //test
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            GetComponent<Animator>().SetBool("Death", true);
+            MController.GetComponent<MonsterController>().ItemGen(myIndex);
+            Destroy(gameObject,5f);
+            isDeath = true;
+        }
     }
 }
 

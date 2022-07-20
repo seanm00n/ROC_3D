@@ -11,8 +11,7 @@ public class MonsterCollider : MonoBehaviour
     }
     public IEnumerator Attack () {
         while (true) {
-            //GetComponentInParent<Animator>().SetBool("Attack", true);
-            Debug.Log("Attack");
+            GetComponent<Animator>().SetBool("Attack", true);
             yield return new WaitForSeconds(m_attackDelay);
         }
     }
@@ -23,13 +22,19 @@ public class MonsterCollider : MonoBehaviour
             GetComponentInParent<MonsterAI>().m_isInRange = true;
             StartCoroutine(cAttack);
         }
+        if(other.gameObject.tag == "PlayerAttack") {
+            Debug.Log("Monster Hit");
+            //this.HP -= other.AP;
+        }
     }
     private void OnTriggerExit (Collider other) {
         if (other.gameObject.tag == "Player" ||
             other.gameObject.tag == "HQ" ||
             other.gameObject.tag == "Turret") {
-            GetComponentInParent<MonsterAI>().m_isInRange = false;
             StopCoroutine(cAttack);
+            GetComponent<MonsterAI>().m_isInRange = false;
+            GetComponent<Animator>().SetBool("Attack", false);
+            
         }
     }
 }
