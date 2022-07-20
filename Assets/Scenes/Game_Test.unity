@@ -2027,27 +2027,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8927523804802834133, guid: 4c233e68c1e1dff438daf9af2e3bec0d, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8927523804802834133, guid: 4c233e68c1e1dff438daf9af2e3bec0d, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8927523804802834133, guid: 4c233e68c1e1dff438daf9af2e3bec0d, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 8927523804802834133, guid: 4c233e68c1e1dff438daf9af2e3bec0d, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 8927523804802834133, guid: 4c233e68c1e1dff438daf9af2e3bec0d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 8927523804802834133, guid: 4c233e68c1e1dff438daf9af2e3bec0d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -40
       objectReference: {fileID: 0}
     - target: {fileID: 8927523804876041272, guid: 4c233e68c1e1dff438daf9af2e3bec0d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5112,7 +5112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11ff345e4e2124248ae3224d635e45d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distance: 11
+  distance: 9
   changePosValue: {x: 0, y: 0, z: 0}
   LiveParent: {fileID: 8709825661575558688}
   installLayer:
@@ -5176,10 +5176,13 @@ MonoBehaviour:
   - {fileID: 7883633327435959787}
   - {fileID: 7883633327435959787}
   cameraRotSpeed: 200
+  cameraMoveSpeed: 8
   topAngle: 80
   DownAngle: 0
   maxAngle: 80
   minAngle: -40
+  smoothCameraTime: 0
+  smoothCameraSpeed: 25
 --- !u!4 &7883633326265997892
 Transform:
   m_ObjectHideFlags: 0
@@ -5340,7 +5343,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7883633326353135513}
   m_LocalRotation: {x: -0.27990824, y: -1.3555573e-20, z: -5.1334123e-23, w: 0.9600268}
-  m_LocalPosition: {x: 1.0710001, y: -1.3999996, z: -1.7549992}
+  m_LocalPosition: {x: 0.07, y: -1.41, z: -1.82}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

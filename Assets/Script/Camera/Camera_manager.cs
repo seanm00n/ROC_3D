@@ -22,7 +22,7 @@ public class Camera_manager : MonoBehaviour
     public Transform[] targetPositions;
 
     public float cameraRotSpeed = 200;
-    float cameraMoveSpeed = 8f;
+    public float cameraMoveSpeed = 8f;
     Vector3 cameraMoveVelocity;
 
     float currentAngle;
@@ -39,8 +39,9 @@ public class Camera_manager : MonoBehaviour
     public float maxAngle = 80;
     public float minAngle = -40f;
 
-
-    Ray rayEarly;
+    //
+    public float smoothCameraTime;
+    public float smoothCameraSpeed = 24f;
 
     private void Awake()
     {
@@ -55,6 +56,24 @@ public class Camera_manager : MonoBehaviour
 
     void Update()
     {
+        if(smoothCameraTime > 0)
+        {
+            if (smoothCameraSpeed > cameraMoveSpeed && targetNum == 1)
+            {
+                float value = cameraMoveSpeed;
+                cameraMoveSpeed = smoothCameraSpeed;
+                smoothCameraSpeed = value;
+            }
+            smoothCameraTime -= Time.deltaTime;
+        }
+        else if(smoothCameraTime < 0)
+        {
+            smoothCameraTime = 0;
+            float value = cameraMoveSpeed;
+            cameraMoveSpeed = smoothCameraSpeed;
+            smoothCameraSpeed = value;
+        }
+
         if (!target) return;
         CameraMove();
         CameraRotate();
@@ -64,9 +83,8 @@ public class Camera_manager : MonoBehaviour
             if (fpsMode) {fpsMode = false; Camera.main.nearClipPlane = 0.01f;}
             else { fpsMode = true;}
         }
-
-        
     }
+
 
     void CameraMove()
     {
@@ -74,13 +92,21 @@ public class Camera_manager : MonoBehaviour
         {
             Vector3 destination = new Vector3(targetPosition.position.x, targetPosition.position.y, targetPosition.position.z);
             Vector3 pVector = Vector3.Lerp(transform.position, destination, cameraMoveSpeed * Time.deltaTime);
-            if (targetNum == 1)
+            if (targetNum == 1 && smoothCameraTime == 0)
             {
                 transform.position = destination;
             }
-            else transform.position = pVector;
+            else
+            {
+                transform.position = pVector;
+                if (targetNum != 1)
+                {
+                    smoothCameraTime = 0.5f;
 
+                }
+            }
             float pointY = transform.eulerAngles.y + Input.GetAxisRaw("Mouse X") * cameraRotSpeed * Time.deltaTime;
+            
             target.eulerAngles = new Vector3(target.rotation.x, pointY, target.rotation.z);
         }
         else
@@ -88,15 +114,16 @@ public class Camera_manager : MonoBehaviour
             Vector3 destination = new Vector3(targetPosition.position.x, targetPosition.position.y, targetPosition.position.z);
             transform.position = destination;
 
-            float pointY = transform.eulerAngles.y + Input.GetAxisRaw("Mouse X") * cameraRotSpeed * Time.deltaTime;
-            target.eulerAngles = new Vector3(target.rotation.x, pointY, target.rotation.z);            
+            float pointY = target.eulerAngles.y + Input.GetAxisRaw("Mouse X") * cameraRotSpeed * Time.smoothDeltaTime;
+            Debug.Log(pointY);
+            target.eulerAngles = new Vector3(target.rotation.x, pointY, target.rotation.z);  
         }
     }
 
     void CameraRotate()
     {
         float pointX = transform.eulerAngles.x - Input.GetAxisRaw("Mouse Y") * cameraRotSpeed * Time.deltaTime;
-        Vector3 RoteteVelocity = new Vector3();
+        Vector3 RoteteVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
 
         if (minAngle >= 0)
         {
@@ -127,7 +154,6 @@ public class Camera_manager : MonoBehaviour
                 if (Value == 0) targetPosition = targetPositions[0]; else { targetPosition = targetPositions[3]; }
 
                 if (transform.localEulerAngles.x > topAngle) targetNum = 3; else if (pointX < DownAngle) targetNum = 2;
-                RoteteVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
                 transform.eulerAngles = RoteteVelocity;
             }
             else if (targetNum == 2)
