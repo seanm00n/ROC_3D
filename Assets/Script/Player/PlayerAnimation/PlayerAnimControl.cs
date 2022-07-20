@@ -50,6 +50,11 @@ public class PlayerAnimControl : MonoBehaviour
         {
             Player.SetBool("Fps", false);
         }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            AttackEnd();
+        }
     }
     // Update is called once per frame
     public void waitngJump()
@@ -69,8 +74,11 @@ public class PlayerAnimControl : MonoBehaviour
 
     public void AnimationWork(Vector2 move)
     {
-        Player.SetFloat("Horizontal",move.x);
-        Player.SetFloat("Vertical", move.y);
+        if (Camera_manager.fpsMode == false)
+        {
+            Player.SetFloat("Horizontal", move.x);
+            Player.SetFloat("Vertical", move.y);
+        }
     }
     public void Jump()
     {
@@ -79,6 +87,19 @@ public class PlayerAnimControl : MonoBehaviour
             return;
         Player.ResetTrigger("OnAir");
         Player.SetTrigger("Jump");
+    }
+
+    public void Attack()
+    {
+        if (Camera_manager.fpsMode == false)
+        {
+            Player.SetBool("OnAttack",true);
+            Player.SetTrigger("Attack");
+        }
+    }
+    public void AttackEnd()
+    {
+        Player.SetBool("OnAttack", false);
     }
 
     public void AnimationAngleWork(float angle)

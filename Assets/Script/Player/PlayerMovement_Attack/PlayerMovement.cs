@@ -107,12 +107,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (airSpeedX > 0)
         {
-            Debug.Log("L : " + airSpeedX);
             airSpeedX -= airSpeedX * Time.unscaledDeltaTime;
         }
         else if (airSpeedX < 0)
         {
-            Debug.Log("R : " + airSpeedX);
             airSpeedX -= airSpeedX * Time.unscaledDeltaTime;
         }
         else { airSpeedX = 0; }
@@ -186,7 +184,7 @@ public class PlayerMovement : MonoBehaviour
         ////////////////////////////////////
         ///
 
-        if (speed > OriginalSpeed) PlayerAnimControl.instance.Player.SetBool("Dash", true); 
+        if (speed > OriginalSpeed && Camera_manager.fpsMode == false) PlayerAnimControl.instance.Player.SetBool("Dash", true); 
         else PlayerAnimControl.instance.Player.SetBool("Dash", false);
 
         if (speed < OriginalSpeed) PlayerAnimControl.instance.Player.SetBool("Crouch", true);

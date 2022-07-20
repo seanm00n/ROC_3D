@@ -112,7 +112,6 @@ public class WhiteMageController : MonoBehaviour
     void Update()
     {   
         target = screenTargets[targetIndex()];
-
         if (Input.GetMouseButtonDown(1) && casting == true)
         {
             casting = false;
@@ -431,7 +430,9 @@ public class WhiteMageController : MonoBehaviour
 
         //This way you can find target on the full screen
         //if (screenPos.z > 0 && screenPos.x > 0 && screenPos.x < Screen.width && screenPos.y > 0 && screenPos.y < Screen.height)
+
         // {screenPos.x > 0 && screenPos.y > 0 && screenPos.z > 0} - disable target if enemy backside
+
         //Find target near center of the screen     
         if (absCornerDistance.x < screenCenter.x / 3 && absCornerDistance.y < screenCenter.y / 3 && screenPos.x > 0 && screenPos.y > 0 && screenPos.z > 0 //If target is in the middle of the screen
             && !Physics.Linecast(transform.position + (Vector3)uiOffset, target.position + (Vector3)uiOffset * 2, collidingLayer)) //If player can see the target
