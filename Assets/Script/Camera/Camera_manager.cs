@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Camera_manager : MonoBehaviour
 {
+    public GameObject bookVisibleFps;
     public int[] ExceptLayerNum;
     public float Value; //카메라 벽 넘기 방지
     public static Camera_manager instance;
@@ -56,7 +57,15 @@ public class Camera_manager : MonoBehaviour
 
     void Update()
     {
-        if(smoothCameraTime > 0)
+        if (Camera_manager.fpsMode == true && bookVisibleFps)
+        {
+            bookVisibleFps.SetActive(true);
+        }
+        else
+        {
+            bookVisibleFps.SetActive(false);
+        }
+        if (smoothCameraTime > 0)
         {
             if (smoothCameraSpeed > cameraMoveSpeed && targetNum == 1)
             {
@@ -115,7 +124,7 @@ public class Camera_manager : MonoBehaviour
             transform.position = destination;
 
             float pointY = target.eulerAngles.y + Input.GetAxisRaw("Mouse X") * cameraRotSpeed * Time.smoothDeltaTime;
-            Debug.Log(pointY);
+            
             target.eulerAngles = new Vector3(target.rotation.x, pointY, target.rotation.z);  
         }
     }

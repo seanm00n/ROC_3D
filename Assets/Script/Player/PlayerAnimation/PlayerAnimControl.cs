@@ -44,11 +44,11 @@ public class PlayerAnimControl : MonoBehaviour
         Player.SetBool("Onground", P.isJumping);
         if (Camera_manager.fpsMode == true)
         {
-            Player.SetBool("Fps", true);
+            Player.enabled = false;    
         }
         else
         {
-            Player.SetBool("Fps", false);
+            Player.enabled = true;
         }
 
         if (Input.GetMouseButtonUp(0))
