@@ -110,7 +110,10 @@ public class WhiteMageController : MonoBehaviour
     }
 
     void Update()
-    {   
+    {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        
         target = screenTargets[targetIndex()];
         if (Input.GetMouseButtonDown(1) && casting == true)
         {
