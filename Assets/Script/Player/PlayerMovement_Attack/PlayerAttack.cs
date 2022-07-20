@@ -22,6 +22,7 @@ public class PlayerAttack : MonoBehaviour
     [Space]
     public LayerMask obstacle;
     public LayerMask Monster;
+    public LayerMask Player;
     public Image aim;
     public Vector2 uiOffset;
 
@@ -73,41 +74,78 @@ public class PlayerAttack : MonoBehaviour
             PlayerAnimControl.instance.AttackEnd();
             activeTarger = false;
         }
+
         Collider[] col = Physics.OverlapSphere(transform.position, viewDistance, Monster);
         screenTargets.Clear();
         target = null;
-        
-        for (int i = 0; i< col.Length; i++)
+
+        for (int i = 0; i < col.Length; i++)
         {
             Vector3 TargetAngle = col[i].transform.position - transform.position;
-            if (Vector3.Angle(transform.forward,TargetAngle) < fieldOfView)
+            if (Vector3.Angle(transform.forward, TargetAngle) < fieldOfView)
                 screenTargets.Add(col[i].transform);
         }
 
-        if (screenTargets.Count > targetIndex())
-            target = screenTargets[targetIndex()];
-        UserInterface();
-        if (Input.GetMouseButton(0) && aim.enabled == true && activeTarger == true)
+        if (Input.GetMouseButton(1))
         {
-            PlayerAnimControl.instance.Attack();
-            if (fireCountdown <= 0f)
+            if (screenTargets.Count > targetIndex())
+                target = screenTargets[targetIndex()];
+        }
+        UserInterface();
+
+
+        if (Input.GetMouseButton(0))
+        {
+            if (aim.enabled == true && activeTarger == true)
             {
-                GameObject projectile = Instantiate(PrefabsCast[8], FirePoint.position, FirePoint.rotation);
-                projectile.GetComponent<TargetProjectile>().UpdateTarget(target, (Vector3)uiOffset);
-                Effect = Prefabs[8].GetComponent<ParticleSystem>();
-                Effect.Play();
-                //Get Audiosource from Prefabs if exist
-                if (Prefabs[8].GetComponent<AudioSource>())
+                PlayerAnimControl.instance.Attack();
+                if (fireCountdown <= 0f)
                 {
-                    soundComponent = Prefabs[8].GetComponent<AudioSource>();
-                    clip = soundComponent.clip;
-                    soundComponent.PlayOneShot(clip);
+                    GameObject projectile = Instantiate(PrefabsCast[8], FirePoint.position, FirePoint.rotation);
+                    projectile.GetComponent<TargetProjectile>().UpdateTarget(target, (Vector3)uiOffset);
+                    Effect = Prefabs[8].GetComponent<ParticleSystem>();
+                    Effect.Play();
+                    //Get Audiosource from Prefabs if exist
+                    if (Prefabs[8].GetComponent<AudioSource>())
+                    {
+                        soundComponent = Prefabs[8].GetComponent<AudioSource>();
+                        clip = soundComponent.clip;
+                        soundComponent.PlayOneShot(clip);
+                    }
+                    fireCountdown = fireRate;
                 }
-                fireCountdown = fireRate;
+            }
+            else
+            {
+                PlayerAnimControl.instance.Attack();
+                if (fireCountdown <= 0f)
+                {
+                    Transform target_;
+                    RaycastHit hit;
+                    Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+
+                    if (Physics.Raycast(ray, out hit, viewDistance,~Player))
+                    {
+                        target_ = new GameObject().transform;
+                        target_.position = hit.point;
+                        GameObject projectile = Instantiate(PrefabsCast[8], FirePoint.position, FirePoint.rotation);
+                        projectile.GetComponent<TargetProjectile>().UpdateTarget(target_, (Vector3)uiOffset);
+                        Effect = Prefabs[8].GetComponent<ParticleSystem>();
+                        Effect.Play();
+                        //Get Audiosource from Prefabs if exist
+                        if (Prefabs[8].GetComponent<AudioSource>())
+                        {
+                            soundComponent = Prefabs[8].GetComponent<AudioSource>();
+                            clip = soundComponent.clip;
+                            soundComponent.PlayOneShot(clip);
+                        }
+                        fireCountdown = fireRate;
+                        Destroy(target_.gameObject, 2f);
+                    }
+                }
             }
         }
     }
-
     private void UserInterface()
     {
         Vector3 screenCenter = new Vector3(Screen.width, Screen.height, 0) / 2;
@@ -123,8 +161,8 @@ public class PlayerAttack : MonoBehaviour
             // {screenPos.x > 0 && screenPos.y > 0 && screenPos.z > 0} - disable target if enemy backside
 
             //Find target near center of the screen     
-            if (absCornerDistance.x < screenCenter.x / 3 && absCornerDistance.y < screenCenter.y / 3 && screenPos.x > 0 && screenPos.y > 0 && screenPos.z > 0 //If target is in the middle of the screen
-                && !Physics.Linecast(transform.position + (Vector3)uiOffset, target.position + (Vector3)uiOffset * 2, 0)) //If player can see the target
+            if (absCornerDistance.x < screenCenter.x  && absCornerDistance.y < screenCenter.y && screenPos.x > 0 && screenPos.y > 0 && screenPos.z > 0 //If target is in the middle of the screen
+                && !Physics.Linecast(transform.position + (Vector3)uiOffset, target.position + (Vector3)uiOffset * 2, obstacle)) //If player can see the target
             {
                 aim.transform.position = Vector3.MoveTowards(aim.transform.position, screenPos, Time.deltaTime * 3000);
                 if (!activeTarger)

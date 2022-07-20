@@ -2043,7 +2043,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8567060890077904672}
   m_LocalRotation: {x: -0.27990824, y: -1.3555573e-20, z: -5.1334123e-23, w: 0.9600268}
-  m_LocalPosition: {x: 0.07, y: -1.41, z: -1.82}
+  m_LocalPosition: {x: 0.12, y: -1.41, z: -1.82}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2195,6 +2195,7 @@ GameObject:
   - component: {fileID: 8567060890460721917}
   - component: {fileID: 8567060890460721906}
   - component: {fileID: 8567060890460721907}
+  - component: {fileID: 1299952601}
   m_Layer: 3
   m_Name: CameraTarget
   m_TagString: Untagged
@@ -2210,7 +2211,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8567060890460721918}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.38, y: 1.13, z: -3.1}
+  m_LocalPosition: {x: 0.13, y: 1.13, z: -3.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2268,6 +2269,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1299952601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8567060890460721918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8cf0365b0e2f5545b35cadaa9ef34f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8567060890559498242
 GameObject:
   m_ObjectHideFlags: 0
@@ -2296,7 +2309,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8567060890559498242}
   m_LocalRotation: {x: 0.095570974, y: -0, z: -0, w: 0.9954226}
-  m_LocalPosition: {x: 1.77, y: 5.6399994, z: -3.6000004}
+  m_LocalPosition: {x: 542.2958, y: 60.23132, z: 374.45477}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2388,12 +2401,12 @@ MonoBehaviour:
   - {fileID: 8567060889030214994}
   cameraRotSpeed: 200
   cameraMoveSpeed: 8
-  topAngle: 80
-  DownAngle: 0
+  topAngle: 30
+  DownAngle: -20
   maxAngle: 80
   minAngle: -40
   smoothCameraTime: 0
-  smoothCameraSpeed: 25
+  smoothCameraSpeed: 15
 --- !u!114 &8567060890559498245
 MonoBehaviour:
   m_ObjectHideFlags: 0

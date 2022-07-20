@@ -9311,6 +9311,7 @@ GameObject:
   - component: {fileID: 669614163}
   - component: {fileID: 669614162}
   - component: {fileID: 669614161}
+  - component: {fileID: 669614165}
   m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
@@ -9396,6 +9397,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!111 &669614165
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 669614160}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: efe74ac32458298409711acebd846574, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: efe74ac32458298409711acebd846574, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1001 &679013970
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25123,6 +25140,14 @@ PrefabInstance:
       propertyPath: aim
       value: 
       objectReference: {fileID: 2083075936}
+    - target: {fileID: 7982534700999431396, guid: 0fb3e836d1c5a554cbf05c36fe090cd1, type: 3}
+      propertyPath: Player.m_Bits
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7982534700999431396, guid: 0fb3e836d1c5a554cbf05c36fe090cd1, type: 3}
+      propertyPath: PrefabsCast.Array.data[8]
+      value: 
+      objectReference: {fileID: 1184375899483656, guid: 3fd0e63b096ab2d4faaebafeae7794d8, type: 3}
     - target: {fileID: 8567060890003917534, guid: 0fb3e836d1c5a554cbf05c36fe090cd1, type: 3}
       propertyPath: m_RootOrder
       value: 11
