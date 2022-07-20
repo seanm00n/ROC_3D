@@ -44,6 +44,7 @@ public class PlayerAnimControl : MonoBehaviour
         Player.SetBool("Onground", P.isJumping);
         if (Camera_manager.fpsMode == true)
         {
+            Player.Rebind();
             Player.enabled = false;    
         }
         else

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Camera_manager : MonoBehaviour
 {
+
+    Transform targetLocation;
+    /// /////
     public GameObject bookVisibleFps;
     public int[] ExceptLayerNum;
     public float Value; //카메라 벽 넘기 방지
@@ -46,6 +49,7 @@ public class Camera_manager : MonoBehaviour
 
     private void Awake()
     {
+        targetLocation = targetPositions[0];
         instance = this;
     }
     void Start()
@@ -132,6 +136,7 @@ public class Camera_manager : MonoBehaviour
     void CameraRotate()
     {
         float pointX = transform.eulerAngles.x - Input.GetAxisRaw("Mouse Y") * cameraRotSpeed * Time.deltaTime;
+        if (pointX < 300 && pointX > maxAngle) pointX = maxAngle;
         Vector3 RoteteVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
 
         if (minAngle >= 0)
@@ -155,14 +160,28 @@ public class Camera_manager : MonoBehaviour
 
         if (!fpsMode)
         {
+            float pointX_ = 0;
+            if (pointX > 300 && DownAngle < 0)
+            {
+                pointX_ = pointX - 360;
+
+            }
             if (targetNum == 1)
             {
                 if (Value != 2)
                 Value = CameraReset(c1);
 
-                if (Value == 0) targetPosition = targetPositions[0]; else { targetPosition = targetPositions[3]; }
+                if (Value == 0) targetPosition = targetLocation; else { targetPosition = targetPositions[3]; }
 
-                if (transform.localEulerAngles.x > topAngle) targetNum = 3; else if (pointX < DownAngle) targetNum = 2;
+                if (pointX_ != 0)
+                {
+                    if (pointX_ < DownAngle) targetNum = 2;
+                }
+                else 
+                {
+                    if (transform.localEulerAngles.x > topAngle) targetNum = 3; else if (pointX < DownAngle) targetNum = 2;
+                }
+
                 transform.eulerAngles = RoteteVelocity;
             }
             else if (targetNum == 2)
@@ -172,10 +191,14 @@ public class Camera_manager : MonoBehaviour
 
                 if (Value == 0) targetPosition = targetPositions[1]; else { targetPosition = targetPositions[4]; }
                 currentAngle = transform.eulerAngles.x;
+
+                
                 if (minAngle + 360 > (pointX)) pointX = -40;
                 RoteteVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
+                
+
                 transform.eulerAngles = RoteteVelocity;
-                if ((topAngle/2) > transform.eulerAngles.x) targetNum = 1;
+                if (DownAngle < pointX_ && pointX_ != 0) targetNum = 1;
 
             }
             else if (targetNum == 3)
@@ -185,7 +208,6 @@ public class Camera_manager : MonoBehaviour
 
                 if (Value == 0) targetPosition = targetPositions[2]; else { targetPosition = targetPositions[5]; }
                 currentAngle = transform.eulerAngles.x;
-                if (maxAngle < transform.eulerAngles.x) pointX = maxAngle;
                 RoteteVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
                 transform.eulerAngles = RoteteVelocity;
                 if (30 > transform.eulerAngles.x) targetNum = 1;
