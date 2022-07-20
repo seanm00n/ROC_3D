@@ -62,7 +62,9 @@ public class PlayerAttack : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(fireCountdown > 0)
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        if (fireCountdown > 0)
         {
             fireCountdown -= Time.deltaTime;
         }
