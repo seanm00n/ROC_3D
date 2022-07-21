@@ -39,7 +39,7 @@ public class Test_Box : MonoBehaviour, IItem
         GetComponentInChildren<Canvas>().worldCamera = Camera.main;
         skillWindow = GameObject.Find("InGame_UI_sample").transform.Find("Skill_Upgrade").gameObject;
         skillWindow.SetActive(true);
-        blackScreen = GameObject.Find("InGame_UI_sample").transform.Find("BlackOut").gameObject; ;
+        blackScreen = GameObject.Find("InGame_UI_sample").transform.Find("BlackOut").gameObject;
         blackScreen.SetActive(true);
 
         FindObjectOfType<PlayerMovement>().enabled = false;

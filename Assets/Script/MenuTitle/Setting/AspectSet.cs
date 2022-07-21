@@ -22,7 +22,8 @@ public class AspectSet : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape)) {
             //Instantiate();//return to menu prefab
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
     
@@ -57,7 +58,45 @@ public class AspectSet : MonoBehaviour
 
     //Used in inspector
     public void ExitAspectSet () {
-        Debug.Log("exit setting");
-        Destroy(gameObject);
+        //Debug.Log("exit setting");
+        //Destroy(gameObject);
+        gameObject.SetActive(false);
+    }
+
+
+
+
+
+
+
+
+
+
+
+    private void OnEnable()
+    {
+
+        Time.timeScale = 0f;
+        FindObjectOfType<PlayerMovement>().enabled = false;
+        FindObjectOfType<PlayerAttack>().enabled = false;
+        FindObjectOfType<Camera_manager>().enabled = false;
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+
+    private void OnDisable()
+    {
+
+        GameObject skillWindow = GameObject.Find("InGame_UI_sample").transform.Find("Skill_Upgrade").gameObject;
+        if (skillWindow.activeSelf == false)
+        {
+            FindObjectOfType<PlayerMovement>().enabled = true;
+            FindObjectOfType<PlayerAttack>().enabled = true;
+            FindObjectOfType<Camera_manager>().enabled = true;
+
+            Time.timeScale = 1f;
+        }
     }
 }
