@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4688967993787936}
   - component: {fileID: 198014357558018248}
   - component: {fileID: 199374775772794064}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Bubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4893,7 +4893,7 @@ GameObject:
   - component: {fileID: 4089273648216124}
   - component: {fileID: 198006896321584412}
   - component: {fileID: 199513559271964120}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Dust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9778,7 +9778,7 @@ GameObject:
   - component: {fileID: 82712604240128802}
   - component: {fileID: 5196145642640936128}
   - component: {fileID: 1484185417431163849}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Light hit Player
   m_TagString: PlayerAttack
   m_Icon: {fileID: 0}
@@ -14779,7 +14779,7 @@ SphereCollider:
   m_GameObject: {fileID: 1408840603016568}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -14810,7 +14810,7 @@ GameObject:
   - component: {fileID: 4868412797454976}
   - component: {fileID: 198299620863889370}
   - component: {fileID: 199254841493303676}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: DarkAura
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19692,7 +19692,7 @@ GameObject:
   - component: {fileID: 4363193825938320}
   - component: {fileID: 198707323532589322}
   - component: {fileID: 199525373409143840}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Rays
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24574,7 +24574,7 @@ GameObject:
   - component: {fileID: 4231664670210450}
   - component: {fileID: 198745618004258456}
   - component: {fileID: 199948312939945046}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: ShockWave
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29456,7 +29456,7 @@ GameObject:
   - component: {fileID: 4858045533428148}
   - component: {fileID: 198554886761345804}
   - component: {fileID: 199787111004083254}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34347,7 +34347,7 @@ GameObject:
   - component: {fileID: 4686078455686328}
   - component: {fileID: 198156232648221410}
   - component: {fileID: 199101011579799994}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Flare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
