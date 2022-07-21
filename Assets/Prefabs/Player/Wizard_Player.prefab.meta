@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Script/Controller.meta
+guid: 540147e8819f8c74c800f6e6a67b68ef
+folderAsset: yes
+DefaultImporter:
+========
 guid: 0fb3e836d1c5a554cbf05c36fe090cd1
 PrefabImporter:
+>>>>>>>> 8f0abf3 (폴더 배치 수정):Assets/Prefabs/Player/Wizard_Player.prefab.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

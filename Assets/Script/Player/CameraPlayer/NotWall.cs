@@ -16,21 +16,27 @@ public class NotWall : MonoBehaviour
     }
     void OnTriggerStay(Collider other)
     {
-        for (int i = 0; i < cam.ExceptLayerNum.Length; i++)
+        if (other.gameObject.CompareTag("PlayerAttack") == false)
         {
-            if (other.gameObject.layer == cam.ExceptLayerNum[i])
+            for (int i = 0; i < cam.ExceptLayerNum.Length; i++)
             {
-                return;
+                if (other.gameObject.layer == cam.ExceptLayerNum[i])
+                {
+                    return;
+                }
             }
-        }
 
-        if (other.gameObject.layer != cam.target.gameObject.layer)
-            Camera_manager.instance.Value = 2;
+            if (other.gameObject.layer != cam.target.gameObject.layer)
+                Camera_manager.instance.Value = 2;
+        }
     }
     void OnTriggerExit(Collider other)
     {
 
-        if (other.gameObject.layer != cam.target.gameObject.layer)
-        Camera_manager.instance.Value = 0;
+        if (other.gameObject.CompareTag("PlayerAttack") == false)
+        {
+            if (other.gameObject.layer != cam.target.gameObject.layer)
+                Camera_manager.instance.Value = 0;
+        }
     }
 }

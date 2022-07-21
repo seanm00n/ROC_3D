@@ -39,12 +39,15 @@ public class Test_Box : MonoBehaviour, IItem
         GetComponentInChildren<Canvas>().worldCamera = Camera.main;
         skillWindow = GameObject.Find("InGame_UI_sample").transform.Find("Skill_Upgrade").gameObject;
         skillWindow.SetActive(true);
-        blackScreen = GameObject.Find("InGame_UI_sample").transform.Find("BlackOut").gameObject; ;
+        blackScreen = GameObject.Find("InGame_UI_sample").transform.Find("BlackOut").gameObject;
         blackScreen.SetActive(true);
 
         FindObjectOfType<PlayerMovement>().enabled = false;
+        FindObjectOfType<PlayerAttack>().enabled = false;
         FindObjectOfType<Camera_manager>().enabled = false;
 
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
         end = true;
     }
 
@@ -52,6 +55,8 @@ public class Test_Box : MonoBehaviour, IItem
     {
         Time.timeScale = 1f;
         GetComponentInChildren<Canvas>().gameObject.SetActive(false);
+        FindObjectOfType<PlayerAttack>().enabled = true;
+
         Destroy(this);
     }
 }

@@ -158,7 +158,7 @@ GameObject:
   - component: {fileID: 6510016175071703868}
   - component: {fileID: 38731831}
   - component: {fileID: 706153272}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MonsterBossPref
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -282,7 +282,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   m_SightDistance: 10
-  MController: {fileID: 0}
 --- !u!95 &38731831
 Animator:
   serializedVersion: 4

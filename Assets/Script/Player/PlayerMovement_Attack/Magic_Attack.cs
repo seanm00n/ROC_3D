@@ -36,6 +36,7 @@ public class Magic_Attack : MonoBehaviour
             foreach (var effect in EffectsOnCollision)
             {
                 var instance = Instantiate(effect, collisionEvents[i].intersection + collisionEvents[i].normal * Offset, new Quaternion()) as GameObject;
+                instance.GetComponent<Skill_Attack>().skill_Damage_Value = PlayerAttack.normalDamage;
                 if (!UseWorldSpacePosition) instance.transform.parent = transform;
                 if (UseFirePointRotation) { instance.transform.LookAt(transform.position); }
                 else if (rotationOffset != Vector3.zero && useOnlyRotationOffset) { instance.transform.rotation = Quaternion.Euler(rotationOffset); }

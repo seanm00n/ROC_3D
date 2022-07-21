@@ -41,7 +41,7 @@ public class MonsterAI : MonoBehaviour
     }
 
     void Init () {
-        Player = GameObject.Find("Test_Player").transform.GetChild(0).gameObject;//추후 수정
+        Player = GameObject.Find("Wizard_Player").transform.GetChild(0).gameObject;//추후 수정
         MController = GameObject.Find("MonsterController");
         HQ = GameObject.Find("HQ");//추후 수정
         m_target = HQ;

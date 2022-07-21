@@ -61,6 +61,15 @@ public class Turret : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (target)
+        {
+            Vector3 Pos = new Vector3 (transform.position.x,0,transform.position.z);
+            Vector3 targetPos = new Vector3(target.transform.position.x, 0, target.transform.position.z);
+            if (Vector3.Distance(Pos, targetPos) > radius)
+            {
+                target = null;
+            }
+        }
         if (isLive)
         {
             if (Hui && Hui.GetComponentInChildren<Slider>().maxValue == Hpbar.maxValue && (int)Hpbar.value != HP)
