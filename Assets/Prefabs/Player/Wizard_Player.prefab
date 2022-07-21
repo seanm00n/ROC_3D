@@ -2586,7 +2586,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8567060891022760391}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 540.36, y: 61.21, z: 375.3}
+  m_LocalPosition: {x: 547.38, y: 61.21, z: 365.35}
   m_LocalScale: {x: 0.85, y: 0.85, z: 0.85}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2697,7 +2697,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 1200282832259902, guid: 5756c55aa5236114485245076256ce47, type: 3}
-  - {fileID: 1184375899483656, guid: a0be4fb98ccc9c2478b05ccdf7b61225, type: 3}
+  - {fileID: 1184375899483656, guid: 3fd0e63b096ab2d4faaebafeae7794d8, type: 3}
   - {fileID: 1989801033779156, guid: 5ab3b0147547c474ab7f4ca158578ef4, type: 3}
   obstacle:
     serializedVersion: 2
@@ -2705,12 +2705,15 @@ MonoBehaviour:
   Monster:
     serializedVersion: 2
     m_Bits: 64
+  Player:
+    serializedVersion: 2
+    m_Bits: 8
   aim: {fileID: 0}
   uiOffset: {x: 0, y: 0}
   FirePoint: {fileID: 5430561834964855316}
   fireRate: 0.1
   fieldOfView: 60
-  viewDistance: 40
+  viewDistance: 60
   screenTargets: []
   cameraShaker: {fileID: 0}
 --- !u!95 &8567060891022760443
