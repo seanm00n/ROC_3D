@@ -11,29 +11,32 @@ public class AspectSet : MonoBehaviour
 
     readonly List<Resolution> _resolutions = new();
     FullScreenMode _screenMode;
-    
+
     void Start()
     {
         InitUI();
     }
 
-    
+
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
             //Instantiate();//return to menu prefab
-            //Destroy(gameObject);
+
             gameObject.SetActive(false);
         }
     }
-    
-    void InitUI () {
+
+    public void InitUI()
+    {
+        Debug.Log(Screen.resolutions);
         foreach (var resolution in Screen.resolutions)
         {
             if (resolution.refreshRate == 60) // 항상 60hz만 서포트?
                 _resolutions.Add(resolution);
         }
-        
+
         resolutionsDropdown.options.Clear();
 
         // Add all available resolutions
@@ -43,34 +46,27 @@ public class AspectSet : MonoBehaviour
         resolutionsDropdown.RefreshShownValue();
         fullscreenBtn.isOn = Screen.fullScreenMode.Equals(FullScreenMode.FullScreenWindow);
     }
-    
+
     // Used in inspector
-    public void ApplyButton () {
-        Screen.SetResolution(_resolutions[resolutionsDropdown.value].width, 
+    public void ApplyButton()
+    {
+            Screen.SetResolution(_resolutions[resolutionsDropdown.value].width,
             _resolutions[resolutionsDropdown.value].height,
             _screenMode);
     }
-    
+
     // Used in inspector
-    public void FullScreenBtn (bool isFull) {
+    public void FullScreenBtn(bool isFull)
+    {
         _screenMode = isFull ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
     }
 
     //Used in inspector
-    public void ExitAspectSet () {
-        //Debug.Log("exit setting");
-        //Destroy(gameObject);
+    public void ExitAspectSet()
+    {
+        Debug.Log("exit setting");
         gameObject.SetActive(false);
     }
-
-
-
-
-
-
-
-
-
 
 
     private void OnEnable()

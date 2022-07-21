@@ -30,8 +30,7 @@ public class Skill_Attack : MonoBehaviour
             if (other.gameObject.layer == layerNumber)
             {
                 GameObject Explo = Instantiate(Explosion, other.gameObject.transform.transform.position, Quaternion.identity);
-                Destroy(other.gameObject);
-
+                
                 Destroy(Explo, 2f);
                 Destroy(gameObject);
             }
