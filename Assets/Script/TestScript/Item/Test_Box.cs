@@ -10,7 +10,6 @@ public class Test_Box : MonoBehaviour, IItem
 
     GameObject skillWindow;
     GameObject blackScreen;
-
     private void Update()
     {
         if(end == true && skillWindow && skillWindow.activeSelf == false)
@@ -55,8 +54,9 @@ public class Test_Box : MonoBehaviour, IItem
     {
         Time.timeScale = 1f;
         GetComponentInChildren<Canvas>().gameObject.SetActive(false);
+        if (StructureSpawn_Test.StructureMode == false)
         FindObjectOfType<PlayerAttack>().enabled = true;
 
-        Destroy(this);
+        Destroy(gameObject);
     }
 }

@@ -5,8 +5,15 @@ using UnityEngine;
 public class MeshModChange : MonoBehaviour
 {
     Material materialOrigin;
+    public Material materialDamaged;
 
     public Material transparentMat;
+    public void DamagedMat()
+    {
+        if(materialDamaged)
+        GetComponent<Renderer>().material = materialDamaged;
+    }
+
     void Start()
     {
         materialOrigin = GetComponent<Renderer>().material;
@@ -19,6 +26,14 @@ public class MeshModChange : MonoBehaviour
             GetComponent<Renderer>().material = transparentMat;
         }
         else
-            GetComponent<Renderer>().material = materialOrigin;
+        {
+            if (PlayerAnimControl.instance.hit == true)
+            {
+                GetComponent<Renderer>().material = materialDamaged;
+            }
+            else
+
+                GetComponent<Renderer>().material = materialOrigin;
+        }
     }
 }

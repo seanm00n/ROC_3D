@@ -4715,10 +4715,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19409eef9574ed2458cc82e00f4c7cd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DamageCoolTime: 0.5
   Hp: 100
+  hit: 0
   State: 0
   Player: {fileID: 0}
-  hitEffect: {fileID: 3955156087321414750, guid: abfaa00760f785d4288878fb5224f9dc, type: 3}
 --- !u!143 &7883633325670404476
 CharacterController:
   m_ObjectHideFlags: 0
@@ -5118,6 +5119,9 @@ MonoBehaviour:
   installLayer:
     serializedVersion: 2
     m_Bits: 256
+  areaLayer:
+    serializedVersion: 2
+    m_Bits: 0
   selectNumber: 0
   Selected_Prefab:
   - {fileID: 5151253315898664023, guid: 7e202205634b0d34e8ce286f164c93ba, type: 3}
@@ -5158,7 +5162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bookVisibleFps: {fileID: 0}
-  ExceptLayerNum: 09000000
+  ExceptLayerNum: 0900000006000000
   Value: 0
   c1: {fileID: 7883633325889716304}
   c2: {fileID: 7883633326756476046}
@@ -6390,6 +6394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e43056a01cfe79644b16d24040cf6a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  materialDamaged: {fileID: 0}
   transparentMat: {fileID: 2100000, guid: d175cb548ef67294686921e2e4f2ae2c, type: 2}
 --- !u!1 &8370795185000912254
 GameObject:

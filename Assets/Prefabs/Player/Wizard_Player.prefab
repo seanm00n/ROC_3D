@@ -1065,6 +1065,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e43056a01cfe79644b16d24040cf6a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  materialDamaged: {fileID: 0}
   transparentMat: {fileID: 2100000, guid: d175cb548ef67294686921e2e4f2ae2c, type: 2}
 --- !u!1 &7783879611482940471
 GameObject:
@@ -2381,7 +2382,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bookVisibleFps: {fileID: 2463752376988766228}
-  ExceptLayerNum: 0400000009000000
+  ExceptLayerNum: 0400000009000000060000000a000000
   Value: 0
   c1: {fileID: 8567060890839353577}
   c2: {fileID: 8567060889944570935}
@@ -2425,6 +2426,9 @@ MonoBehaviour:
   installLayer:
     serializedVersion: 2
     m_Bits: 256
+  areaLayer:
+    serializedVersion: 2
+    m_Bits: 0
   selectNumber: 0
   Selected_Prefab:
   - {fileID: 5151253315898664023, guid: 7e202205634b0d34e8ce286f164c93ba, type: 3}
@@ -2661,10 +2665,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19409eef9574ed2458cc82e00f4c7cd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DamageCoolTime: 0.5
   Hp: 100
+  hit: 0
   State: 0
   Player: {fileID: 0}
-  hitEffect: {fileID: 3955156087321414750, guid: abfaa00760f785d4288878fb5224f9dc, type: 3}
 --- !u!114 &7982534700999431396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2707,7 +2712,7 @@ MonoBehaviour:
     m_Bits: 64
   Player:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 1034
   aim: {fileID: 0}
   uiOffset: {x: 0, y: 0}
   FirePoint: {fileID: 5430561834964855316}

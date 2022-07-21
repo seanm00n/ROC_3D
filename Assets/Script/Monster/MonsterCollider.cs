@@ -27,6 +27,15 @@ public class MonsterCollider : MonoBehaviour
             //this.HP -= other.AP;
         }
     }
+
+    private void OnTriggerStay(Collider other)
+    {
+
+        if (other.gameObject.tag == "Player")
+        {
+            PlayerAnimControl.instance.Hit(10f);
+        }
+    }
     private void OnTriggerExit (Collider other) {
         if (other.gameObject.tag == "Player" ||
             other.gameObject.tag == "HQ" ||
