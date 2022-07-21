@@ -12,6 +12,9 @@ using UnityEditor;
 
 public class PlayerAttack : MonoBehaviour
 {
+    [Header("Damage")]
+    [SerializeField] public static float normalDamage = 10;
+
     [Header("Effects")]
     public GameObject[] Prefabs;
     public GameObject[] PrefabsCast;
@@ -126,21 +129,22 @@ public class PlayerAttack : MonoBehaviour
 
                     if (Physics.Raycast(ray, out hit, viewDistance,~Player))
                     {
-                        target_ = new GameObject().transform;
-                        target_.position = hit.point;
-                        GameObject projectile = Instantiate(PrefabsCast[8], FirePoint.position, FirePoint.rotation);
-                        projectile.GetComponent<TargetProjectile>().UpdateTarget(target_, (Vector3)uiOffset);
-                        Effect = Prefabs[8].GetComponent<ParticleSystem>();
-                        Effect.Play();
-                        //Get Audiosource from Prefabs if exist
-                        if (Prefabs[8].GetComponent<AudioSource>())
-                        {
-                            soundComponent = Prefabs[8].GetComponent<AudioSource>();
-                            clip = soundComponent.clip;
-                            soundComponent.PlayOneShot(clip);
-                        }
-                        fireCountdown = fireRate;
-                        Destroy(target_.gameObject, 2f);
+                            target_ = new GameObject().transform;
+                            target_.position = hit.point;
+                            GameObject projectile = Instantiate(PrefabsCast[8], FirePoint.position, FirePoint.rotation);
+                            projectile.GetComponent<TargetProjectile>().UpdateTarget(target_, (Vector3)uiOffset);
+                            Effect = Prefabs[8].GetComponent<ParticleSystem>();
+                            Effect.Play();
+                            //Get Audiosource from Prefabs if exist
+                            if (Prefabs[8].GetComponent<AudioSource>())
+                            {
+                                soundComponent = Prefabs[8].GetComponent<AudioSource>();
+                                clip = soundComponent.clip;
+                                soundComponent.PlayOneShot(clip);
+                            }
+                            fireCountdown = fireRate;
+                            Destroy(target_.gameObject, 2f);
+                        
                     }
                 }
             }

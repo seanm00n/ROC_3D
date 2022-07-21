@@ -9711,7 +9711,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 30
-  hit: {fileID: 1408840603016568, guid: 04c37cc0cab73994280830cd0738ac85, type: 3}
+  hit: {fileID: 1408840603016568, guid: 39b426dc2c5cc0a47ba73dea486cfdc0, type: 3}
   flash: {fileID: 0}
   Detached: []
   sideAngle: 20
@@ -9865,7 +9865,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetLayerNumber: 6
   EffectsOnCollision:
-  - {fileID: 1408840603016568, guid: 04c37cc0cab73994280830cd0738ac85, type: 3}
+  - {fileID: 1408840603016568, guid: 39b426dc2c5cc0a47ba73dea486cfdc0, type: 3}
   DestroyTimeDelay: 1
   UseWorldSpacePosition: 1
   Offset: 0.15

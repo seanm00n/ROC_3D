@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 612485972}
   - component: {fileID: 612485971}
   - component: {fileID: 612485969}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Sphere_Fire (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 7359820963147919516}
   - component: {fileID: 7359820963147919518}
   - component: {fileID: 7359820963147919517}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4932,7 +4932,7 @@ GameObject:
   - component: {fileID: 7359820963615490589}
   - component: {fileID: 7359820963615490588}
   - component: {fileID: 7359820963615490590}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Sphere_Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5028,9 +5028,9 @@ GameObject:
   - component: {fileID: 7359820963638954430}
   - component: {fileID: 7359820963638954429}
   - component: {fileID: 2080161460}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: FireAttack
-  m_TagString: Untagged
+  m_TagString: PlayerAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5065,6 +5065,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76a6346bf6fbe4247ab6baf5b5a81f9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skill_Damage_Value: 10
+  playerIsParent: 0
   layerNumber: 6
   Explosion: {fileID: 3219235074987613225, guid: 44a83cdc8f5672343ae1a646f94c8cfa, type: 3}
 --- !u!54 &7359820963638954429
@@ -5107,7 +5109,7 @@ GameObject:
   - component: {fileID: 7359820964036412214}
   - component: {fileID: 7359820964036412208}
   - component: {fileID: 7359820964036412215}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9931,7 +9933,7 @@ GameObject:
   - component: {fileID: 7359820964165241929}
   - component: {fileID: 7359820964165241928}
   - component: {fileID: 7359820964165241935}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Magic fire pro red (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14759,7 +14761,7 @@ GameObject:
   - component: {fileID: 7359820964280219542}
   - component: {fileID: 7359820964280219536}
   - component: {fileID: 7359820964280219543}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: FireDark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19583,7 +19585,7 @@ GameObject:
   - component: {fileID: 7359820964315551850}
   - component: {fileID: 7359820964315551764}
   - component: {fileID: 7359820964315551851}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
