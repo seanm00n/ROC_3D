@@ -21686,7 +21686,7 @@ MonoBehaviour:
   FirePoint: {fileID: 5430561833399495241}
   fireRate: 0.1
   fieldOfView: 60
-  viewDistance: 40
+  viewDistance: 60
   screenTargets: []
   cameraShaker: {fileID: 0}
 --- !u!4 &7996564057629877085
@@ -22191,7 +22191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bookVisibleFps: {fileID: 2463752377069277257}
-  ExceptLayerNum: 04000000
+  ExceptLayerNum: 0400000009000000
   Value: 0
   c1: {fileID: 8567060889282447540}
   c2: {fileID: 8567060890158120042}

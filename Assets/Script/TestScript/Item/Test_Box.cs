@@ -43,8 +43,11 @@ public class Test_Box : MonoBehaviour, IItem
         blackScreen.SetActive(true);
 
         FindObjectOfType<PlayerMovement>().enabled = false;
+        FindObjectOfType<PlayerAttack>().enabled = false;
         FindObjectOfType<Camera_manager>().enabled = false;
 
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
         end = true;
     }
 
@@ -52,6 +55,8 @@ public class Test_Box : MonoBehaviour, IItem
     {
         Time.timeScale = 1f;
         GetComponentInChildren<Canvas>().gameObject.SetActive(false);
+        FindObjectOfType<PlayerAttack>().enabled = true;
+
         Destroy(this);
     }
 }

@@ -33,7 +33,7 @@ public class NotWall : MonoBehaviour
     void OnTriggerExit(Collider other)
     {
 
-        if (other.gameObject.CompareTag("PlayerAttack"))
+        if (other.gameObject.CompareTag("PlayerAttack") == false)
         {
             if (other.gameObject.layer != cam.target.gameObject.layer)
                 Camera_manager.instance.Value = 0;

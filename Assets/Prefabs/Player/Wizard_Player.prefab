@@ -2381,7 +2381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bookVisibleFps: {fileID: 2463752376988766228}
-  ExceptLayerNum: 04000000
+  ExceptLayerNum: 0400000009000000
   Value: 0
   c1: {fileID: 8567060890839353577}
   c2: {fileID: 8567060889944570935}
