@@ -1,7 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Script/Controller.meta
 guid: 949c7960e2c02504499047c2440165f1
 folderAsset: yes
 DefaultImporter:
+========
+guid: efe74ac32458298409711acebd846574
+NativeFormatImporter:
+>>>>>>>> personal/zin:Assets/TrashFile/Test.anim.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

@@ -3,20 +3,18 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Turret
-  - HQ
+  tags: []
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Alliance
+  - 
   - Water
   - UI
-  - Enemy
-  - Neutral
-  - Structure
-  - Item
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 

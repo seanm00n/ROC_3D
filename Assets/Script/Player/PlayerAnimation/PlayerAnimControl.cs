@@ -7,7 +7,7 @@ public class PlayerAnimControl : MonoBehaviour
     public float Hp = 100;
     public enum AnimationState
     {
-        Normal, Jump
+        Normal, Jump, Air
     }
 
     public AnimationState State;
@@ -42,6 +42,20 @@ public class PlayerAnimControl : MonoBehaviour
     private void Update()
     {
         Player.SetBool("Onground", P.isJumping);
+        if (Camera_manager.fpsMode == true)
+        {
+            Player.Rebind();
+            Player.enabled = false;    
+        }
+        else
+        {
+            Player.enabled = true;
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            AttackEnd();
+        }
     }
     // Update is called once per frame
     public void waitngJump()
@@ -51,20 +65,42 @@ public class PlayerAnimControl : MonoBehaviour
     }
     public void air()
     {
+        if (State == AnimationState.Jump || State == AnimationState.Air)
+        {
+            Player.ResetTrigger("OnAir");
+            return;
+        }
         Player.SetTrigger("OnAir");
     }
 
     public void AnimationWork(Vector2 move)
     {
-        Player.SetFloat("Horizontal",move.x);
-        Player.SetFloat("Vertical", move.y);
+        if (Camera_manager.fpsMode == false)
+        {
+            Player.SetFloat("Horizontal", move.x);
+            Player.SetFloat("Vertical", move.y);
+        }
     }
     public void Jump()
     {
+        Player.ResetTrigger("JumpWaiting");
         if (State == AnimationState.Jump)
             return;
         Player.ResetTrigger("OnAir");
         Player.SetTrigger("Jump");
+    }
+
+    public void Attack()
+    {
+        if (Camera_manager.fpsMode == false)
+        {
+            Player.SetBool("OnAttack",true);
+            Player.SetTrigger("Attack");
+        }
+    }
+    public void AttackEnd()
+    {
+        Player.SetBool("OnAttack", false);
     }
 
     public void AnimationAngleWork(float angle)

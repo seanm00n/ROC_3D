@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Camera_manager : MonoBehaviour
 {
+
+    Transform targetLocation;
+    /// /////
+    public GameObject bookVisibleFps;
     public int[] ExceptLayerNum;
     public float Value; //카메라 벽 넘기 방지
     public static Camera_manager instance;
@@ -22,10 +26,9 @@ public class Camera_manager : MonoBehaviour
     public Transform[] targetPositions;
 
     public float cameraRotSpeed = 200;
-    float cameraMoveSpeed = 8f;
+    public float cameraMoveSpeed = 8f;
     Vector3 cameraMoveVelocity;
 
-    public float smoothSpeed = 50;
     float currentAngle;
 
     ////////////////////////
@@ -40,8 +43,13 @@ public class Camera_manager : MonoBehaviour
     public float maxAngle = 80;
     public float minAngle = -40f;
 
+    //
+    public float smoothCameraTime;
+    public float smoothCameraSpeed = 24f;
+
     private void Awake()
     {
+        targetLocation = targetPositions[0];
         instance = this;
     }
     void Start()
@@ -53,6 +61,32 @@ public class Camera_manager : MonoBehaviour
 
     void Update()
     {
+        if (Camera_manager.fpsMode == true && bookVisibleFps)
+        {
+            bookVisibleFps.SetActive(true);
+        }
+        else
+        {
+            bookVisibleFps.SetActive(false);
+        }
+        if (smoothCameraTime > 0)
+        {
+            if (smoothCameraSpeed > cameraMoveSpeed && targetNum == 1)
+            {
+                float value = cameraMoveSpeed;
+                cameraMoveSpeed = smoothCameraSpeed;
+                smoothCameraSpeed = value;
+            }
+            smoothCameraTime -= Time.deltaTime;
+        }
+        else if(smoothCameraTime < 0)
+        {
+            smoothCameraTime = 0;
+            float value = cameraMoveSpeed;
+            cameraMoveSpeed = smoothCameraSpeed;
+            smoothCameraSpeed = value;
+        }
+
         if (!target) return;
         CameraMove();
         CameraRotate();
@@ -60,9 +94,10 @@ public class Camera_manager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.V))
         {
             if (fpsMode) {fpsMode = false; Camera.main.nearClipPlane = 0.01f;}
-        else { fpsMode = true;}
+            else { fpsMode = true;}
         }
     }
+
 
     void CameraMove()
     {
@@ -70,9 +105,21 @@ public class Camera_manager : MonoBehaviour
         {
             Vector3 destination = new Vector3(targetPosition.position.x, targetPosition.position.y, targetPosition.position.z);
             Vector3 pVector = Vector3.Lerp(transform.position, destination, cameraMoveSpeed * Time.deltaTime);
-            transform.position = pVector;
+            if (targetNum == 1 && smoothCameraTime == 0)
+            {
+                transform.position = destination;
+            }
+            else
+            {
+                transform.position = pVector;
+                if (targetNum != 1)
+                {
+                    smoothCameraTime = 0.5f;
 
+                }
+            }
             float pointY = transform.eulerAngles.y + Input.GetAxisRaw("Mouse X") * cameraRotSpeed * Time.deltaTime;
+            
             target.eulerAngles = new Vector3(target.rotation.x, pointY, target.rotation.z);
         }
         else
@@ -80,15 +127,17 @@ public class Camera_manager : MonoBehaviour
             Vector3 destination = new Vector3(targetPosition.position.x, targetPosition.position.y, targetPosition.position.z);
             transform.position = destination;
 
-            float pointY = transform.eulerAngles.y + Input.GetAxisRaw("Mouse X") * cameraRotSpeed * Time.deltaTime;
-            target.eulerAngles = new Vector3(target.rotation.x, pointY, target.rotation.z);
+            float pointY = target.eulerAngles.y + Input.GetAxisRaw("Mouse X") * cameraRotSpeed * Time.smoothDeltaTime;
+            
+            target.eulerAngles = new Vector3(target.rotation.x, pointY, target.rotation.z);  
         }
     }
 
     void CameraRotate()
     {
         float pointX = transform.eulerAngles.x - Input.GetAxisRaw("Mouse Y") * cameraRotSpeed * Time.deltaTime;
-        Vector3 RoteteVelocity = new Vector3();
+        if (pointX < 300 && pointX > maxAngle) pointX = maxAngle;
+        Vector3 RoteteVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
 
         if (minAngle >= 0)
         {
@@ -111,15 +160,28 @@ public class Camera_manager : MonoBehaviour
 
         if (!fpsMode)
         {
+            float pointX_ = 0;
+            if (pointX > 300 && DownAngle < 0)
+            {
+                pointX_ = pointX - 360;
+
+            }
             if (targetNum == 1)
             {
-                if(Value != 2)
+                if (Value != 2)
                 Value = CameraReset(c1);
 
-                if (Value == 0) targetPosition = targetPositions[0]; else { targetPosition = targetPositions[3]; }
+                if (Value == 0) targetPosition = targetLocation; else { targetPosition = targetPositions[3]; }
 
-                if (transform.localEulerAngles.x > topAngle) targetNum = 3; else if (pointX < DownAngle) targetNum = 2;
-                RoteteVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
+                if (pointX_ != 0)
+                {
+                    if (pointX_ < DownAngle) targetNum = 2;
+                }
+                else 
+                {
+                    if (transform.localEulerAngles.x > topAngle) targetNum = 3; else if (pointX < DownAngle) targetNum = 2;
+                }
+
                 transform.eulerAngles = RoteteVelocity;
             }
             else if (targetNum == 2)
@@ -129,10 +191,14 @@ public class Camera_manager : MonoBehaviour
 
                 if (Value == 0) targetPosition = targetPositions[1]; else { targetPosition = targetPositions[4]; }
                 currentAngle = transform.eulerAngles.x;
+
+                
                 if (minAngle + 360 > (pointX)) pointX = -40;
                 RoteteVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
+                
+
                 transform.eulerAngles = RoteteVelocity;
-                if ((topAngle/2) > transform.eulerAngles.x) targetNum = 1;
+                if (DownAngle < pointX_ && pointX_ != 0) targetNum = 1;
 
             }
             else if (targetNum == 3)
@@ -142,7 +208,6 @@ public class Camera_manager : MonoBehaviour
 
                 if (Value == 0) targetPosition = targetPositions[2]; else { targetPosition = targetPositions[5]; }
                 currentAngle = transform.eulerAngles.x;
-                if (maxAngle < transform.eulerAngles.x) pointX = maxAngle;
                 RoteteVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
                 transform.eulerAngles = RoteteVelocity;
                 if (30 > transform.eulerAngles.x) targetNum = 1;
@@ -166,14 +231,14 @@ public class Camera_manager : MonoBehaviour
     {
         RaycastHit hit;
         float Value = 0;
-        var ray = c.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        var ray = c.ViewportPointToRay(new Vector3(0.5f, 0.5f, -3));
         if (Physics.Linecast(ray.origin, target.position, out hit, ~target.GetComponent<PlayerMovement>().playerLayer))
         {
             for (int i = 0; i < ExceptLayerNum.Length; i++) 
             {
                 if (hit.collider.gameObject.layer == ExceptLayerNum[i]) 
                 { 
-                    return Value; 
+                    return Value;
                 }
             }
             Value = 1;
