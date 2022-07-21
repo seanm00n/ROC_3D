@@ -12,6 +12,9 @@ using UnityEditor;
 
 public class PlayerAttack : MonoBehaviour
 {
+    [Header("Damage")]
+    [SerializeField] public static float normalDamage = 10;
+
     [Header("Effects")]
     public GameObject[] Prefabs;
     public GameObject[] PrefabsCast;

@@ -236,10 +236,16 @@ public class Camera_manager : MonoBehaviour
         {
             for (int i = 0; i < ExceptLayerNum.Length; i++) 
             {
-                if (hit.collider.gameObject.layer == ExceptLayerNum[i]) 
+                if (hit.collider.gameObject.layer == ExceptLayerNum[i])
                 { 
                     return Value;
                 }
+            }
+
+            if (hit.collider.gameObject.CompareTag("PlayerAttack"))
+            {
+                return Value;
+
             }
             Value = 1;
         }
