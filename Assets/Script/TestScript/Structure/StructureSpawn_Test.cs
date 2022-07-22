@@ -68,13 +68,13 @@ public class StructureSpawn_Test : MonoBehaviour
 
                     if (StructureMode == false)
                     {
-                        if (area) area.SetActive(true);
+                        if (area && areaLayer != 0) area.SetActive(true);
                         StructureMode = true;
                         FindObjectOfType<PlayerAttack>().enabled = false;
                     }
                     else
                     {
-                        if (area) area.SetActive(false);
+                        if (area && areaLayer != 0) area.SetActive(false);
                         StructureMode = false;
 
                     }
