@@ -46,6 +46,15 @@ public class StructureSpawn_Test : MonoBehaviour
         else selectNumber = 0;
     }
 
+    public void ChangePrevious()
+    {
+        Destroy(target);
+        if (selectNumber > 0)
+            selectNumber--;
+
+        else selectNumber = Selected_Prefab.Length - 1;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -73,7 +82,7 @@ public class StructureSpawn_Test : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.N))
+        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0)
         {
             if (skillWindow)
             {
@@ -83,6 +92,18 @@ public class StructureSpawn_Test : MonoBehaviour
                 }
             }
         }
+        else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0)
+        {
+            if (skillWindow)
+            {
+                if (skillWindow.activeSelf == false)
+                {
+                    ChangePrevious();
+                }
+            }
+        }
+
+
         if (areaLayer != 0)
         {
             if (isArea == false)
