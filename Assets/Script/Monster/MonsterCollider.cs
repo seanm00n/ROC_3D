@@ -28,13 +28,6 @@ public class MonsterCollider : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
-            PlayerAnimControl.instance.Hit(10f);
-        }
-    }
 
     private void OnTriggerExit (Collider other) {
         if (other.gameObject.tag == "Player" ||

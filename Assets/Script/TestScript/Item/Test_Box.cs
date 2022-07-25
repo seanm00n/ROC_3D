@@ -19,18 +19,6 @@ public class Test_Box : MonoBehaviour, IItem
             UseEnd();
         }
     }
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            Debug.Log("Work");
-            if (Input.GetKeyDown(KeyCode.F) && end == false)
-            {
-                Use();
-            }
-        }
-         
-    }
     public void Use()
     {
         Time.timeScale = 0f;

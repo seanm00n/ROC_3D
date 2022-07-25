@@ -12,6 +12,14 @@ using UnityEditor;
 
 public class PlayerAttack : MonoBehaviour
 {
+    public Slider Mp_bar;
+    public float Mp = 20;
+
+    ////////////////
+    bool isUseMp = false;
+    bool isNotUseMp = false;
+    bool isAttack = false;
+    ////////////////
     [Header("Damage")]
     [SerializeField] public static float normalDamage = 10;
 
@@ -66,6 +74,20 @@ public class PlayerAttack : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if((int)(Mp_bar.value - Mp) != 0)
+        {
+            if(Mp_bar.value < Mp)
+                Mp_bar.value += 2 * Time.deltaTime;
+            else if (Mp_bar.value > Mp)
+                Mp_bar.value -= Time.deltaTime;
+        }
+
+        if (isNotUseMp == false && isAttack == false)
+        {
+            isNotUseMp = true;
+            StartCoroutine(Mp_Revert());
+        }
+
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         if (fireCountdown > 0)
@@ -96,9 +118,14 @@ public class PlayerAttack : MonoBehaviour
         }
         UserInterface();
 
-
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && Mp > 0)
         {
+            isAttack = true;
+            if (isUseMp == false)
+            {
+                isUseMp = true;
+                StartCoroutine(Mp_Use());
+            }
             if (aim.enabled == true && activeTarger == true)
             {
                 PlayerAnimControl.instance.Attack();
@@ -168,6 +195,11 @@ public class PlayerAttack : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            isAttack = false;
+
+        }
     }
     private void UserInterface()
     {
@@ -226,5 +258,22 @@ public class PlayerAttack : MonoBehaviour
         return index;
     }
 
+    IEnumerator Mp_Use()
+    {
+        yield return new WaitForSeconds(1f);
+        isUseMp = false;
+        Mp -= 1;
+    }
 
+    IEnumerator Mp_Revert()
+    {
+        yield return new WaitForSeconds(1f);
+        Mp += 2;
+        if(Mp > 20)
+        {
+            Mp = 20;
+        }
+
+        isNotUseMp = false;
+    }
 }

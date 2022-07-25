@@ -26,7 +26,14 @@ public class PlayerAnimControl : MonoBehaviour
 
     public void HpRefresh()
     {
-        HpBar.value = Hp;
+        if ((int)(HpBar.value - Hp) != 0)
+        {
+            if (HpBar.value < Hp)
+                HpBar.value += 40 * Time.deltaTime;
+            else if (HpBar.value > Hp)
+                HpBar.value -= 40 *Time.deltaTime;
+        }
+
         Hp_Text.text = Hp.ToString() + "/" + 100.ToString();
     }
     public void Hit(float damage)
