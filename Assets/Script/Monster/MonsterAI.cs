@@ -19,13 +19,14 @@ public class MonsterAI : MonoBehaviour
     public int myIndex;
     float m_health;
     float m_attack;
-    float timer = 0f;
     bool isDeath = false;
     GameObject m_target;
     NavMeshAgent m_agent;
     GameObject HQ;
     GameObject Player;
     GameObject MController;
+    float m_attackDelay = 1f;
+    IEnumerator cAttack;
     [SerializeField] bool m_isBoss = false;
     [SerializeField] LayerMask Alliance;
     [SerializeField] float m_SightDistance = 0f;
@@ -38,8 +39,15 @@ public class MonsterAI : MonoBehaviour
         CheckDeath();
         SelectTarget();
         Move();
+        cAttack = Attack();
     }
-
+    public IEnumerator Attack () {
+        while (true) {
+            GetComponent<Animator>().SetBool("Attack", true);
+            PlayerAnimControl.instance.Hit(10f);
+            yield return new WaitForSeconds(m_attackDelay);
+        }
+    }
     void Init () {
         Player = GameObject.Find("Wizard_Player").transform.GetChild(0).gameObject;//추후 수정
         MController = GameObject.Find("MonsterController");
@@ -98,17 +106,35 @@ public class MonsterAI : MonoBehaviour
     void CheckDeath () {
         if (m_health <= 0) {
             GetComponent<Animator>().SetBool("Death", true);
-            MController.GetComponent<MonsterController>().ItemGen(myIndex);
-            Destroy(gameObject, 5f);
-            isDeath = true;
-        }
-        //test
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            GetComponent<Animator>().SetBool("Death", true);
-            MController.GetComponent<MonsterController>().ItemGen(myIndex);
-            Destroy(gameObject,5f);
+            StartCoroutine(DestroyMonster());
             isDeath = true;
         }
     }
+    private void OnTriggerEnter (Collider other) {
+        if (other.gameObject.tag == "Player" ||
+            other.gameObject.tag == "HQ" ||
+            other.gameObject.tag == "Turret") {
+            GetComponentInParent<MonsterAI>().m_isInRange = true;
+            StartCoroutine(cAttack);
+        }
+        if (other.gameObject.tag == "PlayerAttack") {
+            m_health -= other.GetComponent<Skill_Attack>().skill_Damage_Value;
+            Debug.Log("Monster hit :: health : " + m_health);
+        }
+    }
+    private void OnTriggerExit (Collider other) {
+        if (other.gameObject.tag == "Player" ||
+            other.gameObject.tag == "HQ" ||
+            other.gameObject.tag == "Turret") {
+            StopCoroutine(cAttack);
+            GetComponent<MonsterAI>().m_isInRange = false;
+            GetComponent<Animator>().SetBool("Attack", false);
+        }
+    }
+    IEnumerator DestroyMonster () {
+        yield return new WaitForSeconds(5f);
+        MController.GetComponent<MonsterController>().ItemGen(myIndex);
+        Destroy(gameObject);
+        
+    }
 }
-
