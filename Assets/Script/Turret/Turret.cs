@@ -105,6 +105,14 @@ public class Turret : MonoBehaviour
 
         if (target != null)
         {
+            if (target.GetComponent<MonsterAI>() != null)
+            {
+                if (target.GetComponent<Animator>().GetBool("Death"))
+                {
+                    target = null;
+                    return;
+                }
+            }
             transform.LookAt(target.transform);
             Debug.DrawLine(transform.position, target.transform.position, Color.blue);
             Physics.Linecast(transform.position,target.transform.position);
@@ -117,10 +125,10 @@ public class Turret : MonoBehaviour
                 currentTime = Time.time;
                 Attack = Instantiate(AttackPrefab, FirePosition.position, transform.rotation);
             }
-            return;
+            return; // Block Repetitive Statement below.
         }
 
-        for (int i = 0; i < scopeEntity.Length; i++) 
+        for (int i = 0; i < scopeEntity.Length; i++)
         {
             target = scopeEntity[i].gameObject;
         }

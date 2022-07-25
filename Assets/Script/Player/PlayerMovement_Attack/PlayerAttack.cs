@@ -74,12 +74,12 @@ public class PlayerAttack : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if((int)(Mp_bar.value - Mp) != 0)
+        if((int)(Mp_bar.value - Mp) != 0 || (int)(Mp_bar.value) != Mp)
         {
             if(Mp_bar.value < Mp)
-                Mp_bar.value += 2 * Time.deltaTime;
+                Mp_bar.value += 10 * Time.deltaTime;
             else if (Mp_bar.value > Mp)
-                Mp_bar.value -= Time.deltaTime;
+                Mp_bar.value -= 10 * Time.deltaTime;
         }
 
         if (isNotUseMp == false && isAttack == false)
@@ -261,8 +261,9 @@ public class PlayerAttack : MonoBehaviour
     IEnumerator Mp_Use()
     {
         yield return new WaitForSeconds(1f);
-        isUseMp = false;
         Mp -= 1;
+        isUseMp = false;
+        
     }
 
     IEnumerator Mp_Revert()
