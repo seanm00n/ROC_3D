@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PlayerAnimControl : MonoBehaviour
 {
+    public float DamageCoolTime = 0.5f;
     public float Hp = 100;
+    public bool hit = false;
     public enum AnimationState
     {
         Normal, Jump, Air
@@ -17,19 +19,22 @@ public class PlayerAnimControl : MonoBehaviour
     public Animator Player;
     public static PlayerAnimControl instance;
 
-    public GameObject hitEffect;
 
     public void Hit(float damage)
     {
-        if(Hp > 0)
+        if (hit == false)
         {
-            Hp -= damage;
-            GameObject effect = Instantiate(hitEffect, transform.position, Quaternion.identity);
-            Destroy(effect, 0.5f);
-        }
-        if(Hp < 0)
-        {
-            Hp = 0;
+            hit = true;
+            if (Hp > 0)
+            {
+                Hp -= damage;
+            }
+            if (Hp < 0)
+            {
+                Hp = 0;
+            }
+            Player.SetTrigger("Damaged");
+            StartCoroutine(playerDamageRotator());
         }
     }
     void Awake()
@@ -108,4 +113,9 @@ public class PlayerAnimControl : MonoBehaviour
         Player.SetFloat("Angle", angle);
     }
 
+    IEnumerator playerDamageRotator()
+    {
+        yield return new WaitForSeconds(DamageCoolTime);
+        hit = false;
+    }
 }
