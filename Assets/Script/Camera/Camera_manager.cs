@@ -104,20 +104,9 @@ public class Camera_manager : MonoBehaviour
         if (!fpsMode)
         {
             Vector3 destination = new Vector3(targetPosition.position.x, targetPosition.position.y, targetPosition.position.z);
-            Vector3 pVector = Vector3.Lerp(transform.position, destination, cameraMoveSpeed * Time.deltaTime);
-            if (targetNum == 1 && smoothCameraTime == 0)
-            {
-                transform.position = destination;
-            }
-            else
-            {
-                transform.position = pVector;
-                if (targetNum != 1)
-                {
-                    smoothCameraTime = 0.5f;
+            //Vector3 pVector = Vector3.Lerp(transform.position, destination, cameraMoveSpeed * Time.deltaTime);
+            transform.position = destination;
 
-                }
-            }
             float pointY = transform.eulerAngles.y + Input.GetAxisRaw("Mouse X") * cameraRotSpeed * Time.deltaTime;
             
             target.eulerAngles = new Vector3(target.rotation.x, pointY, target.rotation.z);
