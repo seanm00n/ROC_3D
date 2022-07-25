@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class PlayerAnimControl : MonoBehaviour
 {
+    public TextMeshProUGUI Hp_Text;
+    public Slider HpBar;
     public float DamageCoolTime = 0.5f;
     public float Hp = 100;
     public bool hit = false;
@@ -20,6 +24,11 @@ public class PlayerAnimControl : MonoBehaviour
     public static PlayerAnimControl instance;
 
 
+    public void HpRefresh()
+    {
+        HpBar.value = Hp;
+        Hp_Text.text = Hp.ToString() + "/" + 100.ToString();
+    }
     public void Hit(float damage)
     {
         if (hit == false)
@@ -46,6 +55,7 @@ public class PlayerAnimControl : MonoBehaviour
 
     private void Update()
     {
+        HpRefresh();
         Player.SetBool("Onground", P.isJumping);
         if (Camera_manager.fpsMode == true)
         {
