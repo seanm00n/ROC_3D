@@ -19,9 +19,9 @@ public class MonsterAI : MonoBehaviour
     public int myIndex;
     float m_health;
     float m_attack;
-    float m_attackDelay = 1f;
-    float m_time = 0f;
     bool m_isDeath = false;
+    bool m_isAttacked = false;
+    float m_cooltime = 0f;
     GameObject m_target;
     NavMeshAgent m_agent;
     GameObject HQ;
@@ -40,17 +40,17 @@ public class MonsterAI : MonoBehaviour
         CheckDeath();
         SelectTarget();
         Move();
-        Attack();
-    }
+    } 
     public void Attack () {
-        if (m_isInRange) {
-            GetComponent<Animator>().SetBool("Attack", true);
-            m_time += Time.deltaTime;
-            if (m_time < 0.5f) {
-                m_time = 0f;
+        m_cooltime += Time.deltaTime;
+        GetComponent<Animator>().SetBool("Attack", true);
+        if (!m_isAttacked) {
+            if (0.5f < GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime) {
                 PlayerAnimControl.instance.Hit(m_attack);
+                m_isAttacked = true;//애니메이션 1회 당 1번 공격
+                Debug.Log("Attack Player");
             }
-        }
+        }   
     }
     void Init () {
         Player = GameObject.Find("Wizard_Player").transform.GetChild(0).gameObject;
@@ -114,13 +114,17 @@ public class MonsterAI : MonoBehaviour
         }
     }
     private void OnTriggerEnter (Collider other) {
+
+        if (other.gameObject.tag == "PlayerAttack") {
+            m_health -= other.GetComponent<Skill_Attack>().skill_Damage_Value;
+        }
+    }
+    private void OnTriggerStay (Collider other) {
         if (other.gameObject.tag == "Player" ||
             other.gameObject.tag == "HQ" ||
             other.gameObject.tag == "Turret") {
             m_isInRange = true;
-        }
-        if (other.gameObject.tag == "PlayerAttack") {
-            m_health -= other.GetComponent<Skill_Attack>().skill_Damage_Value;
+            Attack();
         }
     }
     private void OnTriggerExit (Collider other) {
