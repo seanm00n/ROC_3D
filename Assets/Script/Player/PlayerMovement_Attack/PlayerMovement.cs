@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float slideSpeedX = 0;
     [SerializeField] float slideSpeedZ = 0;
-    [SerializeField] bool Test = false;
+    [SerializeField] bool Test;
     [SerializeField] bool isGround_New = false;
     float airSpeedX;
     float airSpeedZ;
