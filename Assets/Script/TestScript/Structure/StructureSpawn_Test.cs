@@ -13,7 +13,7 @@ public class StructureSpawn_Test : MonoBehaviour
     public float distance = 15;
 
     public Vector3 changePosValue;
-    public GameObject LiveParent;
+    public GameObject liveParent;
 
     public LayerMask installLayer;
     public LayerMask areaLayer;
@@ -31,28 +31,15 @@ public class StructureSpawn_Test : MonoBehaviour
 
     private void Awake()
     {
-        if (GameObject.Find("InGame_UI_sample").transform.Find("Skill_Upgrade") != null)
+        if (GameObject.Find("InGame_UI_sample") && GameObject.Find("InGame_UI_sample").transform.Find("Skill_Upgrade") != null)
         {
             skillWindow = GameObject.Find("InGame_UI_sample").transform.Find("Skill_Upgrade").gameObject;
         }
     }
 
-    public void ChangeNext()
+    private void Start()
     {
-        Destroy(target);
-        if (selectNumber < (Selected_Prefab.Length - 1))
-            selectNumber++;
-
-        else selectNumber = 0;
-    }
-
-    public void ChangePrevious()
-    {
-        Destroy(target);
-        if (selectNumber > 0)
-            selectNumber--;
-
-        else selectNumber = Selected_Prefab.Length - 1;
+        liveParent = Player.instance.ui.turretHp;
     }
 
     // Update is called once per frame
@@ -124,6 +111,7 @@ public class StructureSpawn_Test : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, distance, installLayer))
             {
+                Debug.DrawRay(hit.point, hit.normal, Color.blue);
                 if (hit.collider.gameObject.GetComponent<GridStructure>() != null)
                     changePosValue = hit.collider.gameObject.GetComponent<GridStructure>().posPreview;
                 else changePosValue = new Vector3(0, 0, 0);
@@ -158,7 +146,7 @@ public class StructureSpawn_Test : MonoBehaviour
 
                 if (Install && Install.Compatibility == true)
                 {
-                    //////// »ö º¯È­ ////////////
+                    //////// ìƒ‰ ë³€í™” ////////////
                     for (int i = 0; i < Install.remderers.Length; i++)
                     {
                         Install.remderers[i].material.color = color;
@@ -167,7 +155,7 @@ public class StructureSpawn_Test : MonoBehaviour
                     if (Input.GetKeyDown(KeyCode.Mouse2))
                     {
 
-                        //////// ¼³Ä¡ ///////////////
+                        //////// ì„¤ì¹˜ ///////////////
                         GameObject install;
                         if (changePosValue != new Vector3(0, 0, 0))
                         {
@@ -180,7 +168,7 @@ public class StructureSpawn_Test : MonoBehaviour
                         Turret t = install.GetComponentInChildren<Turret>();
                         if (t != null)
                         {
-                            GameObject installHUI = Instantiate(PrefabHUI[TurretNum], LiveParent.transform);
+                            GameObject installHUI = Instantiate(PrefabHUI[TurretNum], liveParent.transform);
                             t.Hui = installHUI;
                             Slider Turret_s = install.GetComponentInChildren<Turret>().Hpbar = installHUI.GetComponentInChildren<Slider>();
                             Turret_s.maxValue = t.HP;
@@ -205,5 +193,24 @@ public class StructureSpawn_Test : MonoBehaviour
                 Destroy(target);
             }
         }
+    }
+
+
+    public void ChangeNext()
+    {
+        Destroy(target);
+        if (selectNumber < (Selected_Prefab.Length - 1))
+            selectNumber++;
+
+        else selectNumber = 0;
+    }
+
+    public void ChangePrevious()
+    {
+        Destroy(target);
+        if (selectNumber > 0)
+            selectNumber--;
+
+        else selectNumber = Selected_Prefab.Length - 1;
     }
 }

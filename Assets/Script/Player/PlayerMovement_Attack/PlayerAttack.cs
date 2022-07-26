@@ -9,13 +9,22 @@ using UnityEditor;
 
 #endif
 
-
 public class PlayerAttack : MonoBehaviour
 {
+    // Check whether player using mp or not.
+    bool isUseMp = false; 
+    bool isNotUseMp = false;
+
+    // Check whether player attack or not.
+    bool isAttack = false;
+
     [Header("Damage")]
-    [SerializeField] public static float normalDamage = 10;
+    [SerializeField] public static float normalDamage = 10; // player normal attack damage.
 
     [Header("Effects")]
+    public GameObject TargetMarker;
+
+    [Space]
     public GameObject[] Prefabs;
     public GameObject[] PrefabsCast;
 
@@ -23,13 +32,19 @@ public class PlayerAttack : MonoBehaviour
     private ParticleSystem Effect;
 
     [Space]
+    [Header("Layer")]
     public LayerMask obstacle;
     public LayerMask Monster;
-    public LayerMask Player;
-    public Image aim;
+    public LayerMask player;
+    public LayerMask collidingLayer = ~0; // Target marker can only collide with scene layer
+
+    [Space]
+    [Header("UI")]
+    public Image aim; // Aiming Cross
     public Vector2 uiOffset;
 
     [Space]
+    [Header("Attack")]
     Transform target;
     private bool activeTarger = false;
     public Transform FirePoint;
@@ -48,24 +63,21 @@ public class PlayerAttack : MonoBehaviour
     private AudioSource soundComponentCast; //Play audio from PrefabsCast
     private AudioSource soundComponentUlt; //Play audio from PrefabsCast
 
-    [Space]
-    [Header("Camera Shaker script")]
-    public HS_CameraShaker cameraShaker;
-
-#if UNITY_EDITOR
-
-    private void OnDrawGizmosSelected()
+    private void Start()
     {
-        var angle = Quaternion.AngleAxis(-fieldOfView, transform.up);
-        var angleAxis = angle * transform.forward;
-        Handles.color = new Color(0, 0, 0, 0.1f);
-        Handles.DrawSolidArc(transform.position,transform.up,angleAxis,fieldOfView * 2f,viewDistance);
+        aim = Player.instance.ui.aim;
     }
-
-#endif
 
     private void FixedUpdate()
     {
+
+      
+        if (isNotUseMp == false && isAttack == false)
+        {
+            isNotUseMp = true;
+            StartCoroutine(Mp_Revert());
+        }
+
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         if (fireCountdown > 0)
@@ -74,7 +86,7 @@ public class PlayerAttack : MonoBehaviour
         }
         if (target == null)
         {
-            PlayerAnimControl.instance.AttackEnd();
+            Player.instance.animationController.AttackEnd();
             activeTarger = false;
         }
 
@@ -96,12 +108,17 @@ public class PlayerAttack : MonoBehaviour
         }
         UserInterface();
 
-
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && Player.instance && Player.instance.mp > 0)
         {
+            isAttack = true;
+            if (isUseMp == false)
+            {
+                isUseMp = true;
+                StartCoroutine(Mp_Use());
+            }
             if (aim.enabled == true && activeTarger == true)
             {
-                PlayerAnimControl.instance.Attack();
+                Player.instance.animationController.Attack();
                 if (fireCountdown <= 0f)
                 {
                     GameObject projectile = Instantiate(PrefabsCast[8], FirePoint.position, FirePoint.rotation);
@@ -120,14 +137,14 @@ public class PlayerAttack : MonoBehaviour
             }
             else
             {
-                PlayerAnimControl.instance.Attack();
+                Player.instance.animationController.Attack();
                 if (fireCountdown <= 0f)
                 {
                     Transform target_;
                     RaycastHit hit;
                     Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
 
-                    if (Physics.Raycast(ray, out hit, viewDistance,~Player))
+                    if (Physics.Raycast(ray, out hit, viewDistance,~player))
                     {
                         target_ = new GameObject().transform;
                         target_.position = hit.point;
@@ -146,7 +163,7 @@ public class PlayerAttack : MonoBehaviour
                         Destroy(target_.gameObject, 2f);
                         
                     }
-                    else if (!Physics.Raycast(ray, out hit, viewDistance, ~Player))
+                    else if (!Physics.Raycast(ray, out hit, viewDistance, ~player))
                     {
                         target_ = new GameObject().transform;
                         target_.position = (ray.origin + 100 * ray.direction);
@@ -168,7 +185,18 @@ public class PlayerAttack : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            isAttack = false;
+
+        }
     }
+
+    public void CastSoundPlay()
+    {
+        soundComponentCast.Play(0);
+    }
+
     private void UserInterface()
     {
         Vector3 screenCenter = new Vector3(Screen.width, Screen.height, 0) / 2;
@@ -183,7 +211,8 @@ public class PlayerAttack : MonoBehaviour
 
             // {screenPos.x > 0 && screenPos.y > 0 && screenPos.z > 0} - disable target if enemy backside
 
-            //Find target near center of the screen     
+            //Find target near center of the screen
+            //
             if (absCornerDistance.x < screenCenter.x  && absCornerDistance.y < screenCenter.y && screenPos.x > 0 && screenPos.y > 0 && screenPos.z > 0 //If target is in the middle of the screen
                 && !Physics.Linecast(transform.position + (Vector3)uiOffset, target.position + (Vector3)uiOffset * 2, obstacle)) //If player can see the target
             {
@@ -226,5 +255,39 @@ public class PlayerAttack : MonoBehaviour
         return index;
     }
 
+    IEnumerator Mp_Use()
+    {
+        yield return new WaitForSeconds(1f);
+        if(Player.instance)
+            Player.instance.mp -= 1;
+        isUseMp = false;
+        
+    }
+
+    IEnumerator Mp_Revert()
+    {
+        yield return new WaitForSeconds(1f);
+
+        if (Player.instance)
+        {
+            Player.instance.mp += 2;
+            if (Player.instance.mp > 20)
+                Player.instance.mp = 20;
+        }
+        isNotUseMp = false;
+    }
+
+
+#if UNITY_EDITOR
+    // You can see this in unity editor. 
+    private void OnDrawGizmosSelected()
+    {
+        var angle = Quaternion.AngleAxis(-fieldOfView, transform.up);
+        var angleAxis = angle * transform.forward;
+        Handles.color = new Color(0, 0, 0, 0.1f);
+        Handles.DrawSolidArc(transform.position, transform.up, angleAxis, fieldOfView * 2f, viewDistance);
+    }
+
+#endif
 
 }

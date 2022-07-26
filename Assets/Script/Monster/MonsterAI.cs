@@ -14,19 +14,20 @@ public class MonsterAI : MonoBehaviour
         Handles.DrawSolidDisc(transform.position, transform.up, m_SightDistance);
     }
 #endif
-    public int m_stage = 3; //Get value on Instantiate
+    public int m_stage = 3; //set value
     public bool m_isInRange = false;
     public int myIndex;
     float m_health;
     float m_attack;
-    bool isDeath = false;
+    float m_attackDelay = 1f;
+    float m_time = 0f;
+    bool m_isDeath = false;
     GameObject m_target;
     NavMeshAgent m_agent;
     GameObject HQ;
-    GameObject Player;
+    GameObject player;
     GameObject MController;
-    float m_attackDelay = 1f;
-    IEnumerator cAttack;
+    
     [SerializeField] bool m_isBoss = false;
     [SerializeField] LayerMask Alliance;
     [SerializeField] float m_SightDistance = 0f;
@@ -39,19 +40,22 @@ public class MonsterAI : MonoBehaviour
         CheckDeath();
         SelectTarget();
         Move();
-        cAttack = Attack();
+        Attack();
     }
-    public IEnumerator Attack () {
-        while (true) {
+    public void Attack () {
+        if (m_isInRange) {
             GetComponent<Animator>().SetBool("Attack", true);
-            PlayerAnimControl.instance.Hit(10f);
-            yield return new WaitForSeconds(m_attackDelay);
+            m_time += Time.deltaTime;
+            if (m_time < 0.5f) {
+                m_time = 0f;
+                Player.instance.Hit(m_attack);
+            }
         }
     }
     void Init () {
-        Player = GameObject.Find("Wizard_Player").transform.GetChild(0).gameObject;//ÃßÈÄ ¼öÁ¤
+        player = GameObject.Find("Wizard_Player").transform.GetChild(0).gameObject;
         MController = GameObject.Find("MonsterController");
-        HQ = GameObject.Find("HQ");//ÃßÈÄ ¼öÁ¤
+        HQ = GameObject.Find("HQ");//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         m_target = HQ;
         m_agent = GetComponent<NavMeshAgent>();
         m_agent.speed = m_stage * 1.6f;
@@ -65,7 +69,7 @@ public class MonsterAI : MonoBehaviour
     }
 
     void SelectTarget () {
-        if (isDeath)
+        if (m_isDeath)
             return;
         if(m_target == null)
             m_target = HQ;
@@ -74,12 +78,12 @@ public class MonsterAI : MonoBehaviour
         if (result[0] && result[0].transform.CompareTag("Player")) 
         {
             if (Vector3.Distance(transform.position, HQ.transform.position) <=
-                Vector3.Distance(transform.position, Player.transform.position)) {
+                Vector3.Distance(transform.position, player.transform.position)) {
                 m_target = HQ;
             } 
             else 
             {
-                m_target = Player;
+                m_target = player;
             }
         }
         if (result[0] && result[0].transform.CompareTag("Turret")) {
@@ -93,11 +97,10 @@ public class MonsterAI : MonoBehaviour
     }
 
     void Move () {
-        if (isDeath) {
+        if (m_isDeath) {
             m_agent.enabled = false;
             return;
-        }
-            
+        }  
         if (!m_isInRange) {
             GetComponent<Animator>().SetBool("Run", true);
             m_agent.SetDestination(m_target.transform.position);
@@ -107,27 +110,24 @@ public class MonsterAI : MonoBehaviour
         if (m_health <= 0) {
             GetComponent<Animator>().SetBool("Death", true);
             StartCoroutine(DestroyMonster());
-            isDeath = true;
+            m_isDeath = true;
         }
     }
     private void OnTriggerEnter (Collider other) {
         if (other.gameObject.tag == "Player" ||
             other.gameObject.tag == "HQ" ||
             other.gameObject.tag == "Turret") {
-            GetComponentInParent<MonsterAI>().m_isInRange = true;
-            StartCoroutine(cAttack);
+            m_isInRange = true;
         }
         if (other.gameObject.tag == "PlayerAttack") {
             m_health -= other.GetComponent<Skill_Attack>().skill_Damage_Value;
-            Debug.Log("Monster hit :: health : " + m_health);
         }
     }
     private void OnTriggerExit (Collider other) {
         if (other.gameObject.tag == "Player" ||
             other.gameObject.tag == "HQ" ||
             other.gameObject.tag == "Turret") {
-            StopCoroutine(cAttack);
-            GetComponent<MonsterAI>().m_isInRange = false;
+            m_isInRange = false;
             GetComponent<Animator>().SetBool("Attack", false);
         }
     }
@@ -135,6 +135,5 @@ public class MonsterAI : MonoBehaviour
         yield return new WaitForSeconds(5f);
         MController.GetComponent<MonsterController>().ItemGen(myIndex);
         Destroy(gameObject);
-        
     }
 }

@@ -184,13 +184,13 @@ public class PlayerMovement : MonoBehaviour
         ////////////////////////////////////
         ///
 
-        if (speed > OriginalSpeed && Camera_manager.fpsMode == false) PlayerAnimControl.instance.Player.SetBool("Dash", true); 
-        else PlayerAnimControl.instance.Player.SetBool("Dash", false);
+        if (speed > OriginalSpeed && CameraManager.fpsMode == false) Player.instance.animationController.animator.SetBool("Dash", true); 
+        else Player.instance.animationController.animator.SetBool("Dash", false);
 
-        if (speed < OriginalSpeed) PlayerAnimControl.instance.Player.SetBool("Crouch", true);
-        else PlayerAnimControl.instance.Player.SetBool("Crouch", false);
+        if (speed < OriginalSpeed) Player.instance.animationController.animator.SetBool("Crouch", true);
+        else Player.instance.animationController.animator.SetBool("Crouch", false);
 
-        PlayerAnimControl.instance.AnimationWork(new Vector2(horizontalMove, verticalMove));
+        Player.instance.animationController.AnimationWork(new Vector2(horizontalMove, verticalMove));
 
         if (slideSpeedZ != 0 && isJumping == true && isGround_New == false)
         {
@@ -222,9 +222,9 @@ public class PlayerMovement : MonoBehaviour
         else 
         {
             isJumping = false;
-            PlayerAnimControl.instance.air();
+            Player.instance.animationController.air();
             if (DoJump != true)
-                PlayerAnimControl.instance.waitngJump();
+                Player.instance.animationController.waitngJump();
 
         }
         if (Input.GetKeyDown(KeyCode.Space))
@@ -234,7 +234,7 @@ public class PlayerMovement : MonoBehaviour
                 waitingAnimation = true;
                 DoJump = true;
 
-                PlayerAnimControl.instance.Jump();
+                Player.instance.animationController.Jump();
                 var velocity = new Vector3(horizontalMove * speed, jumpSpeed, verticalMove * speed);
                 currenJumpSpeed = jumpSpeed;
                 mybody.Move(velocity * Time.unscaledDeltaTime);

@@ -15,21 +15,9 @@ public class Test_Box : MonoBehaviour, IItem
         if(end == true && skillWindow && skillWindow.activeSelf == false)
         {
             FindObjectOfType<PlayerMovement>().enabled = true;
-            FindObjectOfType<Camera_manager>().enabled = true;
+            FindObjectOfType<CameraManager>().enabled = true;
             UseEnd();
         }
-    }
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            Debug.Log("Work");
-            if (Input.GetKeyDown(KeyCode.F) && end == false)
-            {
-                Use();
-            }
-        }
-         
     }
     public void Use()
     {
@@ -43,7 +31,7 @@ public class Test_Box : MonoBehaviour, IItem
 
         FindObjectOfType<PlayerMovement>().enabled = false;
         FindObjectOfType<PlayerAttack>().enabled = false;
-        FindObjectOfType<Camera_manager>().enabled = false;
+        FindObjectOfType<CameraManager>().enabled = false;
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;

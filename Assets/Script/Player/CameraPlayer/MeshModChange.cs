@@ -21,13 +21,13 @@ public class MeshModChange : MonoBehaviour
     }
     private void Update()
     {
-        if (Camera_manager.fpsMode == true)
+        if (CameraManager.fpsMode == true)
         {
             GetComponent<Renderer>().material = transparentMat;
         }
         else
         {
-            if (PlayerAnimControl.instance.hit == true)
+            if (Player.instance.hit == true)
             {
                 GetComponent<Renderer>().material = materialDamaged;
             }

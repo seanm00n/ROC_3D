@@ -10,11 +10,14 @@ public class MouseSmoothInterpolation : MonoBehaviour
     private void Awake()
     {
         original = transform.localPosition;
+    }
+    private void Start()
+    {
         cam = Camera.main.transform;
     }
     void Update()
     {
-        if (Camera_manager.instance.targetNum == 1)
+        if (CameraManager.instance.targetNum == 1)
         {
             if (Input.GetAxisRaw("Mouse Y") > 0.3f)
             {

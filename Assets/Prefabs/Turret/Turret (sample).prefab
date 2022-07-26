@@ -481,6 +481,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Compatibility: 1
   ExceptLayer: 8
+  ExceptLayer_2: 10
   remderers:
   - {fileID: 116675572561767230}
   - {fileID: 8662044578680978675}
