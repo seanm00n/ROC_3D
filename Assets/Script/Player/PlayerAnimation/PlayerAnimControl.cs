@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
 
@@ -23,7 +24,7 @@ public class PlayerAnimControl : MonoBehaviour
     public Animator Player;
     public static PlayerAnimControl instance;
 
-
+    public UnityEvent OnDeath;
     public void HpRefresh()
     {
         if ((int)(HpBar.value - Hp) != 0)
@@ -38,7 +39,7 @@ public class PlayerAnimControl : MonoBehaviour
     }
     public void Hit(float damage)
     {
-        if (hit == false)
+        if (hit == false && Hp != 0)
         {
             hit = true;
             if (Hp > 0)
@@ -48,6 +49,16 @@ public class PlayerAnimControl : MonoBehaviour
             if (Hp < 0)
             {
                 Hp = 0;
+            }
+            if(Hp == 0)
+            {
+                hit = false;
+                OnDeath.Invoke();
+                Player.SetTrigger("Death");
+
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                return;
             }
             Player.SetTrigger("Damaged");
             StartCoroutine(playerDamageRotator());

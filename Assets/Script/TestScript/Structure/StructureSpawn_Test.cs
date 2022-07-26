@@ -31,7 +31,7 @@ public class StructureSpawn_Test : MonoBehaviour
 
     private void Awake()
     {
-        if (GameObject.Find("InGame_UI_sample").transform.Find("Skill_Upgrade") != null)
+        if (GameObject.Find("InGame_UI_sample") && GameObject.Find("InGame_UI_sample").transform.Find("Skill_Upgrade") != null)
         {
             skillWindow = GameObject.Find("InGame_UI_sample").transform.Find("Skill_Upgrade").gameObject;
         }
