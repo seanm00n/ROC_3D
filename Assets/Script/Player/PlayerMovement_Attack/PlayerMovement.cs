@@ -184,7 +184,7 @@ public class PlayerMovement : MonoBehaviour
         ////////////////////////////////////
         ///
 
-        if (speed > OriginalSpeed && Camera_manager.fpsMode == false) PlayerAnimControl.instance.Player.SetBool("Dash", true); 
+        if (speed > OriginalSpeed && CameraManager.fpsMode == false) PlayerAnimControl.instance.Player.SetBool("Dash", true); 
         else PlayerAnimControl.instance.Player.SetBool("Dash", false);
 
         if (speed < OriginalSpeed) PlayerAnimControl.instance.Player.SetBool("Crouch", true);

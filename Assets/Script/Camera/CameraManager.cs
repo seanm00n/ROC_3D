@@ -2,26 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Camera_manager : MonoBehaviour
+public class CameraManager : MonoBehaviour
 {
+    [Header("Target")]
 
     Transform targetLocation;
-    /// /////
-    public GameObject bookVisibleFps;
-    public int[] ExceptLayerNum;
-    public float Value; //ƒ´∏ﬁ∂Û ∫Æ ≥—±‚ πÊ¡ˆ
-    public static Camera_manager instance;
-    //////////////////////////////////////////
-    public Camera c1;
-    public Camera c2;
-    public Camera c3;
 
+    [Header("FpsModeSetting")]
+
+    public GameObject bookVisibleFps;
+
+    [Space]
+    
+    [Header("ExtraCamera")]
+    public Camera c1; // Middle sight of view.
+    public Camera c2; // Down sight of view.
+    public Camera c3; // Top sight of view.
+
+
+    [Header("PlayerHeadRotation")]
     public float upperAngle = 0;
-    public static bool fpsMode = false;
-    //////////////////////////////////////////
+
+    [Space]
+
     public Transform target;
     public int targetNum = 1;
     public Transform targetPosition;
+
+    [Space]
 
     public Transform[] targetPositions;
 
@@ -29,23 +37,29 @@ public class Camera_manager : MonoBehaviour
     public float cameraMoveSpeed = 8f;
     Vector3 cameraMoveVelocity;
 
-    float currentAngle;
+    [Space]
 
-    ////////////////////////
+    [Header("AngleSetting")]
+
+    float currentAngle;
     float earlyTopAngle;
     float earlyDownAngle;
-    ////////////////////////
-    
-
     public float topAngle = 50;
     public float DownAngle = 0;
-
     public float maxAngle = 80;
     public float minAngle = -40f;
 
-    //
+    [Space]
+
     public float smoothCameraTime;
     public float smoothCameraSpeed = 24f;
+
+    [Space]
+    public static CameraManager instance;
+    public static bool fpsMode = false;
+
+    public int[] exceptLayerNum;
+    public float Value; //Ïπ¥Î©îÎùº Î≤Ω ÎÑòÍ∏∞ Î∞©ÏßÄ
 
     private void Awake()
     {
@@ -61,7 +75,7 @@ public class Camera_manager : MonoBehaviour
 
     void Update()
     {
-        if (Camera_manager.fpsMode == true && bookVisibleFps)
+        if (CameraManager.fpsMode == true && bookVisibleFps)
         {
             bookVisibleFps.SetActive(true);
         }
@@ -223,9 +237,9 @@ public class Camera_manager : MonoBehaviour
         var ray = c.ViewportPointToRay(new Vector3(0.5f, 0.5f, -3));
         if (Physics.Linecast(ray.origin, target.position, out hit, ~target.GetComponent<PlayerMovement>().playerLayer))
         {
-            for (int i = 0; i < ExceptLayerNum.Length; i++) 
+            for (int i = 0; i < exceptLayerNum.Length; i++) 
             {
-                if (hit.collider.gameObject.layer == ExceptLayerNum[i])
+                if (hit.collider.gameObject.layer == exceptLayerNum[i])
                 { 
                     return Value;
                 }

@@ -9,18 +9,38 @@ using UnityEditor;
 
 #endif
 
-
 public class PlayerAttack : MonoBehaviour
 {
+    public float[] castingTime;
+    private bool casting;
+
+    private bool canUlt = false;
+    private bool useUlt = false;
+    
+    
+    ////////////////////
+    
+
+    public Slider Mp_bar;
+    public float Mp = 20;
+
+    ////////////////
+    bool isUseMp = false;
+    bool isNotUseMp = false;
+    bool isAttack = false;
+    ////////////////
     [Header("Damage")]
     [SerializeField] public static float normalDamage = 10;
 
     [Header("Effects")]
+    public GameObject TargetMarker;
     public GameObject[] Prefabs;
     public GameObject[] PrefabsCast;
 
     private ParticleSystem currEffect;
     private ParticleSystem Effect;
+
+    public LayerMask collidingLayer = ~0; //Target marker can only collide with scene layer
 
     [Space]
     public LayerMask obstacle;
@@ -63,9 +83,36 @@ public class PlayerAttack : MonoBehaviour
     }
 
 #endif
-
+    public void CastSoundPlay()
+    {
+        soundComponentCast.Play(0);
+    }
     private void FixedUpdate()
     {
+        if (Input.GetKeyDown("1"))
+        {
+            if (canUlt)
+            {
+                useUlt = true;
+            }
+            else
+                StartCoroutine(PreCast(0));
+        }
+
+        if ((int)(Mp_bar.value - Mp) != 0 || (int)(Mp_bar.value) != Mp)
+        {
+            if(Mp_bar.value < Mp)
+                Mp_bar.value += 10 * Time.deltaTime;
+            else if (Mp_bar.value > Mp)
+                Mp_bar.value -= 10 * Time.deltaTime;
+        }
+
+        if (isNotUseMp == false && isAttack == false)
+        {
+            isNotUseMp = true;
+            StartCoroutine(Mp_Revert());
+        }
+
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         if (fireCountdown > 0)
@@ -96,9 +143,14 @@ public class PlayerAttack : MonoBehaviour
         }
         UserInterface();
 
-
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && Mp > 0)
         {
+            isAttack = true;
+            if (isUseMp == false)
+            {
+                isUseMp = true;
+                StartCoroutine(Mp_Use());
+            }
             if (aim.enabled == true && activeTarger == true)
             {
                 PlayerAnimControl.instance.Attack();
@@ -168,6 +220,11 @@ public class PlayerAttack : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            isAttack = false;
+
+        }
     }
     private void UserInterface()
     {
@@ -226,5 +283,133 @@ public class PlayerAttack : MonoBehaviour
         return index;
     }
 
+    IEnumerator Mp_Use()
+    {
+        yield return new WaitForSeconds(1f);
+        Mp -= 1;
+        isUseMp = false;
+        
+    }
 
+    IEnumerator Mp_Revert()
+    {
+        yield return new WaitForSeconds(1f);
+        Mp += 2;
+        if(Mp > 20)
+        {
+            Mp = 20;
+        }
+
+        isNotUseMp = false;
+    }
+
+
+    public IEnumerator PreCast(int EffectNumber)
+    {
+        if (PrefabsCast[EffectNumber] && TargetMarker)
+        {
+            //Waiting for confirm or deny
+            while (true)
+            {
+                aim.enabled = false;
+                TargetMarker.SetActive(true);
+                var forwardCamera = Camera.main.transform.forward;
+                forwardCamera.y = 0.0f;
+                RaycastHit hit;
+                Ray ray = new Ray(Camera.main.transform.position + new Vector3(0, 2, 0), Camera.main.transform.forward);
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, collidingLayer))
+                {
+                    TargetMarker.transform.position = hit.point;
+                    TargetMarker.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal) * Quaternion.LookRotation(forwardCamera);
+                }
+                else
+                {
+                    aim.enabled = true;
+                    TargetMarker.SetActive(false);
+                }
+
+                if (Input.GetMouseButtonDown(0) && casting == false)
+                {
+                    aim.enabled = true;
+                    TargetMarker.SetActive(false);
+                    soundComponentCast = null;
+                    
+                    casting = true;
+                    PrefabsCast[EffectNumber].transform.position = hit.point;
+                    PrefabsCast[EffectNumber].transform.rotation = Quaternion.LookRotation(forwardCamera);
+                    PrefabsCast[EffectNumber].transform.parent = null;
+                    currEffect = PrefabsCast[EffectNumber].GetComponent<ParticleSystem>();
+                    Effect = Prefabs[EffectNumber].GetComponent<ParticleSystem>();
+                    //Get Audiosource from Prefabs if exist
+                    if (Prefabs[EffectNumber].GetComponent<AudioSource>())
+                    {
+                        soundComponent = Prefabs[EffectNumber].GetComponent<AudioSource>();
+                    }
+                    //Get Audiosource from PrefabsCast if exist
+                    if (PrefabsCast[EffectNumber].GetComponent<AudioSource>())
+                    {
+                        soundComponentCast = PrefabsCast[EffectNumber].GetComponent<AudioSource>();
+                    }
+                    StartCoroutine(OnCast(EffectNumber));
+
+                 yield break;
+                }
+                else if (Input.GetMouseButtonDown(1))
+                {
+                    aim.enabled = true;
+                    TargetMarker.SetActive(false);
+                    yield break;
+                }
+                yield return null;
+            }
+        }
+        else if (casting == false)
+        {
+            Effect = Prefabs[EffectNumber].GetComponent<ParticleSystem>();
+            ////Get Audiosource from prefab if exist
+            if (Prefabs[EffectNumber].GetComponent<AudioSource>())
+            {
+                soundComponent = Prefabs[EffectNumber].GetComponent<AudioSource>();
+            }
+            casting = true;
+            yield break;
+        }
+        else
+            yield break;
+    }
+
+    IEnumerator OnCast(int EffectNumber)
+    {
+        while (true)
+        {
+            if (casting)
+            {
+                if (castingTime[EffectNumber] == 0)
+                {
+                    //Play PrefabCast VFX
+                    currEffect.Play();
+                    if (soundComponentCast)
+                    {
+                        CastSoundPlay();
+                    }
+                    yield return new WaitForSeconds(1f);
+                }
+                else
+                {
+                    //Play PrefabCast VFX
+                    currEffect.Play();
+                    //Camera shake
+                    if (EffectNumber == 0) StartCoroutine(cameraShaker.Shake(0.2f, 5, 2, 1.5f));
+                    if (EffectNumber == 3) StartCoroutine(cameraShaker.Shake(0.6f, 6, 0.3f, 1.45f));
+                    if (soundComponentCast)
+                    {
+                        CastSoundPlay();
+                    }
+                    yield return new WaitForSeconds(castingTime[EffectNumber]);
+                    yield break;
+                }
+            }
+            else yield break;
+        }
+    }
 }

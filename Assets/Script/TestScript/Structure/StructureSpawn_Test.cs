@@ -31,7 +31,7 @@ public class StructureSpawn_Test : MonoBehaviour
 
     private void Awake()
     {
-        if (GameObject.Find("InGame_UI_sample").transform.Find("Skill_Upgrade") != null)
+        if (GameObject.Find("InGame_UI_sample") && GameObject.Find("InGame_UI_sample").transform.Find("Skill_Upgrade") != null)
         {
             skillWindow = GameObject.Find("InGame_UI_sample").transform.Find("Skill_Upgrade").gameObject;
         }
@@ -124,6 +124,7 @@ public class StructureSpawn_Test : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, distance, installLayer))
             {
+                Debug.DrawRay(hit.point, hit.normal, Color.blue);
                 if (hit.collider.gameObject.GetComponent<GridStructure>() != null)
                     changePosValue = hit.collider.gameObject.GetComponent<GridStructure>().posPreview;
                 else changePosValue = new Vector3(0, 0, 0);

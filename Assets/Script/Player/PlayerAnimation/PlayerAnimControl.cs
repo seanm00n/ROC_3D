@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
+using TMPro;
 
 public class PlayerAnimControl : MonoBehaviour
 {
+    public TextMeshProUGUI Hp_Text;
+    public Slider HpBar;
     public float DamageCoolTime = 0.5f;
     public float Hp = 100;
     public bool hit = false;
@@ -19,10 +24,22 @@ public class PlayerAnimControl : MonoBehaviour
     public Animator Player;
     public static PlayerAnimControl instance;
 
+    public UnityEvent OnDeath;
+    public void HpRefresh()
+    {
+        if ((int)(HpBar.value - Hp) != 0)
+        {
+            if (HpBar.value < Hp)
+                HpBar.value += 40 * Time.deltaTime;
+            else if (HpBar.value > Hp)
+                HpBar.value -= 40 *Time.deltaTime;
+        }
 
+        Hp_Text.text = Hp.ToString() + "/" + 100.ToString();
+    }
     public void Hit(float damage)
     {
-        if (hit == false)
+        if (hit == false && Hp != 0)
         {
             hit = true;
             if (Hp > 0)
@@ -32,6 +49,16 @@ public class PlayerAnimControl : MonoBehaviour
             if (Hp < 0)
             {
                 Hp = 0;
+            }
+            if(Hp == 0)
+            {
+                hit = false;
+                OnDeath.Invoke();
+                Player.SetTrigger("Death");
+
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                return;
             }
             Player.SetTrigger("Damaged");
             StartCoroutine(playerDamageRotator());
@@ -46,8 +73,9 @@ public class PlayerAnimControl : MonoBehaviour
 
     private void Update()
     {
+        HpRefresh();
         Player.SetBool("Onground", P.isJumping);
-        if (Camera_manager.fpsMode == true)
+        if (CameraManager.fpsMode == true)
         {
             Player.Rebind();
             Player.enabled = false;    
@@ -80,7 +108,7 @@ public class PlayerAnimControl : MonoBehaviour
 
     public void AnimationWork(Vector2 move)
     {
-        if (Camera_manager.fpsMode == false)
+        if (CameraManager.fpsMode == false)
         {
             Player.SetFloat("Horizontal", move.x);
             Player.SetFloat("Vertical", move.y);
@@ -97,7 +125,7 @@ public class PlayerAnimControl : MonoBehaviour
 
     public void Attack()
     {
-        if (Camera_manager.fpsMode == false)
+        if (CameraManager.fpsMode == false)
         {
             Player.SetBool("OnAttack",true);
             Player.SetTrigger("Attack");
