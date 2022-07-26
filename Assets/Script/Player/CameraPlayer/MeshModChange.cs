@@ -27,7 +27,7 @@ public class MeshModChange : MonoBehaviour
         }
         else
         {
-            if (PlayerAnimControl.instance.hit == true)
+            if (PlayerAnimationController.instance.hit == true)
             {
                 GetComponent<Renderer>().material = materialDamaged;
             }

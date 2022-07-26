@@ -48,14 +48,14 @@ public class MonsterAI : MonoBehaviour
             m_time += Time.deltaTime;
             if (m_time < 0.5f) {
                 m_time = 0f;
-                PlayerAnimControl.instance.Hit(m_attack);
+                PlayerAnimationController.instance.Hit(m_attack);
             }
         }
     }
     void Init () {
         Player = GameObject.Find("Wizard_Player").transform.GetChild(0).gameObject;
         MController = GameObject.Find("MonsterController");
-        HQ = GameObject.Find("HQ");//ÃßÈÄ ¼öÁ¤
+        HQ = GameObject.Find("HQ");//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         m_target = HQ;
         m_agent = GetComponent<NavMeshAgent>();
         m_agent.speed = m_stage * 1.6f;

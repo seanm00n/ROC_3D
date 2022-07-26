@@ -27,7 +27,7 @@ public class NotWall : MonoBehaviour
             }
 
             if (other.gameObject.layer != cam.target.gameObject.layer)
-                CameraManager.instance.Value = 2;
+                CameraManager.instance.clampedPos = 2;
         }
     }
     void OnTriggerExit(Collider other)
@@ -36,7 +36,7 @@ public class NotWall : MonoBehaviour
         if (other.gameObject.CompareTag("PlayerAttack") == false)
         {
             if (other.gameObject.layer != cam.target.gameObject.layer)
-                CameraManager.instance.Value = 0;
+                CameraManager.instance.clampedPos = 0;
         }
     }
 }

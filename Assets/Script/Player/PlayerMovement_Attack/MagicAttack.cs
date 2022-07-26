@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Magic_Attack : MonoBehaviour
+public class MagicAttack : MonoBehaviour
 {
     public float targetLayerNumber;
     public GameObject[] EffectsOnCollision;

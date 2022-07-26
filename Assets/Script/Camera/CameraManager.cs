@@ -1,27 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CameraManager : MonoBehaviour
 {
-    [Header("Target")]
-
-    Transform targetLocation;
-
-    [Header("FpsModeSetting")]
-
+    [Header("FPS Mode Options")]
+    // handheld object that is always static to camera
     public GameObject bookVisibleFps;
 
     [Space]
     
-    [Header("ExtraCamera")]
-    public Camera c1; // Middle sight of view.
-    public Camera c2; // Down sight of view.
-    public Camera c3; // Top sight of view.
+    [Header("Extra Camera")]
+    [FormerlySerializedAs("c1")] public Camera middleViewCamera; // Middle sight of view.
+    [FormerlySerializedAs("c2")] public Camera downViewCamera; // Down sight of view.
+    [FormerlySerializedAs("c3")] public Camera topViewCamera; // Top sight of view.
 
-
-    [Header("PlayerHeadRotation")]
-    public float upperAngle = 0;
+    [Header("Player Head Rotation")]
+    public float upperAngle;
 
     [Space]
 
@@ -31,116 +27,92 @@ public class CameraManager : MonoBehaviour
 
     [Space]
 
+    // 0: middle view
+    // 1: top view
+    // 2: down view
+    // 3: middle view but closer to wall
+    // 4: top view but closer to wall
+    // 5: down view but closer to wall
+    // 6: fpsmode cam
     public Transform[] targetPositions;
 
     public float cameraRotSpeed = 200;
-    public float cameraMoveSpeed = 8f;
     Vector3 cameraMoveVelocity;
 
     [Space]
 
     [Header("AngleSetting")]
-
-    float currentAngle;
-    float earlyTopAngle;
-    float earlyDownAngle;
+    private float currentAngle;
+    private float earlyTopAngle;
+    private float earlyDownAngle;
     public float topAngle = 50;
-    public float DownAngle = 0;
+    [FormerlySerializedAs("DownAngle")] public float downAngle;
     public float maxAngle = 80;
     public float minAngle = -40f;
 
     [Space]
-
-    public float smoothCameraTime;
-    public float smoothCameraSpeed = 24f;
-
-    [Space]
-    public static CameraManager instance;
-    public static bool fpsMode = false;
-
+    
     public int[] exceptLayerNum;
-    public float Value; //카메라 벽 넘기 방지
+    [FormerlySerializedAs("Value")] public float clampedPos; //카메라 벽 넘기 방지
 
+    // Singleton stuff
+    public static CameraManager instance { get; private set; }
+    public static bool fpsMode { get; private set; }
+    
     private void Awake()
     {
-        targetLocation = targetPositions[0];
         instance = this;
     }
-    void Start()
+    
+    private void Start()
     {
         target = FindObjectOfType<PlayerMovement>().transform;
         earlyTopAngle = topAngle;
-        earlyDownAngle = DownAngle;
+        earlyDownAngle = downAngle;
+        
+        // semi-disable clipping
+        Camera.main.nearClipPlane = 0.01f;
     }
 
-    void Update()
+    private void Update()
     {
-        if (CameraManager.fpsMode == true && bookVisibleFps)
-        {
-            bookVisibleFps.SetActive(true);
-        }
-        else
-        {
-            bookVisibleFps.SetActive(false);
-        }
-        if (smoothCameraTime > 0)
-        {
-            if (smoothCameraSpeed > cameraMoveSpeed && targetNum == 1)
-            {
-                float value = cameraMoveSpeed;
-                cameraMoveSpeed = smoothCameraSpeed;
-                smoothCameraSpeed = value;
-            }
-            smoothCameraTime -= Time.deltaTime;
-        }
-        else if(smoothCameraTime < 0)
-        {
-            smoothCameraTime = 0;
-            float value = cameraMoveSpeed;
-            cameraMoveSpeed = smoothCameraSpeed;
-            smoothCameraSpeed = value;
-        }
-
+        // Prevent exception from method calls below
         if (!target) return;
-        CameraMove();
-        CameraRotate();
+        
+        MoveCamera();
+        RotateCamera();
 
+        // Toggle fps mode (first-person-perspective?)
         if (Input.GetKeyDown(KeyCode.V))
         {
-            if (fpsMode) {fpsMode = false; Camera.main.nearClipPlane = 0.01f;}
-            else { fpsMode = true;}
+            if ((fpsMode = !fpsMode) && bookVisibleFps)
+            {
+                // Set visibility of held book
+                bookVisibleFps.SetActive(fpsMode);
+            }
         }
     }
-
-
-    void CameraMove()
+    
+    // This method not only moves the camera, but also rotates player's angles
+    private void MoveCamera()
     {
-        if (!fpsMode)
-        {
-            Vector3 destination = new Vector3(targetPosition.position.x, targetPosition.position.y, targetPosition.position.z);
-            //Vector3 pVector = Vector3.Lerp(transform.position, destination, cameraMoveSpeed * Time.deltaTime);
-            transform.position = destination;
-
-            float pointY = transform.eulerAngles.y + Input.GetAxisRaw("Mouse X") * cameraRotSpeed * Time.deltaTime;
+        var position = targetPosition.position;
+        var destination = new Vector3(position.x, position.y, position.z);
             
-            target.eulerAngles = new Vector3(target.rotation.x, pointY, target.rotation.z);
-        }
-        else
-        {
-            Vector3 destination = new Vector3(targetPosition.position.x, targetPosition.position.y, targetPosition.position.z);
-            transform.position = destination;
+        transform.position = destination;
 
-            float pointY = target.eulerAngles.y + Input.GetAxisRaw("Mouse X") * cameraRotSpeed * Time.smoothDeltaTime;
+        var pointY = target.eulerAngles.y + Input.GetAxisRaw("Mouse X") * cameraRotSpeed * Time.deltaTime;
             
-            target.eulerAngles = new Vector3(target.rotation.x, pointY, target.rotation.z);  
-        }
+        // Rotate player
+        target.eulerAngles = new Vector3(target.rotation.x, pointY, target.rotation.z);
     }
 
-    void CameraRotate()
+    // This method sets the player's Y position when looking at the sky or ground
+    void RotateCamera()
     {
         float pointX = transform.eulerAngles.x - Input.GetAxisRaw("Mouse Y") * cameraRotSpeed * Time.deltaTime;
         if (pointX < 300 && pointX > maxAngle) pointX = maxAngle;
-        Vector3 RoteteVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
+        Vector3 rotateVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
 
         if (minAngle >= 0)
         {
@@ -148,113 +120,129 @@ public class CameraManager : MonoBehaviour
         }
         else
         {
-            float Max = (-minAngle) + maxAngle + 1;
+            float max = maxAngle - minAngle + 1;
             if (transform.localEulerAngles.x > 300 || transform.localEulerAngles.x == 0)
             {
-                float ThisNum = ((maxAngle) + 1) + (360-transform.localEulerAngles.x);
-                upperAngle = (ThisNum / Max);
+                float unsanitizedUpperAngle = ((maxAngle) + 1) + (360-transform.localEulerAngles.x);
+                upperAngle = (unsanitizedUpperAngle / max);
             }
-            else if(transform.localEulerAngles.x > 0)
+            else if (transform.localEulerAngles.x > 0)
             {
-                float ThisNum = (maxAngle - transform.localEulerAngles.x) + 1;
-                upperAngle = (ThisNum / Max);
+                float unsanitizedUpperAngle = (maxAngle - transform.localEulerAngles.x) + 1;
+                upperAngle = (unsanitizedUpperAngle / max);
             }
         }
 
         if (!fpsMode)
         {
             float pointX_ = 0;
-            if (pointX > 300 && DownAngle < 0)
+            if (pointX > 300 && downAngle < 0)
             {
                 pointX_ = pointX - 360;
 
             }
             if (targetNum == 1)
             {
-                if (Value != 2)
-                Value = CameraReset(c1);
+                if (clampedPos != 2)
+                    clampedPos = ResetCamera(middleViewCamera);
 
-                if (Value == 0) targetPosition = targetLocation; else { targetPosition = targetPositions[3]; }
+                targetPosition = clampedPos == 0 ? targetPositions[0] : targetPositions[3];
 
                 if (pointX_ != 0)
                 {
-                    if (pointX_ < DownAngle) targetNum = 2;
+                    if (pointX_ < downAngle) targetNum = 2;
                 }
                 else 
                 {
-                    if (transform.localEulerAngles.x > topAngle) targetNum = 3; else if (pointX < DownAngle) targetNum = 2;
+                    if (transform.localEulerAngles.x > topAngle) targetNum = 3; else if (pointX < downAngle) targetNum = 2;
                 }
 
-                transform.eulerAngles = RoteteVelocity;
+                transform.eulerAngles = rotateVelocity;
             }
             else if (targetNum == 2)
             {
-                if (Value != 2)
-                    Value = CameraReset(c2);
+                if (clampedPos != 2)
+                    clampedPos = ResetCamera(downViewCamera);
 
-                if (Value == 0) targetPosition = targetPositions[1]; else { targetPosition = targetPositions[4]; }
+                if (clampedPos == 0) targetPosition = targetPositions[1]; else { targetPosition = targetPositions[4]; }
                 currentAngle = transform.eulerAngles.x;
 
                 
                 if (minAngle + 360 > (pointX)) pointX = -40;
-                RoteteVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
+                rotateVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
                 
 
-                transform.eulerAngles = RoteteVelocity;
-                if (DownAngle < pointX_ && pointX_ != 0) targetNum = 1;
+                transform.eulerAngles = rotateVelocity;
+                if (downAngle < pointX_ && pointX_ != 0) targetNum = 1;
 
             }
             else if (targetNum == 3)
             {
-                if (Value != 2)
-                    Value = CameraReset(c3);
+                if (clampedPos != 2)
+                    clampedPos = ResetCamera(topViewCamera);
 
-                if (Value == 0) targetPosition = targetPositions[2]; else { targetPosition = targetPositions[5]; }
+                targetPosition = clampedPos == 0 ? targetPositions[2] : targetPositions[5];
+                
                 currentAngle = transform.eulerAngles.x;
-                RoteteVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
-                transform.eulerAngles = RoteteVelocity;
+                rotateVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
+                transform.eulerAngles = rotateVelocity;
+                
                 if (30 > transform.eulerAngles.x) targetNum = 1;
             }
         }
         else
         {
             targetPosition = targetPositions[6];
-            if (pointX > 200 && pointX < 303) return;
-            else if (pointX < 200 && pointX > 73) pointX = 73;
-            RoteteVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
-            transform.eulerAngles = RoteteVelocity;
+            
+            switch (pointX)
+            {
+                // Limit looking up
+                case > 200 and < 303:
+                    return;
+                
+                // Limit looking down
+                case < 200 and > 73:
+                    // pointX = 73;
+                    return;
+            }
+
+            rotateVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
+            transform.eulerAngles = rotateVelocity;
         }
+        
+        // Cap below 1, or the animations will break
         if (upperAngle >= 1)
         {
             upperAngle = 0.9999f;
         }
-        PlayerAnimControl.instance.AnimationAngleWork(upperAngle);
+        
+        PlayerAnimationController.instance.SetAngle(upperAngle);
     }
-    float CameraReset(Camera c)
+    float ResetCamera(Camera cam)
     {
-        RaycastHit hit;
-        float Value = 0;
-        var ray = c.ViewportPointToRay(new Vector3(0.5f, 0.5f, -3));
-        if (Physics.Linecast(ray.origin, target.position, out hit, ~target.GetComponent<PlayerMovement>().playerLayer))
+        var newClampedPos = 0;
+        var ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, -3));
+        
+        if (Physics.Linecast(ray.origin, target.position, out var hit, ~target.GetComponent<PlayerMovement>().playerLayer))
         {
             for (int i = 0; i < exceptLayerNum.Length; i++) 
             {
                 if (hit.collider.gameObject.layer == exceptLayerNum[i])
                 { 
-                    return Value;
+                    return newClampedPos;
                 }
             }
 
             if (hit.collider.gameObject.CompareTag("PlayerAttack"))
             {
-                return Value;
+                return newClampedPos;
 
             }
-            Value = 1;
+            newClampedPos = 1;
         }
-        else Value = 0;
+        else newClampedPos = 0;
 
-        return Value;
+        return newClampedPos;
     }
 
     public void CameraSensitivity(float Rot)

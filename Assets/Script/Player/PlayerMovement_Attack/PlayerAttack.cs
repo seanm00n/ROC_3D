@@ -121,7 +121,7 @@ public class PlayerAttack : MonoBehaviour
         }
         if (target == null)
         {
-            PlayerAnimControl.instance.AttackEnd();
+            PlayerAnimationController.instance.AttackEnd();
             activeTarger = false;
         }
 
@@ -153,7 +153,7 @@ public class PlayerAttack : MonoBehaviour
             }
             if (aim.enabled == true && activeTarger == true)
             {
-                PlayerAnimControl.instance.Attack();
+                PlayerAnimationController.instance.Attack();
                 if (fireCountdown <= 0f)
                 {
                     GameObject projectile = Instantiate(PrefabsCast[8], FirePoint.position, FirePoint.rotation);
@@ -172,7 +172,7 @@ public class PlayerAttack : MonoBehaviour
             }
             else
             {
-                PlayerAnimControl.instance.Attack();
+                PlayerAnimationController.instance.Attack();
                 if (fireCountdown <= 0f)
                 {
                     Transform target_;
