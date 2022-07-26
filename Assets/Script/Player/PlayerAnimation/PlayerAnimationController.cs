@@ -8,11 +8,6 @@ using UnityEngine.Serialization;
 
 public class PlayerAnimationController : MonoBehaviour
 {
-    [FormerlySerializedAs("Hp_Text")] public TextMeshProUGUI hpText;
-    [FormerlySerializedAs("HpBar")] public Slider hpBar;
-    [FormerlySerializedAs("DamageCoolTime")] public float damageCoolTime = 0.5f;
-    [FormerlySerializedAs("Hp")] public float hp = 100;
-    public bool hit;
     public enum AnimationState
     {
         Normal, Jump, Air
@@ -20,65 +15,18 @@ public class PlayerAnimationController : MonoBehaviour
 
     [FormerlySerializedAs("State")] public AnimationState state;
 
-    PlayerMovement playerMovement;
-
     [FormerlySerializedAs("playerAnimator")] [FormerlySerializedAs("Player")] public Animator animator;
-    public static PlayerAnimationController instance;
-
-    public UnityEvent OnDeath;
-    public void HpRefresh()
-    {
-        if ((int)(hpBar.value - hp) != 0)
-        {
-            if (hpBar.value < hp)
-                hpBar.value += 40 * Time.deltaTime;
-            else if (hpBar.value > hp)
-                hpBar.value -= 40 *Time.deltaTime;
-        }
-
-        hpText.text = hp.ToString() + "/" + 100.ToString();
-    }
-    
-    public void Hit(float damage)
-    {
-        if (hit == false && hp != 0)
-        {
-            hit = true;
-            if (hp > 0)
-            {
-                hp -= damage;
-            }
-            if (hp < 0)
-            {
-                hp = 0;
-            }
-            if(hp == 0)
-            {
-                hit = false;
-                OnDeath.Invoke();
-                animator.SetTrigger("Death");
-
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-                return;
-            }
-            animator.SetTrigger("Damaged");
-            StartCoroutine(PlayerDamageRotator());
-        }
-    }
     
     void Awake()
     {
         animator = GetComponent<Animator>();
-        if(!instance) instance = gameObject.GetComponent<PlayerAnimationController>();
-        playerMovement = GetComponent<PlayerMovement>();
     }
 
     private void Update()
     {
-        HpRefresh();
-        animator.SetBool("Onground", playerMovement.isJumping);
-        if (CameraManager.fpsMode == true)
+        animator.SetBool("Onground", Player.instance.movement.isJumping);
+
+        if (CameraManager.fpsMode == true) // Fps mode don't need animation. 
         {
             animator.Rebind();
             animator.enabled = false;    
@@ -93,12 +41,13 @@ public class PlayerAnimationController : MonoBehaviour
             AttackEnd();
         }
     }
-    // Update is called once per frame
+
     public void waitngJump()
     {
         animator.SetTrigger("JumpWaiting");
-        playerMovement.DoJump = false;
+        Player.instance.movement.DoJump = false; // Block jump when "JumpWaiting" animation is work.
     }
+
     public void air()
     {
         if (state == AnimationState.Jump || state == AnimationState.Air)
@@ -120,8 +69,10 @@ public class PlayerAnimationController : MonoBehaviour
     public void Jump()
     {
         animator.ResetTrigger("JumpWaiting");
-        if (state == AnimationState.Jump)
+
+        if (state == AnimationState.Jump) // Block repetitive animation.
             return;
+
         animator.ResetTrigger("OnAir");
         animator.SetTrigger("Jump");
     }
@@ -144,9 +95,4 @@ public class PlayerAnimationController : MonoBehaviour
         animator.SetFloat("Angle", angle);
     }
 
-    IEnumerator PlayerDamageRotator()
-    {
-        yield return new WaitForSeconds(damageCoolTime);
-        hit = false;
-    }
 }

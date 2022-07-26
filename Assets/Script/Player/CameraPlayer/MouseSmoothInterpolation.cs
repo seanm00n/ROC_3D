@@ -10,6 +10,9 @@ public class MouseSmoothInterpolation : MonoBehaviour
     private void Awake()
     {
         original = transform.localPosition;
+    }
+    private void Start()
+    {
         cam = Camera.main.transform;
     }
     void Update()

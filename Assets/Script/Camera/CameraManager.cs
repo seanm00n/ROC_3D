@@ -10,12 +10,6 @@ public class CameraManager : MonoBehaviour
     public GameObject bookVisibleFps;
 
     [Space]
-    
-    [Header("Extra Camera")]
-    [FormerlySerializedAs("c1")] public Camera middleViewCamera; // Middle sight of view.
-    [FormerlySerializedAs("c2")] public Camera downViewCamera; // Down sight of view.
-    [FormerlySerializedAs("c3")] public Camera topViewCamera; // Top sight of view.
-
     [Header("Player Head Rotation")]
     public float upperAngle;
 
@@ -24,17 +18,6 @@ public class CameraManager : MonoBehaviour
     public Transform target;
     public int targetNum = 1;
     public Transform targetPosition;
-
-    [Space]
-
-    // 0: middle view
-    // 1: top view
-    // 2: down view
-    // 3: middle view but closer to wall
-    // 4: top view but closer to wall
-    // 5: down view but closer to wall
-    // 6: fpsmode cam
-    public Transform[] targetPositions;
 
     public float cameraRotSpeed = 200;
     Vector3 cameraMoveVelocity;
@@ -46,14 +29,15 @@ public class CameraManager : MonoBehaviour
     private float earlyTopAngle;
     private float earlyDownAngle;
     public float topAngle = 50;
-    [FormerlySerializedAs("DownAngle")] public float downAngle;
+
+    public float downAngle;
     public float maxAngle = 80;
     public float minAngle = -40f;
 
     [Space]
     
     public int[] exceptLayerNum;
-    [FormerlySerializedAs("Value")] public float clampedPos; //카메라 벽 넘기 방지
+    public float clampedPos; // Block camera collision with wall.
 
     // Singleton stuff
     public static CameraManager instance { get; private set; }
@@ -66,7 +50,8 @@ public class CameraManager : MonoBehaviour
     
     private void Start()
     {
-        target = FindObjectOfType<PlayerMovement>().transform;
+        targetPosition = Player.instance.cameraPos.middleViewCamera.transform;
+        target = Player.instance.transform;
         earlyTopAngle = topAngle;
         earlyDownAngle = downAngle;
         
@@ -85,8 +70,9 @@ public class CameraManager : MonoBehaviour
         // Toggle fps mode (first-person-perspective?)
         if (Input.GetKeyDown(KeyCode.V))
         {
-            if ((fpsMode = !fpsMode) && bookVisibleFps)
+            if (bookVisibleFps)
             {
+                fpsMode = !fpsMode;
                 // Set visibility of held book
                 bookVisibleFps.SetActive(fpsMode);
             }
@@ -144,9 +130,9 @@ public class CameraManager : MonoBehaviour
             if (targetNum == 1)
             {
                 if (clampedPos != 2)
-                    clampedPos = ResetCamera(middleViewCamera);
+                    clampedPos = ResetCamera(Player.instance.cameraPos.middleViewCamera);
 
-                targetPosition = clampedPos == 0 ? targetPositions[0] : targetPositions[3];
+                targetPosition = clampedPos == 0 ? Player.instance.cameraPos.targetPositions[0] : Player.instance.cameraPos.targetPositions[3];
 
                 if (pointX_ != 0)
                 {
@@ -162,9 +148,9 @@ public class CameraManager : MonoBehaviour
             else if (targetNum == 2)
             {
                 if (clampedPos != 2)
-                    clampedPos = ResetCamera(downViewCamera);
+                    clampedPos = ResetCamera(Player.instance.cameraPos.downViewCamera);
 
-                if (clampedPos == 0) targetPosition = targetPositions[1]; else { targetPosition = targetPositions[4]; }
+                if (clampedPos == 0) targetPosition = Player.instance.cameraPos.targetPositions[1]; else { targetPosition = Player.instance.cameraPos.targetPositions[4]; }
                 currentAngle = transform.eulerAngles.x;
 
                 
@@ -179,9 +165,9 @@ public class CameraManager : MonoBehaviour
             else if (targetNum == 3)
             {
                 if (clampedPos != 2)
-                    clampedPos = ResetCamera(topViewCamera);
+                    clampedPos = ResetCamera(Player.instance.cameraPos.topViewCamera);
 
-                targetPosition = clampedPos == 0 ? targetPositions[2] : targetPositions[5];
+                targetPosition = clampedPos == 0 ? Player.instance.cameraPos.targetPositions[2] : Player.instance.cameraPos.targetPositions[5];
                 
                 currentAngle = transform.eulerAngles.x;
                 rotateVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
@@ -192,7 +178,7 @@ public class CameraManager : MonoBehaviour
         }
         else
         {
-            targetPosition = targetPositions[6];
+            targetPosition = Player.instance.cameraPos.targetPositions[6];
             
             switch (pointX)
             {
@@ -216,7 +202,7 @@ public class CameraManager : MonoBehaviour
             upperAngle = 0.9999f;
         }
         
-        PlayerAnimationController.instance.SetAngle(upperAngle);
+        Player.instance.animationController.SetAngle(upperAngle);
     }
     float ResetCamera(Camera cam)
     {

@@ -25,7 +25,7 @@ public class MonsterAI : MonoBehaviour
     GameObject m_target;
     NavMeshAgent m_agent;
     GameObject HQ;
-    GameObject Player;
+    GameObject player;
     GameObject MController;
     
     [SerializeField] bool m_isBoss = false;
@@ -48,12 +48,12 @@ public class MonsterAI : MonoBehaviour
             m_time += Time.deltaTime;
             if (m_time < 0.5f) {
                 m_time = 0f;
-                PlayerAnimationController.instance.Hit(m_attack);
+                Player.instance.Hit(m_attack);
             }
         }
     }
     void Init () {
-        Player = GameObject.Find("Wizard_Player").transform.GetChild(0).gameObject;
+        player = GameObject.Find("Wizard_Player").transform.GetChild(0).gameObject;
         MController = GameObject.Find("MonsterController");
         HQ = GameObject.Find("HQ");//���� ����
         m_target = HQ;
@@ -78,12 +78,12 @@ public class MonsterAI : MonoBehaviour
         if (result[0] && result[0].transform.CompareTag("Player")) 
         {
             if (Vector3.Distance(transform.position, HQ.transform.position) <=
-                Vector3.Distance(transform.position, Player.transform.position)) {
+                Vector3.Distance(transform.position, player.transform.position)) {
                 m_target = HQ;
             } 
             else 
             {
-                m_target = Player;
+                m_target = player;
             }
         }
         if (result[0] && result[0].transform.CompareTag("Turret")) {

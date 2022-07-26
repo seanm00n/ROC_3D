@@ -11,45 +11,40 @@ using UnityEditor;
 
 public class PlayerAttack : MonoBehaviour
 {
-    public float[] castingTime;
-    private bool casting;
-
-    private bool canUlt = false;
-    private bool useUlt = false;
-    
-    
-    ////////////////////
-    
-
-    public Slider Mp_bar;
-    public float Mp = 20;
-
-    ////////////////
-    bool isUseMp = false;
+    // Check whether player using mp or not.
+    bool isUseMp = false; 
     bool isNotUseMp = false;
+
+    // Check whether player attack or not.
     bool isAttack = false;
-    ////////////////
+
     [Header("Damage")]
-    [SerializeField] public static float normalDamage = 10;
+    [SerializeField] public static float normalDamage = 10; // player normal attack damage.
 
     [Header("Effects")]
     public GameObject TargetMarker;
+
+    [Space]
     public GameObject[] Prefabs;
     public GameObject[] PrefabsCast;
 
     private ParticleSystem currEffect;
     private ParticleSystem Effect;
 
-    public LayerMask collidingLayer = ~0; //Target marker can only collide with scene layer
-
     [Space]
+    [Header("Layer")]
     public LayerMask obstacle;
     public LayerMask Monster;
-    public LayerMask Player;
-    public Image aim;
+    public LayerMask player;
+    public LayerMask collidingLayer = ~0; // Target marker can only collide with scene layer
+
+    [Space]
+    [Header("UI")]
+    public Image aim; // Aiming Cross
     public Vector2 uiOffset;
 
     [Space]
+    [Header("Attack")]
     Transform target;
     private bool activeTarger = false;
     public Transform FirePoint;
@@ -68,45 +63,15 @@ public class PlayerAttack : MonoBehaviour
     private AudioSource soundComponentCast; //Play audio from PrefabsCast
     private AudioSource soundComponentUlt; //Play audio from PrefabsCast
 
-    [Space]
-    [Header("Camera Shaker script")]
-    public HS_CameraShaker cameraShaker;
-
-#if UNITY_EDITOR
-
-    private void OnDrawGizmosSelected()
+    private void Start()
     {
-        var angle = Quaternion.AngleAxis(-fieldOfView, transform.up);
-        var angleAxis = angle * transform.forward;
-        Handles.color = new Color(0, 0, 0, 0.1f);
-        Handles.DrawSolidArc(transform.position,transform.up,angleAxis,fieldOfView * 2f,viewDistance);
+        aim = Player.instance.ui.aim;
     }
 
-#endif
-    public void CastSoundPlay()
-    {
-        soundComponentCast.Play(0);
-    }
     private void FixedUpdate()
     {
-        if (Input.GetKeyDown("1"))
-        {
-            if (canUlt)
-            {
-                useUlt = true;
-            }
-            else
-                StartCoroutine(PreCast(0));
-        }
 
-        if ((int)(Mp_bar.value - Mp) != 0 || (int)(Mp_bar.value) != Mp)
-        {
-            if(Mp_bar.value < Mp)
-                Mp_bar.value += 10 * Time.deltaTime;
-            else if (Mp_bar.value > Mp)
-                Mp_bar.value -= 10 * Time.deltaTime;
-        }
-
+      
         if (isNotUseMp == false && isAttack == false)
         {
             isNotUseMp = true;
@@ -121,7 +86,7 @@ public class PlayerAttack : MonoBehaviour
         }
         if (target == null)
         {
-            PlayerAnimationController.instance.AttackEnd();
+            Player.instance.animationController.AttackEnd();
             activeTarger = false;
         }
 
@@ -143,7 +108,7 @@ public class PlayerAttack : MonoBehaviour
         }
         UserInterface();
 
-        if (Input.GetMouseButton(0) && Mp > 0)
+        if (Input.GetMouseButton(0) && Player.instance && Player.instance.mp > 0)
         {
             isAttack = true;
             if (isUseMp == false)
@@ -153,7 +118,7 @@ public class PlayerAttack : MonoBehaviour
             }
             if (aim.enabled == true && activeTarger == true)
             {
-                PlayerAnimationController.instance.Attack();
+                Player.instance.animationController.Attack();
                 if (fireCountdown <= 0f)
                 {
                     GameObject projectile = Instantiate(PrefabsCast[8], FirePoint.position, FirePoint.rotation);
@@ -172,14 +137,14 @@ public class PlayerAttack : MonoBehaviour
             }
             else
             {
-                PlayerAnimationController.instance.Attack();
+                Player.instance.animationController.Attack();
                 if (fireCountdown <= 0f)
                 {
                     Transform target_;
                     RaycastHit hit;
                     Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
 
-                    if (Physics.Raycast(ray, out hit, viewDistance,~Player))
+                    if (Physics.Raycast(ray, out hit, viewDistance,~player))
                     {
                         target_ = new GameObject().transform;
                         target_.position = hit.point;
@@ -198,7 +163,7 @@ public class PlayerAttack : MonoBehaviour
                         Destroy(target_.gameObject, 2f);
                         
                     }
-                    else if (!Physics.Raycast(ray, out hit, viewDistance, ~Player))
+                    else if (!Physics.Raycast(ray, out hit, viewDistance, ~player))
                     {
                         target_ = new GameObject().transform;
                         target_.position = (ray.origin + 100 * ray.direction);
@@ -226,6 +191,12 @@ public class PlayerAttack : MonoBehaviour
 
         }
     }
+
+    public void CastSoundPlay()
+    {
+        soundComponentCast.Play(0);
+    }
+
     private void UserInterface()
     {
         Vector3 screenCenter = new Vector3(Screen.width, Screen.height, 0) / 2;
@@ -240,7 +211,8 @@ public class PlayerAttack : MonoBehaviour
 
             // {screenPos.x > 0 && screenPos.y > 0 && screenPos.z > 0} - disable target if enemy backside
 
-            //Find target near center of the screen     
+            //Find target near center of the screen
+            //
             if (absCornerDistance.x < screenCenter.x  && absCornerDistance.y < screenCenter.y && screenPos.x > 0 && screenPos.y > 0 && screenPos.z > 0 //If target is in the middle of the screen
                 && !Physics.Linecast(transform.position + (Vector3)uiOffset, target.position + (Vector3)uiOffset * 2, obstacle)) //If player can see the target
             {
@@ -286,7 +258,8 @@ public class PlayerAttack : MonoBehaviour
     IEnumerator Mp_Use()
     {
         yield return new WaitForSeconds(1f);
-        Mp -= 1;
+        if(Player.instance)
+            Player.instance.mp -= 1;
         isUseMp = false;
         
     }
@@ -294,122 +267,27 @@ public class PlayerAttack : MonoBehaviour
     IEnumerator Mp_Revert()
     {
         yield return new WaitForSeconds(1f);
-        Mp += 2;
-        if(Mp > 20)
-        {
-            Mp = 20;
-        }
 
+        if (Player.instance)
+        {
+            Player.instance.mp += 2;
+            if (Player.instance.mp > 20)
+                Player.instance.mp = 20;
+        }
         isNotUseMp = false;
     }
 
 
-    public IEnumerator PreCast(int EffectNumber)
+#if UNITY_EDITOR
+    // You can see this in unity editor. 
+    private void OnDrawGizmosSelected()
     {
-        if (PrefabsCast[EffectNumber] && TargetMarker)
-        {
-            //Waiting for confirm or deny
-            while (true)
-            {
-                aim.enabled = false;
-                TargetMarker.SetActive(true);
-                var forwardCamera = Camera.main.transform.forward;
-                forwardCamera.y = 0.0f;
-                RaycastHit hit;
-                Ray ray = new Ray(Camera.main.transform.position + new Vector3(0, 2, 0), Camera.main.transform.forward);
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity, collidingLayer))
-                {
-                    TargetMarker.transform.position = hit.point;
-                    TargetMarker.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal) * Quaternion.LookRotation(forwardCamera);
-                }
-                else
-                {
-                    aim.enabled = true;
-                    TargetMarker.SetActive(false);
-                }
-
-                if (Input.GetMouseButtonDown(0) && casting == false)
-                {
-                    aim.enabled = true;
-                    TargetMarker.SetActive(false);
-                    soundComponentCast = null;
-                    
-                    casting = true;
-                    PrefabsCast[EffectNumber].transform.position = hit.point;
-                    PrefabsCast[EffectNumber].transform.rotation = Quaternion.LookRotation(forwardCamera);
-                    PrefabsCast[EffectNumber].transform.parent = null;
-                    currEffect = PrefabsCast[EffectNumber].GetComponent<ParticleSystem>();
-                    Effect = Prefabs[EffectNumber].GetComponent<ParticleSystem>();
-                    //Get Audiosource from Prefabs if exist
-                    if (Prefabs[EffectNumber].GetComponent<AudioSource>())
-                    {
-                        soundComponent = Prefabs[EffectNumber].GetComponent<AudioSource>();
-                    }
-                    //Get Audiosource from PrefabsCast if exist
-                    if (PrefabsCast[EffectNumber].GetComponent<AudioSource>())
-                    {
-                        soundComponentCast = PrefabsCast[EffectNumber].GetComponent<AudioSource>();
-                    }
-                    StartCoroutine(OnCast(EffectNumber));
-
-                 yield break;
-                }
-                else if (Input.GetMouseButtonDown(1))
-                {
-                    aim.enabled = true;
-                    TargetMarker.SetActive(false);
-                    yield break;
-                }
-                yield return null;
-            }
-        }
-        else if (casting == false)
-        {
-            Effect = Prefabs[EffectNumber].GetComponent<ParticleSystem>();
-            ////Get Audiosource from prefab if exist
-            if (Prefabs[EffectNumber].GetComponent<AudioSource>())
-            {
-                soundComponent = Prefabs[EffectNumber].GetComponent<AudioSource>();
-            }
-            casting = true;
-            yield break;
-        }
-        else
-            yield break;
+        var angle = Quaternion.AngleAxis(-fieldOfView, transform.up);
+        var angleAxis = angle * transform.forward;
+        Handles.color = new Color(0, 0, 0, 0.1f);
+        Handles.DrawSolidArc(transform.position, transform.up, angleAxis, fieldOfView * 2f, viewDistance);
     }
 
-    IEnumerator OnCast(int EffectNumber)
-    {
-        while (true)
-        {
-            if (casting)
-            {
-                if (castingTime[EffectNumber] == 0)
-                {
-                    //Play PrefabCast VFX
-                    currEffect.Play();
-                    if (soundComponentCast)
-                    {
-                        CastSoundPlay();
-                    }
-                    yield return new WaitForSeconds(1f);
-                }
-                else
-                {
-                    //Play PrefabCast VFX
-                    currEffect.Play();
-                    //Camera shake
-                    if (EffectNumber == 0) StartCoroutine(cameraShaker.Shake(0.2f, 5, 2, 1.5f));
-                    if (EffectNumber == 3) StartCoroutine(cameraShaker.Shake(0.6f, 6, 0.3f, 1.45f));
-                    if (soundComponentCast)
-                    {
-                        CastSoundPlay();
-                    }
-                    yield return new WaitForSeconds(castingTime[EffectNumber]);
-                    yield break;
-                }
-            }
-            else yield break;
-        }
-    }
+#endif
+
 }
