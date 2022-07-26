@@ -15,7 +15,7 @@ public class Test_Box : MonoBehaviour, IItem
         if(end == true && skillWindow && skillWindow.activeSelf == false)
         {
             FindObjectOfType<PlayerMovement>().enabled = true;
-            FindObjectOfType<Camera_manager>().enabled = true;
+            FindObjectOfType<CameraManager>().enabled = true;
             UseEnd();
         }
     }
@@ -31,7 +31,7 @@ public class Test_Box : MonoBehaviour, IItem
 
         FindObjectOfType<PlayerMovement>().enabled = false;
         FindObjectOfType<PlayerAttack>().enabled = false;
-        FindObjectOfType<Camera_manager>().enabled = false;
+        FindObjectOfType<CameraManager>().enabled = false;
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;

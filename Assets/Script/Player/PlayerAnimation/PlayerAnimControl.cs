@@ -75,7 +75,7 @@ public class PlayerAnimControl : MonoBehaviour
     {
         HpRefresh();
         Player.SetBool("Onground", P.isJumping);
-        if (Camera_manager.fpsMode == true)
+        if (CameraManager.fpsMode == true)
         {
             Player.Rebind();
             Player.enabled = false;    
@@ -108,7 +108,7 @@ public class PlayerAnimControl : MonoBehaviour
 
     public void AnimationWork(Vector2 move)
     {
-        if (Camera_manager.fpsMode == false)
+        if (CameraManager.fpsMode == false)
         {
             Player.SetFloat("Horizontal", move.x);
             Player.SetFloat("Vertical", move.y);
@@ -125,7 +125,7 @@ public class PlayerAnimControl : MonoBehaviour
 
     public void Attack()
     {
-        if (Camera_manager.fpsMode == false)
+        if (CameraManager.fpsMode == false)
         {
             Player.SetBool("OnAttack",true);
             Player.SetTrigger("Attack");

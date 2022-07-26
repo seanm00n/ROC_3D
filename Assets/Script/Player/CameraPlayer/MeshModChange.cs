@@ -21,7 +21,7 @@ public class MeshModChange : MonoBehaviour
     }
     private void Update()
     {
-        if (Camera_manager.fpsMode == true)
+        if (CameraManager.fpsMode == true)
         {
             GetComponent<Renderer>().material = transparentMat;
         }

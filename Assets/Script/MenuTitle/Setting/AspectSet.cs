@@ -16,7 +16,7 @@ public class AspectSet : MonoBehaviour
 
     public PlayerMovement pm;
     public PlayerAttack pa;
-    public Camera_manager cm;
+    public CameraManager cm;
 
     void Start()
     {
@@ -29,7 +29,7 @@ public class AspectSet : MonoBehaviour
 
         pm = FindObjectOfType<PlayerMovement>();
         pa = FindObjectOfType<PlayerAttack>();
-        cm = FindObjectOfType<Camera_manager>();
+        cm = FindObjectOfType<CameraManager>();
     }
     void Update()
     {
@@ -87,7 +87,7 @@ public class AspectSet : MonoBehaviour
         {
             FindObjectOfType<PlayerMovement>().enabled = false;
             FindObjectOfType<PlayerAttack>().enabled = false;
-            FindObjectOfType<Camera_manager>().enabled = false;
+            FindObjectOfType<CameraManager>().enabled = false;
         }
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;

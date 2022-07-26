@@ -14,7 +14,7 @@ public class MouseSmoothInterpolation : MonoBehaviour
     }
     void Update()
     {
-        if (Camera_manager.instance.targetNum == 1)
+        if (CameraManager.instance.targetNum == 1)
         {
             if (Input.GetAxisRaw("Mouse Y") > 0.3f)
             {
