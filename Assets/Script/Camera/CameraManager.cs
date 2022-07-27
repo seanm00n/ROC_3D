@@ -23,7 +23,6 @@ public class CameraManager : MonoBehaviour
     Vector3 cameraMoveVelocity;
 
     [Space]
-
     [Header("AngleSetting")]
     private float currentAngle;
     private float earlyTopAngle;
@@ -231,8 +230,8 @@ public class CameraManager : MonoBehaviour
         return newClampedPos;
     }
 
-    public void CameraSensitivity(float Rot)
+    public void SetCameraSensitivity(float rot)
     {
-        cameraRotSpeed = Rot;
+        cameraRotSpeed = rot;
     }
 }

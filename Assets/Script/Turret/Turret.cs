@@ -11,30 +11,44 @@ using UnityEditor;
 
 public class Turret : MonoBehaviour
 {
-    bool Die = false;
-
-    public int DamageSpeed = 30;
-    public GameObject[] Emergency;
-    public GameObject DamageEffect;
-
-    public GameObject ParentObject;
-    public Transform FirePosition;
-    public bool isLive = false;
-
-    public GameObject Hui;
-    public Slider Hpbar;
-    public float HP = 100;
-    float Full_HP;
-    public GameObject AttackPrefab;
-    public GameObject target;
-    public GameObject Attack;
-    public LayerMask targetName;
+    [Header("Turret Setting")]
+    public int damageSpeed = 30;
+    public float attackCycleTime = 2f;
     public float radius;
     public Transform scope;
 
-    public float attackCycleTime = 2f;
+    [Space]
 
-    float currentTime;
+    public GameObject[] emergency;
+    public GameObject damageEffect;
+    public GameObject parentObject;
+    public Transform firePosition;
+    private Collider parentObjectCollider;
+
+    [Space]
+    [Header("UI")]
+    public GameObject hui; // TODO: Get Slider instead of GameObject and rename this field to huiSlider
+    public Slider hpbar; // TODO: Rename this field to "hpBar"
+    public GameObject target;
+    public LayerMask targetName;
+
+    [Space]
+    [Header("Attack Setting")]
+
+    public GameObject attack;
+    public GameObject attackPrefab;
+
+    // Auto Setting
+    private float currTime;
+
+    [Space]
+    [Header("Turret Status")]
+    public float hp = 100;
+    public bool isLive; // TODO: Rename this field to "isAlive"
+    
+    private float fullHp;
+    private bool die;
+
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
@@ -43,69 +57,69 @@ public class Turret : MonoBehaviour
         Handles.DrawSolidDisc(scope.position, scope.up, radius);
     }
 #endif
-
-
+    
     private void Awake()
     {
-        Full_HP = HP;
-    }
-    // Start is called before the first frame update
-    public void OnDamaged(int damage)
-    {
-        GameObject hit = Instantiate(DamageEffect, transform.position, Quaternion.identity);
-        Destroy(hit, hit.GetComponent<ParticleSystem>().main.duration);
-        HP -= damage;
-
+        fullHp = hp;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        if (target)
+        parentObjectCollider = parentObject.GetComponent<Collider>();
+    }
+    
+    private void Update()
+    {
+        var transformPos = transform.position;
+        var targetTransformPos = target.transform.position;
+
+        if (target != null) // Check distance with Target.
         {
-            Vector3 Pos = new Vector3 (transform.position.x,0,transform.position.z);
-            Vector3 targetPos = new Vector3(target.transform.position.x, 0, target.transform.position.z);
-            if (Vector3.Distance(Pos, targetPos) > radius)
+            Vector3 pos = new(transformPos.x, 0, transformPos.z);
+            Vector3 targetPos = new(targetTransformPos.x, 0, targetTransformPos.z);
+            
+            if (Vector3.Distance(pos, targetPos) > radius)
             {
                 target = null;
             }
         }
-        if (isLive)
+        
+        if (isLive) // Change HpBar value and show emergency effect when Hp is low. 
         {
-            if (Hui && Hui.GetComponentInChildren<Slider>().maxValue == Hpbar.maxValue && (int)Hpbar.value != HP)
+            if (hui && hui.GetComponentInChildren<Slider>().maxValue == hpbar.maxValue && (int)hpbar.value != (int)hp)
             {
-                Hpbar.value -= DamageSpeed * Time.deltaTime;
+                hpbar.value -= damageSpeed * Time.deltaTime;
             }
 
-            if (HP <= Full_HP / 2 && Emergency[0] && Emergency[0].activeSelf == false)
+            if (hp <= fullHp / 2 && emergency[0] && !emergency[0].activeSelf)
             {
-                Emergency[0].SetActive(true);
+                emergency[0].SetActive(true);
             }
 
-            if (HP <= Full_HP / 5 && Emergency[1] && Emergency[1].activeSelf == false)
+            if (hp <= fullHp / 5 && emergency[1] && !emergency[1].activeSelf)
             {
-                Emergency[1].SetActive(true);
+                emergency[1].SetActive(true);
             }
         }
 
-        if (HP == 0 && Die == false)
+        if (hp == 0 && die == false) // Turret is die.
         {
-            Die = true;
-            ParentObject.GetComponent<Collider>().enabled = false;
-            Destroy(ParentObject,0.1f);
-            Destroy(Hui);
-            if (Emergency.Length >=3 && Emergency[2]  )
+            die = true;
+            parentObjectCollider.enabled = false;
+            
+            Destroy(parentObject,0.1f);
+            Destroy(hui);
+            
+            if (emergency.Length >=3 && emergency[2])
             {
-                GameObject Explosion = Instantiate(Emergency[2],transform.position,Quaternion.identity);
-                Destroy(Explosion, Explosion.GetComponent<ParticleSystem>().main.duration + 5f);
+                GameObject explosion = Instantiate(emergency[2],transform.position,Quaternion.identity);
+                Destroy(explosion, explosion.GetComponent<ParticleSystem>().main.duration + 5f);
             }
         }
 
-        var scopeEntity = Physics.OverlapSphere(scope.position, radius,targetName);
-
-        if (target != null)
+        if (target != null) // Check Target is live.
         {
-            if (target.GetComponent<MonsterAI>() != null)
+            if (target.GetComponent<MonsterAI>())
             {
                 if (target.GetComponent<Animator>().GetBool("Death"))
                 {
@@ -113,25 +127,38 @@ public class Turret : MonoBehaviour
                     return;
                 }
             }
+            
             transform.LookAt(target.transform);
-            Debug.DrawLine(transform.position, target.transform.position, Color.blue);
-            Physics.Linecast(transform.position,target.transform.position);
-            if (Attack != null)
+            Debug.DrawLine(transformPos, targetTransformPos, Color.blue);
+            Physics.Linecast(transformPos, targetTransformPos);
+            
+            if (attack != null)
             {
-                Attack.transform.LookAt(target.transform.position);
+                attack.transform.LookAt(target.transform.position);
             }
-            if (Time.time > currentTime + attackCycleTime)
+            
+            if (Time.time > currTime + attackCycleTime)
             {
-                currentTime = Time.time;
-                Attack = Instantiate(AttackPrefab, FirePosition.position, transform.rotation);
+                currTime = Time.time;
+                attack = Instantiate(attackPrefab, firePosition.position, transform.rotation);
             }
+            
             return; // Block Repetitive Statement below.
         }
+
+        //// Find Target ///
+        var scopeEntity = Physics.OverlapSphere(scope.position, radius,targetName);
 
         for (int i = 0; i < scopeEntity.Length; i++)
         {
             target = scopeEntity[i].gameObject;
         }
         
+    }
+    public void OnDamaged(int damage) // If Turret is damaged.
+    {
+        GameObject hit = Instantiate(damageEffect, transform.position, Quaternion.identity);
+        Destroy(hit, hit.GetComponent<ParticleSystem>().main.duration);
+        hp -= damage;
     }
 }

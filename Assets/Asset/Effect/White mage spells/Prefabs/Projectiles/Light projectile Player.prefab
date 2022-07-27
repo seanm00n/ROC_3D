@@ -9714,6 +9714,7 @@ MonoBehaviour:
   hit: {fileID: 1408840603016568, guid: 39b426dc2c5cc0a47ba73dea486cfdc0, type: 3}
   flash: {fileID: 0}
   Detached: []
+  normalAttack: 1
   sideAngle: 20
   upAngle: 15
 --- !u!199 &199514712631262364
@@ -9863,16 +9864,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b43fcb7cdaca0f8458747606b2748c77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerNumber: 6
-  EffectsOnCollision:
+  effectsOnCollision:
   - {fileID: 1408840603016568, guid: 39b426dc2c5cc0a47ba73dea486cfdc0, type: 3}
-  DestroyTimeDelay: 1
-  UseWorldSpacePosition: 1
-  Offset: 0.15
+  targetLayerNumber: 6
+  destroyTimeDelay: 5
+  offset: 0
   rotationOffset: {x: 0, y: 0, z: 0}
+  destoyMainEffect: 1
+  useWorldSpacePosition: 0
   useOnlyRotationOffset: 1
-  UseFirePointRotation: 0
-  DestoyMainEffect: 1
+  useFirePointRotation: 0
 --- !u!1 &1843067764193598
 GameObject:
   m_ObjectHideFlags: 0

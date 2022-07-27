@@ -4,24 +4,25 @@ using UnityEngine;
 
 public class Install_Compatibility : MonoBehaviour
 {
-    public bool Compatibility = true;
-    public int ExceptLayer = 8;
-    public int ExceptLayer_2 = 10;
-    public Renderer[] remderers;
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.layer != ExceptLayer && other.gameObject.layer != ExceptLayer_2)
-            Compatibility = false;
-    }
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.layer != ExceptLayer && other.gameObject.layer != ExceptLayer_2)
-            Compatibility = false;
+    [Header("Check surrounding object")]
+    public bool compatibility = true;
 
-    }
-    private void OnTriggerExit(Collider other)
+    [Header("Cut out of Check")]
+    public int exceptLayer = 8;
+    
+    // TODO: Rename this field to "exceptLayer2", and explain the difference between exceptLayer and exceptLayer2
+    public int exceptLayer_2 = 10;
+
+    [Header("Object Renderer (Surely Add)")]
+    public Renderer[] renderers;
+
+    private void OnTriggerEnter(Collider other) => UpdateCompatibility(other);
+    private void OnTriggerStay(Collider other) => UpdateCompatibility(other);
+    private void OnTriggerExit(Collider other) => UpdateCompatibility(other, true);
+
+    private void UpdateCompatibility(Component other, bool value = false)
     {
-        if (other.gameObject.layer != ExceptLayer && other.gameObject.layer != ExceptLayer_2)
-            Compatibility = true;
+        if (other.gameObject.layer != exceptLayer && other.gameObject.layer != exceptLayer_2)
+            compatibility = value;
     }
 }

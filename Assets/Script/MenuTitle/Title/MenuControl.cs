@@ -7,27 +7,29 @@ using UnityEngine.SceneManagement;
 public class MenuControl : MonoBehaviour
 {
     [SerializeField] private int sceneNum = 0;
-    Animator anim;
+    private Animator animator;
+    
+    [Header("BlockScreen")]
     public Image blockImage;
 
     void Start()
     {
-        anim = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
     }
     public void StartButton()
     {
-        // 데이터 초기화
+        // Data Reset
         StartCoroutine(FadeOut());
     }
     public void LoadButton()
     {
-        anim.SetTrigger("save");
+        animator.SetTrigger("save");
         
     }
 
     public void LoadBoxExitButton()
     {
-        anim.SetTrigger("exit");
+        animator.SetTrigger("exit");
     }
 
     public void SaveLoad(int saveFileNumber = 0)
@@ -35,15 +37,15 @@ public class MenuControl : MonoBehaviour
         switch (saveFileNumber) 
         {
             case 1:
-                // 세이브 로드
+                // Load save
                 break;
 
             case 2:
-                // 세이브 로드
+                // Load save
                 break;
 
             case 3:
-                // 세이브 로드
+                // Load save
                 break;
         }
 
@@ -55,15 +57,15 @@ public class MenuControl : MonoBehaviour
         switch (saveFileNumber)
         {
             case 1:
-                // 세이브 삭제
+                // Delete save
                 break;
 
             case 2:
-                // 세이브 삭제
+                // Delete save
                 break;
 
             case 3:
-                // 세이브 삭제
+                // Delete save
                 break;
         }
     }
@@ -73,17 +75,18 @@ public class MenuControl : MonoBehaviour
         Application.Quit();
     }
 
-    IEnumerator FadeOut()
+    IEnumerator FadeOut() // Screen FadeOut
     {
         blockImage.gameObject.SetActive(true);
-        Color C = new Color();
+        Color c = new Color();
         
-        for (; C.a < 1;) 
+        for (; c.a < 1;) 
         {
-            C.a += 0.2f;
-            blockImage.color = C;
+            c.a += 0.2f;
+            blockImage.color = c;
             yield return new WaitForSeconds(0.04f);
         }
+
         yield return new WaitForSeconds(0.1f);
         SceneManager.LoadScene(sceneNum, LoadSceneMode.Single);
     }

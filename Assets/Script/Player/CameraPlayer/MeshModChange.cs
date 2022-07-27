@@ -2,16 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// This component changes the material of the player
 public class MeshModChange : MonoBehaviour
 {
-    Material materialOrigin;
-    public Material materialDamaged;
+    [Header("PlayerMaterial")]
+    private Material materialOrigin; // Original material.
+    public Material materialDamaged; // Damaged material.
+    public Material transparentMat; // invisible material(Fps mode).
 
-    public Material transparentMat;
     public void DamagedMat()
     {
-        if(materialDamaged)
-        GetComponent<Renderer>().material = materialDamaged;
+        if (materialDamaged) // Damaged Player's material is changed.
+            GetComponent<Renderer>().material = materialDamaged;
     }
 
     void Start()
@@ -21,19 +23,15 @@ public class MeshModChange : MonoBehaviour
     }
     private void Update()
     {
-        if (CameraManager.fpsMode == true)
+        if (Player.instance.transform != transform.parent) return;
+        
+        if (CameraManager.fpsMode)
         {
-            GetComponent<Renderer>().material = transparentMat;
+            GetComponent<Renderer>().material = transparentMat; // Player is invisible in fps mode.
         }
         else
         {
-            if (Player.instance.hit == true)
-            {
-                GetComponent<Renderer>().material = materialDamaged;
-            }
-            else
-
-                GetComponent<Renderer>().material = materialOrigin;
+            GetComponent<Renderer>().material = Player.instance.hit ? materialDamaged : materialOrigin;
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UiController : MonoBehaviour
+public class UIController : MonoBehaviour
 {
     [Space]
     [Header("PlayerAim")]
@@ -19,16 +19,11 @@ public class UiController : MonoBehaviour
     [Space]
     [Header("Setting")]
     public GameObject setting;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && setting && setting.activeSelf == false)
+        // Show Option
+        if (Input.GetKeyDown(KeyCode.Escape) && setting && !setting.activeSelf)
         {
             setting.SetActive(true);
         }

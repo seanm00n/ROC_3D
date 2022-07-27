@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
     public PlayerAnimationController animationController;
     public PlayerAttack playerAttack;
     public PlayerMovement movement;
-    public UiController ui;
+    public UIController ui;
 
     //Single Tone Stuff//
     public static Player instance;
@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
         if (!ui)
         {
             GameObject instance = Instantiate(uiPrefab);
-            ui = instance.GetComponent<UiController>();
+            ui = instance.GetComponent<UIController>();
         }
         if (!playerCamera)
             playerCamera = Instantiate(cameraPrefab, transform.position, Quaternion.identity);

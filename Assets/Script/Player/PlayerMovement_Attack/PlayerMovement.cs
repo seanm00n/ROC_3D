@@ -4,53 +4,66 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] float slideSpeedX = 0;
-    [SerializeField] float slideSpeedZ = 0;
-    [SerializeField] bool Test;
-    [SerializeField] bool isGround_New = false;
-    float airSpeedX;
-    float airSpeedZ;
+    [Header("On Tilted Ground")]
+    [SerializeField] private float slideSpeedX = 0;
+    [SerializeField] private float slideSpeedZ = 0;
+    private bool notTiltedGround; // Check Tilted Ground.
 
-    bool sitContinue = false;
-    public bool waitingAnimation = false;
-    public bool DoJump = false;
+    private float airSpeedX; // Player Speed while Player jumping.
+    private float airSpeedZ; // Player Speed while Player jumping.
+    
+    [Space]
+    [Header("Player Current State")]
+    public bool waitingAnimation;
+    public bool doJump;
+    private bool sitContinue;
 
+    [Space]
+    [Header("Cut out of ground layer")]
     public LayerMask playerLayer;
 
-    public float speed = 3;
-    [SerializeField] float Dashspeed = 10;
-    public float Slowspeed = 2;
+    [Space]
+    [Header("Movement Speed Setting")]
+    public float speed = 0.02f;
+    [SerializeField] float dashspeed = 0.04f;
+    public float slowspeed = 0.005f;
 
-    float OriginalSpeed;
+    private float originalSpeed;
+
+    [Space]
+    [Header("Stop speed On air")]
     public float stopSpeed;
 
+    [Space]
+    [Header("Jump Setting")]
     [SerializeField] float jumpSpeed = 0.08f;
-    [SerializeField] float SmoothStopIntensity = 0.05f;
-    public bool isJumping = false;
-
+    [SerializeField] float smoothStopIntensity = 0.05f;
     [SerializeField] float levitateMinusTime = 0.06f;
+    public float antiInertia = 8;
+    private float currJumpSpeed;
+    public bool isJumping;
 
-    public float Anti_Inertia = 8;
-
-    float currenJumpSpeed = 0;
-
+    [Space]
+    [Header("Gravity Setting")]
     public float gravity = 0.03f;
     public float gravity_early;
     public float gravity_Max = 0.04f;
     public float gravitySpeed = 0.02f;
 
-    CharacterController mybody;
+    private CharacterController playerBody;
+    private static readonly int DashID = Animator.StringToHash("Dash");
+    private static readonly int CrouchID = Animator.StringToHash("Crouch");
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
         Vector3 hitNormal = hit.normal;
-        if (Physics.Raycast(transform.position, -transform.up, (mybody.height / (mybody.height * 2)), ~playerLayer))
+        if (Physics.Raycast(transform.position, -transform.up, (playerBody.height / (playerBody.height * 2)), ~playerLayer))
         {
-            if (Vector3.Angle(Vector3.up, hitNormal) <= mybody.slopeLimit)
+            if (Vector3.Angle(Vector3.up, hitNormal) <= playerBody.slopeLimit)
             {
                 slideSpeedX = 0;
                 slideSpeedZ = 0;
-                isGround_New = true;
+                notTiltedGround = true;
             }
         }
         
@@ -59,94 +72,80 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         gravity_early = gravity;
-        OriginalSpeed = speed;
+        originalSpeed = speed;
 
     }
 
-    void Start()
+    private void Start()
     {
-        mybody = GetComponent<CharacterController>();
+        playerBody = GetComponent<CharacterController>();
     }
 
-    void Update()
+    public void Update()
     {
-        if (!Physics.Raycast(transform.position, -transform.up, (mybody.height / (mybody.height * 2)), ~playerLayer))
-            isGround_New = false;
+        if (!Physics.Raycast(transform.position, -transform.up, (playerBody.height / (playerBody.height * 2)), ~playerLayer))
+            notTiltedGround = false;
 
-        if (isGround_New == true)
+        if (notTiltedGround)
         {
             slideSpeedX = 0;
             slideSpeedZ = 0;
         }
-
-        if (isGround_New == false)
+        else // Set value about slideSpeed.
         {
-            if (slideSpeedX == 0 && slideSpeedZ == 0 &&  isJumping == true)
+            if (slideSpeedX == 0 && slideSpeedZ == 0 && isJumping)
             {
-                if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z), -transform.forward, (mybody.height / 2), ~playerLayer))
+                var playerHalfHeight = playerBody.height / 2;
+                
+                if (Physics.Raycast(transform.position, -transform.forward, playerHalfHeight, ~playerLayer))
                 {
-                    slideSpeedZ = 5;
+                    slideSpeedZ = 5; // Current SlideSpeed Value = 5
                 }
-                else if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.forward, (mybody.height / 2), ~playerLayer))
+                else if (Physics.Raycast(transform.position, transform.forward, playerHalfHeight, ~playerLayer))
                 {
                     slideSpeedZ = -5;
                 }
 
-                if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z), -transform.right, (mybody.height / 2), ~playerLayer))
+                if (Physics.Raycast(transform.position, -transform.right, playerHalfHeight, ~playerLayer))
                 {
                     slideSpeedX = 5;
                 }
-                else if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.right, (mybody.height / 2), ~playerLayer))
+                else if (Physics.Raycast(transform.position, transform.right, playerHalfHeight, ~playerLayer))
                 {
                     slideSpeedX = -5;
                 }
             }
         }
+
+        // Default move value.
+
         float horizontalMove = Input.GetAxisRaw("Horizontal");
         float verticalMove = Input.GetAxisRaw("Vertical");
 
-        if (airSpeedX > 0)
-        {
-            airSpeedX -= airSpeedX * Time.unscaledDeltaTime;
-        }
-        else if (airSpeedX < 0)
-        {
-            airSpeedX -= airSpeedX * Time.unscaledDeltaTime;
-        }
-        else { airSpeedX = 0; }
 
-        if (airSpeedZ > 0)
+        // Default move value while player jumping.
+        if (airSpeedX is > 0 or < 0)
+        {
+            airSpeedX -= airSpeedX * Time.unscaledDeltaTime;
+        }
+        else airSpeedX = 0;
+
+        if (airSpeedZ is > 0 or < 0)
         {
             airSpeedZ -= airSpeedZ * Time.unscaledDeltaTime;
         }
-        else if (airSpeedZ < 0)
-        {
-            airSpeedZ += airSpeedZ * Time.unscaledDeltaTime;
-        }
-        else { airSpeedZ = 0; }
+        else airSpeedZ = 0;
 
-        ///////////////////////////////////////////////////////////////
-
-        if ((airSpeedX) > 0) 
+        if (airSpeedX is > 0 or < 0) 
         {
-            airSpeedX += horizontalMove / 10 * SmoothStopIntensity* Time.unscaledDeltaTime;
+            airSpeedX += horizontalMove / 10 * smoothStopIntensity * Time.unscaledDeltaTime;
             if (airSpeedX < 0) airSpeedX = 0;
         }
-        else if ((airSpeedX) < 0)
-        {
-            airSpeedX += horizontalMove / 10 * SmoothStopIntensity * Time.unscaledDeltaTime;
-            if (airSpeedX > 0) airSpeedX = 0;
-        }
 
-        if ((airSpeedZ) > 0)
+        if (airSpeedZ is > 0 or < 0)
         {
-            airSpeedZ += verticalMove / 10 * SmoothStopIntensity * Time.unscaledDeltaTime; 
+            airSpeedZ += verticalMove / 10 * smoothStopIntensity * Time.unscaledDeltaTime; 
             if (airSpeedZ < 0) airSpeedZ = 0;
-        }
-        else if ((airSpeedZ) < 0)
-        {
-            airSpeedZ += verticalMove / 10 * SmoothStopIntensity * Time.unscaledDeltaTime; 
-            if (airSpeedZ > 0) airSpeedZ = 0;
         }
 
         /////////////////////////////////////////////////////////////////
@@ -155,105 +154,133 @@ public class PlayerMovement : MonoBehaviour
         ChJump(horizontalMove, verticalMove);
     }
 
-    public void ChMove(float horizontalMove, float verticalMove)
+    // TODO: Rename this method to "MovePlayer"
+    public void ChMove(float horizontalMove, float verticalMove) // Character Move
     {
-        if (gravity_Max > gravity && isJumping == false)
-        {
+        if (gravity_Max > gravity && !isJumping)
             gravity += gravitySpeed * Time.unscaledDeltaTime;
-        }
-        if (currenJumpSpeed > 0) currenJumpSpeed -= levitateMinusTime * Time.unscaledDeltaTime; else currenJumpSpeed = 0;
+        
+        if (currJumpSpeed > 0)
+            currJumpSpeed -= levitateMinusTime * Time.unscaledDeltaTime;
+        
+        else currJumpSpeed = 0;
 
-        if (Input.GetKeyDown(KeyCode.C))
+        ///////////////////////////////////////////////////////////////////////////
+        
+        if (Input.GetKeyDown(KeyCode.C)) // Player sit
         {
-            if (sitContinue) { sitContinue = false; } else { sitContinue = true; }
+            sitContinue = !sitContinue;
         }
-        if (((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) || sitContinue == true) && isJumping == true) speed = Slowspeed;
-        else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && isJumping == true) speed = Dashspeed;
-        else if (isJumping == true) speed = OriginalSpeed;
+
+        // Player Dash.
+        if (isJumping)
+        {
+            if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) || sitContinue)
+                speed = slowspeed;
+            else if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+                speed = dashspeed;
+            else
+                speed = originalSpeed;
+        }
 
         float moveX = 0, moveZ = 0;
 
         if (airSpeedX != 0)
-            moveX = (airSpeedX);
-        else if (isJumping == true || speed != Dashspeed) { moveX = (horizontalMove); }
+            moveX = airSpeedX;
+        else if (isJumping || speed != dashspeed)
+            moveX = horizontalMove;
 
         if (airSpeedZ != 0)
-            moveZ = (airSpeedZ);
-        else if (isJumping == true || speed != Dashspeed) { moveZ = (verticalMove); }
+            moveZ = airSpeedZ;
+        else if (isJumping || speed != dashspeed)
+            moveZ = verticalMove;
 
-        ////////////////////////////////////
-        ///
+        ////// Set player animator parameter. ///////////////////
 
-        if (speed > OriginalSpeed && CameraManager.fpsMode == false) Player.instance.animationController.animator.SetBool("Dash", true); 
-        else Player.instance.animationController.animator.SetBool("Dash", false);
+        if (Player.instance && Player.instance.animationController)
+        {
+            Player.instance.animationController.animator.SetBool(DashID, speed > originalSpeed && !CameraManager.fpsMode);
+            Player.instance.animationController.animator.SetBool(CrouchID, speed < originalSpeed);
+            Player.instance.animationController.AnimationWork(new Vector2(horizontalMove, verticalMove));
+        }
 
-        if (speed < OriginalSpeed) Player.instance.animationController.animator.SetBool("Crouch", true);
-        else Player.instance.animationController.animator.SetBool("Crouch", false);
-
-        Player.instance.animationController.AnimationWork(new Vector2(horizontalMove, verticalMove));
-
-        if (slideSpeedZ != 0 && isJumping == true && isGround_New == false)
+        /////////////////// Movement when player sliding ///////////////////////////
+        
+        if (slideSpeedZ != 0 && isJumping && !notTiltedGround)
         {
             moveZ /= 2;
-            mybody.Move(transform.forward * slideSpeedZ * Time.deltaTime);
+            playerBody.Move(transform.forward * (slideSpeedZ * Time.deltaTime));
         }
 
-        if (slideSpeedX != 0 && isJumping == true && isGround_New == false)
+        if (slideSpeedX != 0 && isJumping && !notTiltedGround)
         {
             moveX /= 2;
-            mybody.Move(transform.right * slideSpeedX * Time.deltaTime);
+            playerBody.Move(transform.right * (slideSpeedX * Time.deltaTime));
         }
 
-        Vector3 myVelocity = Vector3.Normalize(transform.right * moveX) * speed;
+        var myVelocity = Vector3.Normalize(transform.right * moveX) * speed;
         myVelocity += Vector3.Normalize(transform.forward * moveZ) * speed;
 
-        mybody.Move(new Vector3(myVelocity.x, (-gravity + currenJumpSpeed), myVelocity.z) * 200 * Time.unscaledDeltaTime);
+        playerBody.Move(new Vector3(myVelocity.x, (-gravity + currJumpSpeed), myVelocity.z) * (200 * Time.unscaledDeltaTime));
 
-        
     }
 
-    public void ChJump(float horizontalMove, float verticalMove)
+    // TODO: Rename this method to "JumpPlayer"
+    public void ChJump(float horizontalMove, float verticalMove) // Player Jump
     { 
-        Debug.DrawRay(transform.position, -transform.up * (mybody.height / (mybody.height * 2)), Color.green);
-        if (isGround_New == true || mybody.isGrounded == true)
+        // Check Ground Slope;
+        var playerHeight = playerBody.height;
+        Debug.DrawRay(transform.position, -transform.up * (playerHeight / (playerHeight * 2)), Color.green);
+        
+        if (notTiltedGround || playerBody.isGrounded)
         {
-            if (isJumping == false) { currenJumpSpeed = 0; isJumping = true; gravity = gravity_early; airSpeedX = 0; airSpeedZ = 0; }
+            if (!isJumping)
+            {
+                isJumping = true;
+                gravity = gravity_early;
+                currJumpSpeed = airSpeedX = airSpeedZ = 0;
+            }
         }
         else 
         {
-            isJumping = false;
-            Player.instance.animationController.air();
-            if (DoJump != true)
-                Player.instance.animationController.waitngJump();
-
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (isGround_New == true)
+            isJumping = false; 
+            
+            if (Player.instance && Player.instance.animationController)
             {
-                waitingAnimation = true;
-                DoJump = true;
-
-                Player.instance.animationController.Jump();
-                var velocity = new Vector3(horizontalMove * speed, jumpSpeed, verticalMove * speed);
-                currenJumpSpeed = jumpSpeed;
-                mybody.Move(velocity * Time.unscaledDeltaTime);
-
-                if (speed == Dashspeed)
-                {
-                    airSpeedX = horizontalMove * speed / Anti_Inertia;
-                    
-                    airSpeedZ = verticalMove * speed / Anti_Inertia;
-
-                }
-                else
-                {
-                    airSpeedX = 0;
-                    airSpeedZ = 0;
-
-                }
+                Player.instance.animationController.Air();
+                
+                if (doJump != true)
+                    Player.instance.animationController.WaitngJump();
             }
         }
-        
+
+        if (Input.GetKeyDown(KeyCode.Space)) // Start Jumping
+        {
+            if (!notTiltedGround) return;
+            
+            waitingAnimation = true;
+            doJump = true;
+                
+            if (Player.instance && Player.instance.animationController)
+            {
+                Player.instance.animationController.Jump();
+            }
+            var velocity = new Vector3(horizontalMove * speed, jumpSpeed, verticalMove * speed);
+            currJumpSpeed = jumpSpeed;
+            playerBody.Move(velocity * Time.unscaledDeltaTime);
+
+            if (speed == dashspeed)
+            {
+                airSpeedX = horizontalMove * speed / antiInertia;
+                    
+                airSpeedZ = verticalMove * speed / antiInertia;
+
+            }
+            else
+            {
+                airSpeedX = 0;
+                airSpeedZ = 0;
+            }
+        }
     }
 }

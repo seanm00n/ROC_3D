@@ -13,11 +13,24 @@ public class PlayerAnimationController : MonoBehaviour
         Normal, Jump, Air
     }
 
-    [FormerlySerializedAs("State")] public AnimationState state;
-
-    [FormerlySerializedAs("playerAnimator")] [FormerlySerializedAs("Player")] public Animator animator;
+    [Header("Player Animation State")]
+    public AnimationState state;
     
-    void Awake()
+    [Space]
+    [Header("Player Animator")]
+    public Animator animator;
+
+    // TODO: Move these somewhere?
+    private static readonly int OnAttackID = Animator.StringToHash("OnAttack");
+    private static readonly int AngleID = Animator.StringToHash("Angle");
+    private static readonly int AttackID = Animator.StringToHash("Attack");
+    private static readonly int JumpID = Animator.StringToHash("Jump");
+    private static readonly int OnAirID = Animator.StringToHash("OnAir");
+    private static readonly int JumpWaitingID = Animator.StringToHash("JumpWaiting");
+    private static readonly int VerticalID = Animator.StringToHash("Vertical");
+    private static readonly int HorizontalID = Animator.StringToHash("Horizontal");
+
+    private void Awake()
     {
         animator = GetComponent<Animator>();
     }
@@ -42,57 +55,57 @@ public class PlayerAnimationController : MonoBehaviour
         }
     }
 
-    public void waitngJump()
+    public void WaitngJump() // TODO: Rename it to "WaitingJump"
     {
-        animator.SetTrigger("JumpWaiting");
-        Player.instance.movement.DoJump = false; // Block jump when "JumpWaiting" animation is work.
+        animator.SetTrigger(JumpWaitingID);
+        Player.instance.movement.doJump = false; // Block jump when "JumpWaiting" animation is work.
     }
 
-    public void air()
+    public void Air()
     {
         if (state == AnimationState.Jump || state == AnimationState.Air)
         {
-            animator.ResetTrigger("OnAir");
+            animator.ResetTrigger(OnAirID);
             return;
         }
-        animator.SetTrigger("OnAir");
+        animator.SetTrigger(OnAirID); // End Jump, fall.
     }
 
     public void AnimationWork(Vector2 move)
     {
         if (CameraManager.fpsMode == false)
         {
-            animator.SetFloat("Horizontal", move.x);
-            animator.SetFloat("Vertical", move.y);
+            animator.SetFloat(HorizontalID, move.x);
+            animator.SetFloat(VerticalID, move.y);
         }
     }
     public void Jump()
     {
-        animator.ResetTrigger("JumpWaiting");
+        animator.ResetTrigger(JumpWaitingID);
 
         if (state == AnimationState.Jump) // Block repetitive animation.
             return;
 
-        animator.ResetTrigger("OnAir");
-        animator.SetTrigger("Jump");
+        animator.ResetTrigger(OnAirID);
+        animator.SetTrigger(JumpID);
     }
 
     public void Attack()
     {
-        if (CameraManager.fpsMode == false)
+        if (!CameraManager.fpsMode)
         {
-            animator.SetBool("OnAttack",true);
-            animator.SetTrigger("Attack");
+            animator.SetBool(OnAttackID,true); //OnAttack help that player remain attack state.
+            animator.SetTrigger(AttackID);
         }
     }
     public void AttackEnd()
     {
-        animator.SetBool("OnAttack", false);
+        animator.SetBool(OnAttackID, false);
     }
 
-    public void SetAngle(float angle)
+    public void SetAngle(float angle) // Player Head Rotate.
     {
-        animator.SetFloat("Angle", angle);
+        animator.SetFloat(AngleID, angle);
     }
 
 }

@@ -4,45 +4,28 @@ using UnityEngine;
 
 public class GridStructure : MonoBehaviour
 {
-    public bool Minus = false;
+    [Header("Install Position Setting")]
+    public bool minus; // Minus => Down, Left
+    public bool installX;
+    public bool installY;
+    public bool installZ;
 
-    public bool installX = false;
-    public bool installY = false;
-    public bool installZ = false;
-
+    [Space]
+    [Header("Install Position Preview")]
     public Vector3 posPreview;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        if (Minus)
-        {
-            if (installX == true)
-                posPreview = transform.position - new Vector3(transform.localScale.x * 2 + 0.005f, 0,0);
-
-            if (installY == true)
-                posPreview = transform.position - new Vector3(0, transform.localScale.y + 0.001f, 0);
-
-            if (installZ == true)
-                posPreview = transform.position - new Vector3(0, 0, transform.localScale.z * 2 + 0.05f);
-        }
-        else
-        {
-            if (installX == true)
-                posPreview = transform.position + new Vector3(transform.localScale.x * 2 + 0.005f, 0, 0);
-
-            if (installY == true)
-                posPreview = transform.position + new Vector3(0, transform.localScale.y + 0.001f, 0);
-
-            if (installZ == true)
-                posPreview = transform.position + new Vector3(0, 0, transform.localScale.z * 2 + 0.05f);
-        }
+        var localScale = transform.localScale;
         
-    }
+        // Set install position.
+        if (installX)
+            posPreview = transform.position + new Vector3(localScale.x * 2 + 0.005f, 0, 0) * (minus ? -1 : 1);
 
-    // Update is called once per frame
-    void Update()
-    {
-         
+        if (installY)
+            posPreview = transform.position + new Vector3(0, localScale.y + 0.001f, 0) * (minus ? -1 : 1);
+
+        if (installZ)
+            posPreview = transform.position + new Vector3(0, 0, localScale.z * 2 + 0.05f) * (minus ? -1 : 1);
     }
 }
