@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class NotWall : MonoBehaviour
 {
-    public bool FPS = false;
-    Camera_manager cam;
+    CameraManager cam;
     private void Start()
     {
-        cam = FindObjectOfType<Camera_manager>();
+        cam = FindObjectOfType<CameraManager>();
     }
 
     private void Update()
@@ -16,27 +15,32 @@ public class NotWall : MonoBehaviour
     }
     void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("PlayerAttack") == false)
+        if (transform.parent == Player.instance.gameObject)
         {
-            for (int i = 0; i < cam.ExceptLayerNum.Length; i++)
+            if (other.gameObject.CompareTag("PlayerAttack") == false)
             {
-                if (other.gameObject.layer == cam.ExceptLayerNum[i])
+                for (int i = 0; i < cam.exceptLayerNum.Length; i++)
                 {
-                    return;
+                    if (other.gameObject.layer == cam.exceptLayerNum[i])
+                    {
+                        return;
+                    }
                 }
-            }
 
-            if (other.gameObject.layer != cam.target.gameObject.layer)
-                Camera_manager.instance.Value = 2;
+                if (other.gameObject.layer != cam.target.gameObject.layer)
+                    cam.clampedPos = 2; // Behind player is wall.
+            }
         }
     }
     void OnTriggerExit(Collider other)
     {
-
-        if (other.gameObject.CompareTag("PlayerAttack") == false)
+        if (transform.parent == Player.instance.gameObject)
         {
-            if (other.gameObject.layer != cam.target.gameObject.layer)
-                Camera_manager.instance.Value = 0;
+            if (other.gameObject.CompareTag("PlayerAttack") == false)
+            {
+                if (other.gameObject.layer != cam.target.gameObject.layer)
+                    CameraManager.instance.clampedPos = 0; // Behind player isn't wall.
+            }
         }
     }
 }

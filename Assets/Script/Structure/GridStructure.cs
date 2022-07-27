@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class GridStructure : MonoBehaviour
 {
-    public bool Minus = false;
-
+    [Header("Install Position Setting")]
+    public bool minus = false; // Minus => Down, Left
     public bool installX = false;
     public bool installY = false;
     public bool installZ = false;
 
+    [Space]
+    [Header("Install Position Preview")]
     public Vector3 posPreview;
 
-    // Start is called before the first frame update
     void Start()
     {
-        if (Minus)
+        // Set install position.
+        if (minus)
         {
             if (installX == true)
                 posPreview = transform.position - new Vector3(transform.localScale.x * 2 + 0.005f, 0,0);
@@ -38,11 +40,5 @@ public class GridStructure : MonoBehaviour
                 posPreview = transform.position + new Vector3(0, 0, transform.localScale.z * 2 + 0.05f);
         }
         
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-         
     }
 }

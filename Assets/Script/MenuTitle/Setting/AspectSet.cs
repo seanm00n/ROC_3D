@@ -6,17 +6,26 @@ using UnityEngine.UI;
 
 public class AspectSet : MonoBehaviour
 {
+    [Space]
+    [Header("CurrentGameScene")]
     public bool menu = false;
-    GameObject skillWindow;
+
+    [Space]
+    [Header("UI")]
     public Dropdown resolutionsDropdown;
     public Toggle fullscreenBtn;
 
-    readonly List<Resolution> _resolutions = new();
-    FullScreenMode _screenMode;
+    [Space]
+    [Header("Player And Camera")] // Player + Camera Information.
+    public PlayerMovement playerMovement;
+    public PlayerAttack playerAttack;
+    public CameraManager cameraManager;
 
-    public PlayerMovement pm;
-    public PlayerAttack pa;
-    public Camera_manager cm;
+    // Find
+    private GameObject skillWindow;
+    private FullScreenMode screenMode;
+
+    readonly List<Resolution> resolutions = new();
 
     void Start()
     {
@@ -27,9 +36,9 @@ public class AspectSet : MonoBehaviour
             skillWindow = GameObject.Find("InGame_UI_sample").transform.Find("Skill_Upgrade").gameObject;
         }
 
-        pm = FindObjectOfType<PlayerMovement>();
-        pa = FindObjectOfType<PlayerAttack>();
-        cm = FindObjectOfType<Camera_manager>();
+        playerMovement = Player.instance.movement;
+        playerAttack = Player.instance.playerAttack;
+        cameraManager = FindObjectOfType<CameraManager>();
     }
     void Update()
     {
@@ -40,79 +49,80 @@ public class AspectSet : MonoBehaviour
         }
     }
 
-        void InitUI()
+    void InitUI()
+    {
+        foreach (var resolution in Screen.resolutions)
         {
-            foreach (var resolution in Screen.resolutions)
-            {
-                //if (resolution.refreshRate == 60) // 항상 60hz만 서포트?
-                _resolutions.Add(resolution);
-            }
-
-            resolutionsDropdown.options.Clear();
-
-            // Add all available resolutions
-            resolutionsDropdown.AddOptions(_resolutions.Select(res => res.width + "x" + res.height).ToList());
-
-            // Update the dropdown appearance
-            resolutionsDropdown.RefreshShownValue();
-            fullscreenBtn.isOn = Screen.fullScreenMode.Equals(FullScreenMode.FullScreenWindow);
+            //if (resolution.refreshRate == 60) // 항상 60hz만 서포트?
+            resolutions.Add(resolution);
         }
 
-        // Used in inspector
-        public void ApplyButton()
-        {
-            Screen.SetResolution(_resolutions[resolutionsDropdown.value].width,
-            _resolutions[resolutionsDropdown.value].height,
-            _screenMode);
-        }
+        resolutionsDropdown.options.Clear();
 
-        // Used in inspector
-        public void FullScreenBtn(bool isFull)
-        {
-            _screenMode = isFull ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
-        }
+        // Add all available resolutions
+        resolutionsDropdown.AddOptions(resolutions.Select(res => res.width + "x" + res.height).ToList());
 
-        //Used in inspector
-        public void ExitAspectSet()
-        {
-            gameObject.SetActive(false);
-        }
+        // Update the dropdown appearance
+        resolutionsDropdown.RefreshShownValue();
+        fullscreenBtn.isOn = Screen.fullScreenMode.Equals(FullScreenMode.FullScreenWindow);
+    }
 
+    // Used in inspector
+    public void ApplyButton()
+    {
+        Screen.SetResolution(resolutions[resolutionsDropdown.value].width,
+        resolutions[resolutionsDropdown.value].height,
+        screenMode);
+    }
 
-        private void OnEnable()
-        {
+    // Used in inspector
+    public void FullScreenBtn(bool isFull)
+    {
+        screenMode = isFull ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
+    }
 
-            Time.timeScale = 0f;
+    //Used in inspector
+    public void ExitAspectSet()
+    {
+        gameObject.SetActive(false);
+    }
+
+    private void OnEnable() // Stop Game Play
+    {
+
+        Time.timeScale = 0f; // Stop Time.
         if (!menu)
         {
-            FindObjectOfType<PlayerMovement>().enabled = false;
-            FindObjectOfType<PlayerAttack>().enabled = false;
-            FindObjectOfType<Camera_manager>().enabled = false;
+            Player.instance.movement.enabled = false;
+            Player.instance.playerAttack.enabled = false;
+            FindObjectOfType<CameraManager>().enabled = false;
         }
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
-        }
+    }
 
 
-        private void OnDisable()
+    private void OnDisable() // Start Game Play again.
+    {
+        if (skillWindow)
         {
-            if (skillWindow)
+            if (skillWindow.activeSelf == false)
             {
-                if (skillWindow.activeSelf == false)
-                {
-                if(pm)
-                    pm.enabled = true;
-                if (pa && StructureSpawn_Test.StructureMode == false)
-                    pa.enabled = true;
-                if (cm)
-                    cm.enabled = true;
+                if(playerMovement)
+                    playerMovement.enabled = true;
 
-                    Time.timeScale = 1f;
-                }
+                if (playerAttack && StructureSpawn_Test.structureMode == false)
+                    playerAttack.enabled = true;
+                    
+                if (cameraManager)
+                    cameraManager.enabled = true;
+
+                    Time.timeScale = 1f; // Time goes by.
             }
-            if (menu)
-            {
-                Time.timeScale = 1f;
-            }
+        }
+        if (menu)
+        {
+            Time.timeScale = 1f; // Time goes by.
         }
     }
+}

@@ -4,27 +4,24 @@ using UnityEngine;
 
 public class FpsCamera : MonoBehaviour
 {
-    public Transform head;
-    public Transform head_2;
+    PlayerMovement playerMovement;
 
-    public float ySight;
-    // Start is called before the first frame update
+    [Header("Camera Position in Fps Mode")]
+    public Transform head; // Nomarl Camera Pos in FpsMode.
+    public Transform head_2; // Camera Pos in FpsMode when player sit.
+
     void Start()
     {
+        playerMovement = Player.instance.movement;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        float posY = head.position.y + ySight;
-        float posY_2 = head_2.position.y + ySight;
-
-        PlayerMovement p = FindObjectOfType<PlayerMovement>();
-        if (head_2 && p.speed == p.Slowspeed)
+        if (head_2 && playerMovement.speed == playerMovement.slowspeed) // playerSpeed is slow when player sit.
         {
             transform.position = new Vector3(head_2.position.x, head_2.position.y, head_2.position.z);
         }
         else
-        transform.position = new Vector3(head.position.x, posY, head.position.z);
+        transform.position = new Vector3(head.position.x, head.position.y, head.position.z);
     }
 }
