@@ -120,7 +120,7 @@ public class MonsterAI : MonoBehaviour
             m_isInRange = true;
         }
         if (other.gameObject.tag == "PlayerAttack") {
-            m_health -= other.GetComponent<SkillAttack>().skillDamageValue;
+            m_health -= other.GetComponent<SkillAttack>().skill_Damage_Value;
         }
     }
     private void OnTriggerExit (Collider other) {
