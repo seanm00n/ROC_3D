@@ -230,8 +230,8 @@ public class CameraManager : MonoBehaviour
         return newClampedPos;
     }
 
-    public void CameraSensitivity(float Rot)
+    public void SetCameraSensitivity(float rot)
     {
-        cameraRotSpeed = Rot;
+        cameraRotSpeed = rot;
     }
 }

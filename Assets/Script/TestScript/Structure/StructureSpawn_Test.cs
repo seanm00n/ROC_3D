@@ -15,7 +15,7 @@ public class StructureSpawn_Test : MonoBehaviour
     public float distance = 15;
 
     [Space]
-    [Header("Install Object Positon")]
+    [Header("Install Object Position")]
     public Vector3 changePosValue;
 
     [Space]

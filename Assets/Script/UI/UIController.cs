@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UiController : MonoBehaviour
+public class UIController : MonoBehaviour
 {
     [Space]
     [Header("PlayerAim")]
@@ -20,10 +20,10 @@ public class UiController : MonoBehaviour
     [Header("Setting")]
     public GameObject setting;
 
-    void Update()
+    private void Update()
     {
         // Show Option
-        if (Input.GetKeyDown(KeyCode.Escape) && setting && setting.activeSelf == false)
+        if (Input.GetKeyDown(KeyCode.Escape) && setting && !setting.activeSelf)
         {
             setting.SetActive(true);
         }

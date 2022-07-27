@@ -5,43 +5,42 @@ using UnityEngine;
 public class SkillAttack : MonoBehaviour
 {
     [Header("Damage")]
-    public float skillDamageValue = 0;
+    public float skillDamageValue;
 
     [Space]
     [Header("Master Setting")]
-    public bool turretAttack = false;
+    public bool turretAttack;
 
     [Space]
-    [Header("MonserLayer")]
-    public int monsterlayerNumber = 0;
+    [Header("MonsterLayer")]
+    public int monsterlayerNumber; // TODO: Change this field's name to "monsterLayerNumber"
 
     [Space]
     [Header("Effect")]
     public GameObject explosion;
 
-    Rigidbody r;
+    private Rigidbody skillRigidbody;
 
     void Start()
     {
         if (turretAttack)
         {
-            r = GetComponent<Rigidbody>();
-            r.AddForce(transform.forward * 500f);
+            skillRigidbody = GetComponent<Rigidbody>();
+            skillRigidbody.AddForce(transform.forward * 500f);
             Destroy(gameObject, 2f);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!turretAttack)
+        if (turretAttack) return;
+        
+        if (other.gameObject.layer == monsterlayerNumber)
         {
-            if (other.gameObject.layer == monsterlayerNumber)
-            {
-                GameObject Explo = Instantiate(explosion, other.gameObject.transform.transform.position, Quaternion.identity);
+            GameObject explosionEffect = Instantiate(explosion, other.gameObject.transform.transform.position, Quaternion.identity);
                 
-                Destroy(Explo, 2f);
-                Destroy(gameObject);
-            }
+            Destroy(explosionEffect, 2f);
+            Destroy(gameObject);
         }
     }
 }

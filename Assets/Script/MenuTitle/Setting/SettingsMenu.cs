@@ -4,11 +4,11 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AspectSet : MonoBehaviour
+public class SettingsMenu : MonoBehaviour
 {
     [Space]
     [Header("CurrentGameScene")]
-    public bool menu = false;
+    public bool menu;
 
     [Space]
     [Header("UI")]
@@ -16,7 +16,7 @@ public class AspectSet : MonoBehaviour
     public Toggle fullscreenBtn;
 
     [Space]
-    [Header("Player And Camera")] // Player + Camera Information.
+    [Header("Player And Camera")]
     public PlayerMovement playerMovement;
     public PlayerAttack playerAttack;
     public CameraManager cameraManager;
@@ -27,11 +27,11 @@ public class AspectSet : MonoBehaviour
 
     readonly List<Resolution> resolutions = new();
 
-    void Start()
+    private void Start()
     {
         InitUI();
 
-        if (GameObject.Find("InGame_UI_sample") != null && GameObject.Find("InGame_UI_sample").transform.Find("Skill_Upgrade") != null)
+        if (GameObject.Find("InGame_UI_sample") && GameObject.Find("InGame_UI_sample").transform.Find("Skill_Upgrade"))
         {
             skillWindow = GameObject.Find("InGame_UI_sample").transform.Find("Skill_Upgrade").gameObject;
         }
@@ -40,22 +40,19 @@ public class AspectSet : MonoBehaviour
         playerAttack = Player.instance.playerAttack;
         cameraManager = FindObjectOfType<CameraManager>();
     }
-    void Update()
+
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            //Instantiate();//return to menu prefab
+            //Instantiate(); //return to menu prefab
             gameObject.SetActive(false);
         }
     }
 
-    void InitUI()
+    private void InitUI()
     {
-        foreach (var resolution in Screen.resolutions)
-        {
-            //if (resolution.refreshRate == 60) // 항상 60hz만 서포트?
-            resolutions.Add(resolution);
-        }
+        resolutions.AddRange(Screen.resolutions);
 
         resolutionsDropdown.options.Clear();
 
@@ -68,11 +65,11 @@ public class AspectSet : MonoBehaviour
     }
 
     // Used in inspector
-    public void ApplyButton()
+    public void ApplyButton() // Resolution apply button
     {
-        Screen.SetResolution(resolutions[resolutionsDropdown.value].width,
-        resolutions[resolutionsDropdown.value].height,
-        screenMode);
+        var selectedResolution = resolutions[resolutionsDropdown.value];
+        
+        Screen.SetResolution(selectedResolution.width, selectedResolution.height, screenMode);
     }
 
     // Used in inspector
@@ -81,7 +78,7 @@ public class AspectSet : MonoBehaviour
         screenMode = isFull ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
     }
 
-    //Used in inspector
+    // Used in inspector
     public void ExitAspectSet()
     {
         gameObject.SetActive(false);
@@ -89,20 +86,20 @@ public class AspectSet : MonoBehaviour
 
     private void OnEnable() // Stop Game Play
     {
-
-        Time.timeScale = 0f; // Stop Time.
+        Time.timeScale = 0f; // Freeze time
         if (!menu)
         {
             Player.instance.movement.enabled = false;
             Player.instance.playerAttack.enabled = false;
             FindObjectOfType<CameraManager>().enabled = false;
         }
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+        
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
 
-    private void OnDisable() // Start Game Play again.
+    private void OnDisable() // Start Gameplay again.
     {
         if (skillWindow)
         {
@@ -117,12 +114,13 @@ public class AspectSet : MonoBehaviour
                 if (cameraManager)
                     cameraManager.enabled = true;
 
-                    Time.timeScale = 1f; // Time goes by.
+                Time.timeScale = 1f; // Unfreeze time
             }
         }
+        
         if (menu)
         {
-            Time.timeScale = 1f; // Time goes by.
+            Time.timeScale = 1f; // Unfreeze time
         }
     }
 }

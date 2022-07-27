@@ -10,37 +10,32 @@ public class NotWall : MonoBehaviour
         cam = FindObjectOfType<CameraManager>();
     }
 
-    private void Update()
-    {
-    }
     void OnTriggerStay(Collider other)
     {
-        if (transform.parent == Player.instance.gameObject)
+        if (transform.parent != Player.instance.transform) return;
+        
+        if (other.gameObject.CompareTag("PlayerAttack")) return;
+        
+        for (int i = 0; i < cam.exceptLayerNum.Length; i++)
         {
-            if (other.gameObject.CompareTag("PlayerAttack") == false)
+            if (other.gameObject.layer == cam.exceptLayerNum[i])
             {
-                for (int i = 0; i < cam.exceptLayerNum.Length; i++)
-                {
-                    if (other.gameObject.layer == cam.exceptLayerNum[i])
-                    {
-                        return;
-                    }
-                }
+                // skip if the layer should be ignored
+                return;
+            }
+        }
 
-                if (other.gameObject.layer != cam.target.gameObject.layer)
-                    cam.clampedPos = 2; // Behind player is wall.
-            }
-        }
+        if (other.gameObject.layer != cam.target.gameObject.layer)
+            cam.clampedPos = 2; // there IS a wall behind the player
     }
-    void OnTriggerExit(Collider other)
+
+    public void OnTriggerExit(Collider other)
     {
-        if (transform.parent == Player.instance.gameObject)
-        {
-            if (other.gameObject.CompareTag("PlayerAttack") == false)
-            {
-                if (other.gameObject.layer != cam.target.gameObject.layer)
-                    CameraManager.instance.clampedPos = 0; // Behind player isn't wall.
-            }
-        }
+        if (transform.parent != Player.instance.transform) return;
+        
+        if (other.gameObject.CompareTag("PlayerAttack")) return;
+        
+        if (other.gameObject.layer != cam.target.gameObject.layer)
+            CameraManager.instance.clampedPos = 0; // there ISN'T a wall behind the player
     }
 }

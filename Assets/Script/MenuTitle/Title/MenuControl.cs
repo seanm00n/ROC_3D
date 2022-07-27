@@ -7,14 +7,14 @@ using UnityEngine.SceneManagement;
 public class MenuControl : MonoBehaviour
 {
     [SerializeField] private int sceneNum = 0;
-    Animator anim;
+    private Animator animator;
     
     [Header("BlockScreen")]
     public Image blockImage;
 
     void Start()
     {
-        anim = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
     }
     public void StartButton()
     {
@@ -23,13 +23,13 @@ public class MenuControl : MonoBehaviour
     }
     public void LoadButton()
     {
-        anim.SetTrigger("save");
+        animator.SetTrigger("save");
         
     }
 
     public void LoadBoxExitButton()
     {
-        anim.SetTrigger("exit");
+        animator.SetTrigger("exit");
     }
 
     public void SaveLoad(int saveFileNumber = 0)

@@ -17,12 +17,13 @@ public class AutomaticTargetingAttack : MonoBehaviour
 
     [Space]
     [Header("Target Aim")]
-    public float offset = 0;
-    public Vector3 rotationOffset = new Vector3(0,0,0);
+    public float offset;
+    public Vector3 rotationOffset = Vector3.zero;
 
     [Space]
     [Header("0n Particle Collision Setting")]
 
+    // TODO: Rename the field to "destroyMainEffect"
     public bool destoyMainEffect = true;
 
     // Personal setting
@@ -31,26 +32,25 @@ public class AutomaticTargetingAttack : MonoBehaviour
     public bool useFirePointRotation; 
 
     private ParticleSystem particle;
-    private List<ParticleCollisionEvent> collisionEvents = new List<ParticleCollisionEvent>();
+    private List<ParticleCollisionEvent> collisionEvents = new();
 
-    void Start()
+    public void Start()
     {
         particle = GetComponent<ParticleSystem>();
 
         Destroy(gameObject, destroyTimeDelay + 0.5f);
     }
-    void OnParticleCollision(GameObject other)
-    {
 
+    public void OnParticleCollision(GameObject other)
+    {
         if (other.layer == targetLayerNumber)
         {
-            // 
             int numCollisionEvents = particle.GetCollisionEvents(other, collisionEvents);
             for (int i = 0; i < numCollisionEvents; i++)
             {
                 foreach (var effect in effectsOnCollision) // Check All Collision.
                 {
-                    var instance = Instantiate(effect, collisionEvents[i].intersection + collisionEvents[i].normal * offset, new Quaternion()) as GameObject;
+                    var instance = Instantiate(effect, collisionEvents[i].intersection + collisionEvents[i].normal * offset, new Quaternion());
                     instance.GetComponent<SkillAttack>().skillDamageValue = PlayerAttack.normalDamage; // Skill damage setting.
 
                     if (!useWorldSpacePosition)
@@ -69,10 +69,12 @@ public class AutomaticTargetingAttack : MonoBehaviour
                         instance.transform.LookAt(collisionEvents[i].intersection + collisionEvents[i].normal);
                         instance.transform.rotation *= Quaternion.Euler(rotationOffset);
                     }
+                    
                     Destroy(instance, destroyTimeDelay);
                 }
             }
-            if (destoyMainEffect == true)
+            
+            if (destoyMainEffect)
             {
                 Destroy(gameObject, destroyTimeDelay + 0.5f);
             }
