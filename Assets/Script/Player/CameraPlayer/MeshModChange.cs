@@ -22,7 +22,7 @@ public class MeshModChange : MonoBehaviour
     }
     private void Update()
     {
-        if (transform.parent == Player.instance.gameObject)
+        if (Player.instance.transform == transform.parent)
         {
             if (CameraManager.fpsMode == true)
             {
@@ -35,7 +35,6 @@ public class MeshModChange : MonoBehaviour
                     GetComponent<Renderer>().material = materialDamaged;
                 }
                 else
-
                     GetComponent<Renderer>().material = materialOrigin; // return to original player material.
             }
         }
