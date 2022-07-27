@@ -102,7 +102,7 @@ public class TargetProjectile : MonoBehaviour
             if (hitInstance.GetComponent<SkillAttack>() != null)
             {
                 if(normalAttack == true)
-                hitInstance.GetComponent<SkillAttack>().skillDamageValue = PlayerAttack.normalDamage;
+                hitInstance.GetComponent<SkillAttack>().skill_Damage_Value = PlayerAttack.normalDamage;
             }
             var hitPs = hitInstance.GetComponent<ParticleSystem>();
             if (hitPs != null)

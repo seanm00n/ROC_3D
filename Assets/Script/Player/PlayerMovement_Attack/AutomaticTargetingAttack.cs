@@ -51,7 +51,7 @@ public class AutomaticTargetingAttack : MonoBehaviour
                 foreach (var effect in effectsOnCollision) // Check All Collision.
                 {
                     var instance = Instantiate(effect, collisionEvents[i].intersection + collisionEvents[i].normal * offset, new Quaternion()) as GameObject;
-                    instance.GetComponent<SkillAttack>().skillDamageValue = PlayerAttack.normalDamage; // Skill damage setting.
+                    instance.GetComponent<SkillAttack>().skill_Damage_Value = PlayerAttack.normalDamage; // Skill damage setting.
 
                     if (!useWorldSpacePosition)
                         instance.transform.parent = transform;
