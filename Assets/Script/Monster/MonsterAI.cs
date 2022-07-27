@@ -25,9 +25,9 @@ public class MonsterAI : MonoBehaviour
     GameObject m_target;
     NavMeshAgent m_agent;
     GameObject HQ;
-    GameObject Player;
+    GameObject m_Player;
     GameObject MController;
-    
+    [SerializeField] GameObject m_PlayerScript;
     [SerializeField] bool m_isBoss = false;
     [SerializeField] LayerMask Alliance;
     [SerializeField] float m_SightDistance = 0f;
@@ -50,14 +50,14 @@ public class MonsterAI : MonoBehaviour
         }
         if (!m_isAttacked) {
             if (0.5f < m_cooltime) {
-                PlayerAnimControl.instance.Hit(m_attack);
+                //Player.instance.Hit(m_attack);
                 m_isAttacked = true;//애니메이션 1회 당 1번 공격
                 Debug.Log("Attack Player");
             }
         }
     }
     void Init () {
-        Player = GameObject.Find("Wizard_Player").transform.GetChild(0).gameObject;
+        m_Player = GameObject.Find("Wizard_Player").transform.GetChild(0).gameObject;
         MController = GameObject.Find("MonsterController");
         HQ = GameObject.Find("HQ");//추후 수정
         m_target = HQ;
@@ -82,12 +82,12 @@ public class MonsterAI : MonoBehaviour
         if (result[0] && result[0].transform.CompareTag("Player")) 
         {
             if (Vector3.Distance(transform.position, HQ.transform.position) <=
-                Vector3.Distance(transform.position, Player.transform.position)) {
+                Vector3.Distance(transform.position, m_Player.transform.position)) {
                 m_target = HQ;
             } 
             else 
             {
-                m_target = Player;
+                m_target = m_Player;
             }
         }
         if (result[0] && result[0].transform.CompareTag("Turret")) {
