@@ -5066,8 +5066,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skill_Damage_Value: 10
-  playerIsParent: 0
-  layerNumber: 6
+  turretAttack: 1
+  monsterlayerNumber: 0
   Explosion: {fileID: 3219235074987613225, guid: 44a83cdc8f5672343ae1a646f94c8cfa, type: 3}
 --- !u!54 &7359820963638954429
 Rigidbody:

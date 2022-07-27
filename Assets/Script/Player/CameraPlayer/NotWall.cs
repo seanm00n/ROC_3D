@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class NotWall : MonoBehaviour
 {
-    public bool FPS = false;
     CameraManager cam;
     private void Start()
     {
@@ -16,27 +15,32 @@ public class NotWall : MonoBehaviour
     }
     void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("PlayerAttack") == false)
+        if (transform.parent == Player.instance.gameObject)
         {
-            for (int i = 0; i < cam.exceptLayerNum.Length; i++)
+            if (other.gameObject.CompareTag("PlayerAttack") == false)
             {
-                if (other.gameObject.layer == cam.exceptLayerNum[i])
+                for (int i = 0; i < cam.exceptLayerNum.Length; i++)
                 {
-                    return;
+                    if (other.gameObject.layer == cam.exceptLayerNum[i])
+                    {
+                        return;
+                    }
                 }
-            }
 
-            if (other.gameObject.layer != cam.target.gameObject.layer)
-                CameraManager.instance.clampedPos = 2;
+                if (other.gameObject.layer != cam.target.gameObject.layer)
+                    cam.clampedPos = 2; // Behind player is wall.
+            }
         }
     }
     void OnTriggerExit(Collider other)
     {
-
-        if (other.gameObject.CompareTag("PlayerAttack") == false)
+        if (transform.parent == Player.instance.gameObject)
         {
-            if (other.gameObject.layer != cam.target.gameObject.layer)
-                CameraManager.instance.clampedPos = 0;
+            if (other.gameObject.CompareTag("PlayerAttack") == false)
+            {
+                if (other.gameObject.layer != cam.target.gameObject.layer)
+                    CameraManager.instance.clampedPos = 0; // Behind player isn't wall.
+            }
         }
     }
 }

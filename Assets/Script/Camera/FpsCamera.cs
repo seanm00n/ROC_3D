@@ -15,10 +15,9 @@ public class FpsCamera : MonoBehaviour
         playerMovement = Player.instance.movement;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (head_2 && playerMovement.speed == playerMovement.Slowspeed) // playerSpeed is slow when player sit.
+        if (head_2 && playerMovement.speed == playerMovement.slowspeed) // playerSpeed is slow when player sit.
         {
             transform.position = new Vector3(head_2.position.x, head_2.position.y, head_2.position.z);
         }

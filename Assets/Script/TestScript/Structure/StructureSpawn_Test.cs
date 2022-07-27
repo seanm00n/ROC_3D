@@ -5,29 +5,44 @@ using UnityEngine.UI;
 
 public class StructureSpawn_Test : MonoBehaviour
 {
+    [Header("Area Setting")]
     public GameObject area;
     public static bool isArea;
-
-    GameObject skillWindow;
-    public static bool StructureMode = false;
+    public static bool structureMode = false;
+    
+    [Space]
+    [Header("Install possible distance")]
     public float distance = 15;
 
+    [Space]
+    [Header("Install Object Positon")]
     public Vector3 changePosValue;
+
+    [Space]
+    [Header("Turret Hp Object location")]
     public GameObject liveParent;
 
+    [Space]
+    [Header("Install Possible Layer")]
     public LayerMask installLayer;
+
+    [Space]
+    [Header("Install Area Layer")]
     public LayerMask areaLayer;
 
-    GameObject target;
-
+    [Space]
+    [Header("Using Object")]
     public int selectNumber = 0;
-    public GameObject[] Selected_Prefab;
-    public GameObject[] Prefab;
-    public GameObject[] PrefabHUI;
+    public GameObject[] selectedPrefab;
+    public GameObject[] prefab;
+    public GameObject[] prefabHUI;
 
     public int TurretNum = 0;
 
+    // Auto Setting
     Color color;
+    GameObject target;
+    GameObject skillWindow;
 
     private void Awake()
     {
@@ -39,37 +54,37 @@ public class StructureSpawn_Test : MonoBehaviour
 
     private void Start()
     {
-        liveParent = Player.instance.ui.turretHp;
+        liveParent = Player.instance.ui.turretHp; //Turret Hp go into this location.
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.B)) // On/Off structure mode.
         {
             if (skillWindow)
             {
                 if (skillWindow.activeSelf == false)
                 {
-                    FindObjectOfType<PlayerAttack>().enabled = true;
+                    Player.instance.playerAttack.enabled = true;
 
-                    if (StructureMode == false)
+                    if (structureMode == false)
                     {
                         if (area && areaLayer != 0) area.SetActive(true);
-                        StructureMode = true;
-                        FindObjectOfType<PlayerAttack>().enabled = false;
+                        structureMode = true;
+                        Player.instance.playerAttack.enabled = false;
                     }
                     else
                     {
                         if (area && areaLayer != 0) area.SetActive(false);
-                        StructureMode = false;
+                        structureMode = false;
 
                     }
                 }
             }
         }
+        // Change Object////////////////////////
 
-        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0)
+        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0) 
         {
             if (skillWindow)
             {
@@ -89,8 +104,8 @@ public class StructureSpawn_Test : MonoBehaviour
                 }
             }
         }
-
-
+        //// Area is exist ///////////
+        
         if (areaLayer != 0)
         {
             if (isArea == false)
@@ -102,23 +117,31 @@ public class StructureSpawn_Test : MonoBehaviour
                 return;
             }
         }
-        if (StructureMode == true)
+        //////////////////////////////
+        
+        if (structureMode == true) 
         {
-            //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            // Check Install is possible.
+
             Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+            //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); Other Way.
+
             RaycastHit hit;
-            //Debug.DrawRay(ray.origin, ray.direction * distance,Color.red);
+
+            //Debug.DrawRay(ray.origin, ray.direction * distance,Color.red); If you want see...
 
             if (Physics.Raycast(ray, out hit, distance, installLayer))
             {
                 Debug.DrawRay(hit.point, hit.normal, Color.blue);
+
                 if (hit.collider.gameObject.GetComponent<GridStructure>() != null)
                     changePosValue = hit.collider.gameObject.GetComponent<GridStructure>().posPreview;
+
                 else changePosValue = new Vector3(0, 0, 0);
 
-                if (target == null && Selected_Prefab[selectNumber])
+                if (target == null && selectedPrefab[selectNumber])
                 {
-                    target = Instantiate(Selected_Prefab[selectNumber], hit.point, Quaternion.identity);
+                    target = Instantiate(selectedPrefab[selectNumber], hit.point, Quaternion.identity); // View Sample Object.
                     color = target.GetComponentInChildren<Renderer>().material.color;
                 }
                 else if (target != null && target.transform.position != hit.point)
@@ -138,54 +161,54 @@ public class StructureSpawn_Test : MonoBehaviour
             }
 
 
-            if (target != null && Selected_Prefab[selectNumber])
+            if (target != null && selectedPrefab[selectNumber])
             {
                 Install_Compatibility Install = target.GetComponent<Install_Compatibility>();
                 if (Install == null)
                     Install = target.GetComponentInChildren<Install_Compatibility>();
 
-                if (Install && Install.Compatibility == true)
+                if (Install && Install.compatibility == true)
                 {
-                    //////// 색 변화 ////////////
-                    for (int i = 0; i < Install.remderers.Length; i++)
+                    //////// Change Color ////////////
+                    for (int i = 0; i < Install.renderers.Length; i++)
                     {
-                        Install.remderers[i].material.color = color;
+                        Install.renderers[i].material.color = color;
                     }
 
                     if (Input.GetKeyDown(KeyCode.Mouse2))
                     {
 
-                        //////// 설치 ///////////////
+                        //////// Install Object ///////////////
                         GameObject install;
                         if (changePosValue != new Vector3(0, 0, 0))
                         {
-                            install = Instantiate(Prefab[selectNumber], changePosValue, Quaternion.identity);
+                            install = Instantiate(prefab[selectNumber], changePosValue, Quaternion.identity);
                         }
                         else
                         {
-                            install = Instantiate(Prefab[selectNumber], hit.point, Quaternion.identity);
+                            install = Instantiate(prefab[selectNumber], hit.point, Quaternion.identity);
                         }
                         Turret t = install.GetComponentInChildren<Turret>();
                         if (t != null)
                         {
-                            GameObject installHUI = Instantiate(PrefabHUI[TurretNum], liveParent.transform);
-                            t.Hui = installHUI;
-                            Slider Turret_s = install.GetComponentInChildren<Turret>().Hpbar = installHUI.GetComponentInChildren<Slider>();
-                            Turret_s.maxValue = t.HP;
-                            Turret_s.value = t.HP;
+                            GameObject installHUI = Instantiate(prefabHUI[TurretNum], liveParent.transform);
+                            t.hui = installHUI;
+                            Slider turrets = install.GetComponentInChildren<Turret>().hpbar = installHUI.GetComponentInChildren<Slider>();
+                            turrets.maxValue = t.hp;
+                            turrets.value = t.hp;
                         }
                     }
                 }
                 else
                 {
-                    for (int i = 0; i < Install.remderers.Length; i++)
+                    for (int i = 0; i < Install.renderers.Length; i++)
                     {
-                        Install.remderers[i].material.color = Color.red;
+                        Install.renderers[i].material.color = Color.red;
                     }
                 }
             }
         }
-        else
+        else // Not Structure Mode
         {
 
             if (target != null)
@@ -196,21 +219,21 @@ public class StructureSpawn_Test : MonoBehaviour
     }
 
 
-    public void ChangeNext()
+    public void ChangeNext() //Change Next Object.
     {
         Destroy(target);
-        if (selectNumber < (Selected_Prefab.Length - 1))
+        if (selectNumber < (selectedPrefab.Length - 1))
             selectNumber++;
 
         else selectNumber = 0;
     }
 
-    public void ChangePrevious()
+    public void ChangePrevious() //Change Previous Object.
     {
         Destroy(target);
         if (selectNumber > 0)
             selectNumber--;
 
-        else selectNumber = Selected_Prefab.Length - 1;
+        else selectNumber = selectedPrefab.Length - 1;
     }
 }

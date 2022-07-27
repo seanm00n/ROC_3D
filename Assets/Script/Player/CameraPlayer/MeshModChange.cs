@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class MeshModChange : MonoBehaviour
 {
-    Material materialOrigin;
-    public Material materialDamaged;
+    [Header("PlayerMaterial")]
+    Material materialOrigin; // Original material.
+    public Material materialDamaged; // Damaged material.
+    public Material transparentMat; // invisible material(Fps mode).
 
-    public Material transparentMat;
     public void DamagedMat()
     {
-        if(materialDamaged)
+        if(materialDamaged) // Damaged Player's material is changed.
         GetComponent<Renderer>().material = materialDamaged;
     }
 
@@ -23,7 +24,7 @@ public class MeshModChange : MonoBehaviour
     {
         if (CameraManager.fpsMode == true)
         {
-            GetComponent<Renderer>().material = transparentMat;
+            GetComponent<Renderer>().material = transparentMat; // Player is invisible in fps mode.
         }
         else
         {
@@ -33,7 +34,7 @@ public class MeshModChange : MonoBehaviour
             }
             else
 
-                GetComponent<Renderer>().material = materialOrigin;
+                GetComponent<Renderer>().material = materialOrigin; // return to original player material.
         }
     }
 }

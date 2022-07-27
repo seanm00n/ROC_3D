@@ -725,7 +725,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 796b56b87be8678499985842f6ff9aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FPS: 0
 --- !u!1 &4216857114145786048
 GameObject:
   m_ObjectHideFlags: 0
@@ -795,7 +794,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 796b56b87be8678499985842f6ff9aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FPS: 0
 --- !u!54 &4216857114145786050
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -974,22 +972,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slideSpeedX: 0
   slideSpeedZ: 0
-  Test: 0
-  isGround_New: 0
   waitingAnimation: 1
-  DoJump: 0
+  doJump: 0
   playerLayer:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 10
   speed: 0.02
-  Dashspeed: 0.035
-  Slowspeed: 0.01
+  dashspeed: 0.04
+  slowspeed: 0.005
   stopSpeed: 5
   jumpSpeed: 0.1
   SmoothStopIntensity: 0.05
-  isJumping: 1
   levitateMinusTime: 0.06
-  Anti_Inertia: 5
+  antiInertia: 8
+  isJumping: 1
   gravity: 0.05
   gravity_early: 0.05
   gravity_Max: 0.07
@@ -1020,8 +1016,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad5e3807c7da5fd49baadb83d23672e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetMarker: {fileID: 0}
-  Prefabs:
+  targetMarker: {fileID: 0}
+  prefabs:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -1031,18 +1027,16 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 8291363761192223416}
-  - {fileID: 0}
-  PrefabsCast:
-  - {fileID: 0}
-  - {fileID: 1267775975643832, guid: afc3ac08dff68aa46915da574d41d350, type: 3}
+  prefabsCast:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 1200282832259902, guid: 5756c55aa5236114485245076256ce47, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 1184375899483656, guid: 3fd0e63b096ab2d4faaebafeae7794d8, type: 3}
-  - {fileID: 1989801033779156, guid: 5ab3b0147547c474ab7f4ca158578ef4, type: 3}
   obstacle:
     serializedVersion: 2
     m_Bits: 1
@@ -1057,7 +1051,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   aim: {fileID: 0}
   uiOffset: {x: 0, y: 0}
-  FirePoint: {fileID: 521329581430123587}
+  firePoint: {fileID: 521329581430123587}
   fireRate: 0.1
   fieldOfView: 60
   viewDistance: 60

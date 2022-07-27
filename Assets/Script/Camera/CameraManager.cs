@@ -23,7 +23,6 @@ public class CameraManager : MonoBehaviour
     Vector3 cameraMoveVelocity;
 
     [Space]
-
     [Header("AngleSetting")]
     private float currentAngle;
     private float earlyTopAngle;

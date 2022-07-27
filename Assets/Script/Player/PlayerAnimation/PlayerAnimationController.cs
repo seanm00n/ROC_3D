@@ -13,9 +13,12 @@ public class PlayerAnimationController : MonoBehaviour
         Normal, Jump, Air
     }
 
-    [FormerlySerializedAs("State")] public AnimationState state;
-
-    [FormerlySerializedAs("playerAnimator")] [FormerlySerializedAs("Player")] public Animator animator;
+    [Header("Player Animation State")]
+    public AnimationState state;
+    
+    [Space]
+    [Header("Player Animator")]
+    public Animator animator;
     
     void Awake()
     {
@@ -42,20 +45,20 @@ public class PlayerAnimationController : MonoBehaviour
         }
     }
 
-    public void waitngJump()
+    public void WaitngJump()
     {
         animator.SetTrigger("JumpWaiting");
-        Player.instance.movement.DoJump = false; // Block jump when "JumpWaiting" animation is work.
+        Player.instance.movement.doJump = false; // Block jump when "JumpWaiting" animation is work.
     }
 
-    public void air()
+    public void Air()
     {
         if (state == AnimationState.Jump || state == AnimationState.Air)
         {
             animator.ResetTrigger("OnAir");
             return;
         }
-        animator.SetTrigger("OnAir");
+        animator.SetTrigger("OnAir"); // End Jump, fall.
     }
 
     public void AnimationWork(Vector2 move)
@@ -81,7 +84,7 @@ public class PlayerAnimationController : MonoBehaviour
     {
         if (CameraManager.fpsMode == false)
         {
-            animator.SetBool("OnAttack",true);
+            animator.SetBool("OnAttack",true); //OnAttack help that player remain attack state.
             animator.SetTrigger("Attack");
         }
     }
@@ -90,7 +93,7 @@ public class PlayerAnimationController : MonoBehaviour
         animator.SetBool("OnAttack", false);
     }
 
-    public void SetAngle(float angle)
+    public void SetAngle(float angle) // Player Head Rotate.
     {
         animator.SetFloat("Angle", angle);
     }

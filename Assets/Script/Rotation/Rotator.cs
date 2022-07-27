@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Rotator : MonoBehaviour
 {
-    // Start is called before the first frame update
+    // Always gameObject rotate.
     void Update()
     {
         transform.Rotate(transform.right * 100f * Time.deltaTime);        

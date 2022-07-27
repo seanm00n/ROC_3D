@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TargetProjectile : MonoBehaviour
 {
+    [Space]
+    [Header("PROJECTILE SETTING")]
     public float speed = 15f;
     public GameObject hit;
     public GameObject flash;
@@ -11,6 +13,9 @@ public class TargetProjectile : MonoBehaviour
     private Transform target;
     private Vector3 targetOffset;
 
+    [Space]
+    [Header("Attack Type")]
+    public bool normalAttack = false;
     [Space]
     [Header("PROJECTILE PATH")]
     private float randomUpAngle;
@@ -94,8 +99,11 @@ public class TargetProjectile : MonoBehaviour
         if (hit != null)
         {
             var hitInstance = Instantiate(hit, target.position + targetOffset, transform.rotation);
-            if (hitInstance.GetComponent<Skill_Attack>() != null)
-                hitInstance.GetComponent<Skill_Attack>().skill_Damage_Value = PlayerAttack.normalDamage;
+            if (hitInstance.GetComponent<SkillAttack>() != null)
+            {
+                if(normalAttack == true)
+                hitInstance.GetComponent<SkillAttack>().skill_Damage_Value = PlayerAttack.normalDamage;
+            }
             var hitPs = hitInstance.GetComponent<ParticleSystem>();
             if (hitPs != null)
             {
