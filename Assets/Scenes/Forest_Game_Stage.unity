@@ -27119,27 +27119,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8927523804802834133, guid: 4c233e68c1e1dff438daf9af2e3bec0d, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8927523804802834133, guid: 4c233e68c1e1dff438daf9af2e3bec0d, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8927523804802834133, guid: 4c233e68c1e1dff438daf9af2e3bec0d, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8927523804802834133, guid: 4c233e68c1e1dff438daf9af2e3bec0d, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 80
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8927523804802834133, guid: 4c233e68c1e1dff438daf9af2e3bec0d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 150
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8927523804802834133, guid: 4c233e68c1e1dff438daf9af2e3bec0d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -40
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8927523804876041272, guid: 4c233e68c1e1dff438daf9af2e3bec0d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -57864,7 +57864,7 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
-  speed: 0.02
+  speed: 0.06
   Dashspeed: 0.035
   Slowspeed: 0.01
   stopSpeed: 5

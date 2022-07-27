@@ -44,13 +44,17 @@ public class MonsterAI : MonoBehaviour
     public void Attack () {
         m_cooltime += Time.deltaTime;
         GetComponent<Animator>().SetBool("Attack", true);
+        if(1f < m_cooltime) {
+            m_isAttacked = false;
+            m_cooltime = 0f;
+        }
         if (!m_isAttacked) {
-            if (0.5f < GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime) {
+            if (0.5f < m_cooltime) {
                 PlayerAnimControl.instance.Hit(m_attack);
                 m_isAttacked = true;//애니메이션 1회 당 1번 공격
                 Debug.Log("Attack Player");
             }
-        }   
+        }
     }
     void Init () {
         Player = GameObject.Find("Wizard_Player").transform.GetChild(0).gameObject;
