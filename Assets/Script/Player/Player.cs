@@ -31,7 +31,7 @@ public class Player : MonoBehaviour
     public ViewCameraPosition cameraPos;
 
     [Space]
-    [Header("Player Feature")]
+    [Header("Player Feature (Auto)")]
     public PlayerAnimationController animationController;
     public PlayerAttack playerAttack;
     public PlayerMovement movement;

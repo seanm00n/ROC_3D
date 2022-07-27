@@ -22,19 +22,22 @@ public class MeshModChange : MonoBehaviour
     }
     private void Update()
     {
-        if (CameraManager.fpsMode == true)
+        if (transform.parent == Player.instance.transform) 
         {
-            GetComponent<Renderer>().material = transparentMat; // Player is invisible in fps mode.
-        }
-        else
-        {
-            if (Player.instance.hit == true)
+            if (CameraManager.fpsMode == true)
             {
-                GetComponent<Renderer>().material = materialDamaged;
+                GetComponent<Renderer>().material = transparentMat; // Player is invisible in fps mode.
             }
             else
+            {
+                if (Player.instance.hit == true)
+                {
+                    GetComponent<Renderer>().material = materialDamaged;
+                }
+                else
 
-                GetComponent<Renderer>().material = materialOrigin; // return to original player material.
+                    GetComponent<Renderer>().material = materialOrigin; // return to original player material.
+            }
         }
     }
 }
