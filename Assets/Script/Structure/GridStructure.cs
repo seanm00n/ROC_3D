@@ -4,28 +4,43 @@ using UnityEngine;
 
 public class GridStructure : MonoBehaviour
 {
-    [Header("Install Position Setting")]
-    public bool minus; // Minus => Down, Left
-    public bool installX;
-    public bool installY;
-    public bool installZ;
-
     [Space]
     [Header("Install Position Preview")]
     public Vector3 posPreview;
 
+    [Space]
+    [Header("Install Direction")]
+    [Space]
+    public bool minus; // if minus is true => (Up -> Down, Right -> Left, Forward -> Backward)
+    [Space]
+    [Header("(0 or Anything = Up, 1 = Right, 2 = Forward)")]
+    public float installDirection;
+
     private void Start()
     {
-        var localScale = transform.localScale;
-        
+        var scale = transform.parent.localScale;
+
         // Set install position.
-        if (installX)
-            posPreview = transform.position + new Vector3(localScale.x * 2 + 0.005f, 0, 0) * (minus ? -1 : 1);
+        positionSetting();
+    }
+    private void positionSetting() // Set install position.
+    {
+        Vector3 dir;
 
-        if (installY)
-            posPreview = transform.position + new Vector3(0, localScale.y + 0.001f, 0) * (minus ? -1 : 1);
+        switch (installDirection) 
+        {
+            case 1:
+                dir = transform.parent.right;
+                break;
 
-        if (installZ)
-            posPreview = transform.position + new Vector3(0, 0, localScale.z * 2 + 0.05f) * (minus ? -1 : 1);
+            case 2:
+                dir = transform.parent.forward;
+                break;
+
+            default:
+                dir = transform.parent.up;
+                break;
+        }
+        posPreview = transform.parent.position + (dir * (transform.parent.localScale.y + 0.001f) * (minus? -1 : 1));
     }
 }

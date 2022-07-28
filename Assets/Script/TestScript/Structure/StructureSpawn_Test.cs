@@ -69,13 +69,13 @@ public class StructureSpawn_Test : MonoBehaviour
 
                     if (structureMode == false)
                     {
-                        if (area && areaLayer != 0) area.SetActive(true); // Visible are.
+                        if (area && areaLayer != 0) area.SetActive(true); // Visible area.
                         structureMode = true;
                         Player.instance.playerAttack.enabled = false;
                     }
                     else
                     {
-                        if (area && areaLayer != 0) area.SetActive(false); // Unvisible are.
+                        if (area && areaLayer != 0) area.SetActive(false); // Unvisible area.
                         structureMode = false;
 
                     }
@@ -119,8 +119,12 @@ public class StructureSpawn_Test : MonoBehaviour
         }
         //////////////////////////////
         
-        if (structureMode == true) 
+        if (structureMode == true)
         {
+            //Mouse fixed
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+
             // Check Install is possible.
 
             Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
@@ -134,10 +138,14 @@ public class StructureSpawn_Test : MonoBehaviour
             {
                 Debug.DrawRay(hit.point, hit.normal, Color.blue);
 
-                if (hit.collider.gameObject.GetComponent<GridStructure>() != null) // install fixed position.
-                    changePosValue = hit.collider.gameObject.GetComponent<GridStructure>().posPreview;
+                // install fixed position.
+                GridStructure grid;
+                if ((grid = hit.collider.gameObject.GetComponent<GridStructure>()) != null) 
+                {
+                    changePosValue = grid.posPreview;
+                } 
 
-                else changePosValue = new Vector3(0, 0, 0);
+                else changePosValue = new(0, 0, 0);
 
                 if (target == null && selectedPrefab[selectNumber])
                 {
@@ -149,10 +157,13 @@ public class StructureSpawn_Test : MonoBehaviour
                     if (changePosValue != new Vector3(0, 0, 0))
                     {
                         target.transform.position = changePosValue;
+                        target.transform.rotation = grid.transform.rotation;
                     }
                     else
+                    {
                         target.transform.position = hit.point;
-
+                        target.transform.up = hit.normal; // Set rotation according to ground slope.
+                    }
                 }
             }
             else if (target != null)
@@ -182,12 +193,16 @@ public class StructureSpawn_Test : MonoBehaviour
                         GameObject install;
                         if (changePosValue != new Vector3(0, 0, 0))
                         {
-                            install = Instantiate(prefab[selectNumber], changePosValue, Quaternion.identity);
+                            install = Instantiate(prefab[selectNumber], changePosValue, target.transform.rotation); // Set rotation according to preview.
                         }
                         else
                         {
                             install = Instantiate(prefab[selectNumber], hit.point, Quaternion.identity);
+
+                            if (install)
+                                install.transform.up = hit.normal; // Set rotation according to ground slope.
                         }
+
                         Turret t = install.GetComponentInChildren<Turret>();
                         if (t != null) // If player spawn turret.
                         {
