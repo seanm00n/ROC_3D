@@ -19,7 +19,7 @@ public class PlayerAttack : MonoBehaviour
     bool isAttack = false;
 
     [Header("Damage")]
-    [SerializeField] public static float normalDamage = 10; // player normal attack damage.
+    [SerializeField] public static int normalDamage = 10; // player normal attack damage.
 
     [Header("Effects")]
     public GameObject targetMarker;

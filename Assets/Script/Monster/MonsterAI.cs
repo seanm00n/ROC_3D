@@ -6,19 +6,16 @@ using UnityEngine.AI;
 using UnityEditor;
 
 #endif
-public class MonsterAI : MonoBehaviour
-{
+public class MonsterAI : MonoBehaviour, IBattle {
+    //if Boss avoidancePriority = 0 else avoidancePriority = 1
 #if UNITY_EDITOR
-    private void OnDrawGizmosSelected () {
+private void OnDrawGizmosSelected () {
         Handles.color = new Color(0, 0, 0, 0.1f);
         Handles.DrawSolidDisc(transform.position, transform.up, m_SightDistance);
     }
 #endif
-    public int m_stage = 3; //set value
-    public bool m_isInRange = false;
     public int myIndex;
-    float m_health;
-    float m_attack;
+    bool m_isInRange = false;
     bool m_isDeath = false;
     bool m_isAttacked = false;
     float m_cooltime = 0f;
@@ -27,10 +24,10 @@ public class MonsterAI : MonoBehaviour
     GameObject HQ;
     GameObject m_Player;
     GameObject MController;
-    [SerializeField] GameObject m_PlayerScript;
-    [SerializeField] bool m_isBoss = false;
+    [SerializeField] int m_health;
+    [SerializeField] int m_attack;
     [SerializeField] LayerMask Alliance;
-    [SerializeField] float m_SightDistance = 0f;
+    float m_SightDistance = 10f;
 
     void Start(){
         Init();
@@ -40,8 +37,15 @@ public class MonsterAI : MonoBehaviour
         CheckDeath();
         SelectTarget();
         Move();
-    } 
-    public void Attack () {
+    }
+
+    public void Hit (int attack) {
+        m_health -= attack;
+    }
+    public void Attack (string other) {//Move to Battle.cs
+        if (m_isDeath) {
+            return;
+        }
         m_cooltime += Time.deltaTime;
         GetComponent<Animator>().SetBool("Attack", true);
         if(1f < m_cooltime) {
@@ -50,37 +54,28 @@ public class MonsterAI : MonoBehaviour
         }
         if (!m_isAttacked) {
             if (0.5f < m_cooltime) {
-                //Player.instance.Hit(m_attack);
-                m_isAttacked = true;//æ÷¥œ∏ﬁ¿Ãº« 1»∏ ¥Á 1π¯ ∞¯∞›
-                Debug.Log("Attack Player");
+                GameObject.Find(other).GetComponent<IBattle>().Hit(m_attack);
+                m_isAttacked = true;//Ïï†ÎãàÎ©îÏù¥ÏÖò 1Ìöå Îãπ 1Î≤à Í≥µÍ≤©
             }
         }
     }
     void Init () {
-        m_Player = GameObject.Find("Wizard_Player").transform.GetChild(0).gameObject;
+        m_Player = GameObject.Find("Player");
         MController = GameObject.Find("MonsterController");
-        HQ = GameObject.Find("HQ");//√ﬂ»ƒ ºˆ¡§
+        HQ = GameObject.Find("HQ");//Must change if name changes
         m_target = HQ;
         m_agent = GetComponent<NavMeshAgent>();
-        m_agent.speed = m_stage * 1.6f;
-        m_health = m_stage * 1.4f;
-        m_attack = m_stage * 1.5f;
-        if (m_isBoss) {
-            m_agent.avoidancePriority = 0;
-        } else {
-            m_agent.avoidancePriority = 1;
-        }
+        m_agent.speed = 6f;
     }
 
-    void SelectTarget () {
+    void SelectTarget () {//Edit after adding turret
         if (m_isDeath)
             return;
         if(m_target == null)
             m_target = HQ;
         Collider[] result = new Collider[1];
         Physics.OverlapSphereNonAlloc(transform.position, m_SightDistance, result, Alliance);
-        if (result[0] && result[0].transform.CompareTag("Player")) 
-        {
+        if (result[0] && result[0].transform.CompareTag("Player")) {
             if (Vector3.Distance(transform.position, HQ.transform.position) <=
                 Vector3.Distance(transform.position, m_Player.transform.position)) {
                 m_target = HQ;
@@ -110,6 +105,7 @@ public class MonsterAI : MonoBehaviour
             m_agent.SetDestination(m_target.transform.position);
         }
     }
+
     void CheckDeath () {
         if (m_health <= 0) {
             GetComponent<Animator>().SetBool("Death", true);
@@ -117,20 +113,22 @@ public class MonsterAI : MonoBehaviour
             m_isDeath = true;
         }
     }
-    private void OnTriggerEnter (Collider other) {
 
+    private void OnTriggerEnter (Collider other) {
         if (other.gameObject.tag == "PlayerAttack") {
-            m_health -= other.GetComponent<Skill_Attack>().skill_Damage_Value;
+            Hit(other.gameObject.GetComponent<SkillAttack>().skillDamageValue);
         }
     }
+
     private void OnTriggerStay (Collider other) {
         if (other.gameObject.tag == "Player" ||
             other.gameObject.tag == "HQ" ||
             other.gameObject.tag == "Turret") {
             m_isInRange = true;
-            Attack();
+            Attack(other.gameObject.tag);
         }
     }
+
     private void OnTriggerExit (Collider other) {
         if (other.gameObject.tag == "Player" ||
             other.gameObject.tag == "HQ" ||
@@ -139,6 +137,7 @@ public class MonsterAI : MonoBehaviour
             GetComponent<Animator>().SetBool("Attack", false);
         }
     }
+
     IEnumerator DestroyMonster () {
         yield return new WaitForSeconds(5f);
         MController.GetComponent<MonsterController>().ItemGen(myIndex);

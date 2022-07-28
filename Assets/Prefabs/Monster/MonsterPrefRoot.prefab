@@ -13,11 +13,10 @@ GameObject:
   - component: {fileID: 713130180}
   - component: {fileID: 713130179}
   - component: {fileID: 713130178}
-  - component: {fileID: -216036331511585865}
   - component: {fileID: 1730728694084299656}
   - component: {fileID: 43482552}
   m_Layer: 6
-  m_Name: MonsterPref
+  m_Name: MonsterPrefRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95,7 +94,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 1
+  m_BaseOffset: -0.2
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 1
 --- !u!114 &713130178
@@ -110,26 +109,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cd3ccc2ad8902a4484a0b910120b573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_stage: 3
   m_isInRange: 0
   myIndex: 0
+  m_health: 40
+  m_attack: 10
   m_isBoss: 0
   Alliance:
     serializedVersion: 2
     m_Bits: 8
   m_SightDistance: 10
---- !u!114 &-216036331511585865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100720}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 690c796eeca67d949927844d3a0472fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!33 &1730728694084299656
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -148,10 +136,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 5
-  m_Height: 1
+  m_Radius: 4.280246
+  m_Height: 10
   m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 1, z: -0.7197542}
 --- !u!1 &102148
 GameObject:
   m_ObjectHideFlags: 0
