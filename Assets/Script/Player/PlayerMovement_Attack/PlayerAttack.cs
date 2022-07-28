@@ -177,7 +177,7 @@ public class PlayerAttack : MonoBehaviour
     }
 
 
-    private void UserInterface()
+    private void UserInterface() // Find target on screen.
     {
         Vector3 screenCenter = new Vector3(Screen.width, Screen.height, 0) / 2;
         var targetPos = screenCenter;
