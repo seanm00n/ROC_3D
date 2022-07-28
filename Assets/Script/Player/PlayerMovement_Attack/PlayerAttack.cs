@@ -177,7 +177,7 @@ public class PlayerAttack : MonoBehaviour
     }
 
 
-    private void UserInterface()
+    private void UserInterface() // Find target on screen.
     {
         Vector3 screenCenter = new Vector3(Screen.width, Screen.height, 0) / 2;
         var targetPos = screenCenter;
@@ -190,7 +190,7 @@ public class PlayerAttack : MonoBehaviour
             var cornerDist = screenPos - screenCenter;
             var absCornerDist = new Vector3(Mathf.Abs(cornerDist.x), Mathf.Abs(cornerDist.y), Mathf.Abs(cornerDist.z));
 
-            // Find target near center of the screen
+            // If you want find target near center of the screen => screenCenter.x / 3, screenCenter.y / 3
             if (absCornerDist.x < screenCenter.x && absCornerDist.y < screenCenter.y
                     
                     
