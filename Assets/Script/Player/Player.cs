@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IBattle
 {
 
     [Space]
@@ -58,6 +58,7 @@ public class Player : MonoBehaviour
         if (instance && !instance.playerCamera)
             playerCamera = Instantiate(cameraPrefab, transform.position, Quaternion.identity);
     }
+
     private void Update()
     {
         HpRefresh(); // Always hp value is changing.
@@ -97,7 +98,7 @@ public class Player : MonoBehaviour
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
     
-    public void Hit(float damage)
+    public void Hit(int damage)
     {
         if (hit == false && hp != 0)
         {

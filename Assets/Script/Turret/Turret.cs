@@ -9,7 +9,7 @@ using UnityEditor;
 
 #endif
 
-public class Turret : MonoBehaviour
+public class Turret : MonoBehaviour, IBattle
 {
     [Header("Turret Setting")]
     public int damageSpeed = 30;
@@ -153,7 +153,7 @@ public class Turret : MonoBehaviour
         }
         
     }
-    public void OnDamaged(int damage) // If Turret is damaged.
+    public void Hit(int damage) // If Turret is damaged.
     {
         GameObject hit = Instantiate(damageEffect, transform.position, Quaternion.identity);
         Destroy(hit, hit.GetComponent<ParticleSystem>().main.duration);

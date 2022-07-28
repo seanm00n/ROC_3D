@@ -980,7 +980,7 @@ MonoBehaviour:
     m_Bits: 10
   speed: 0.02
   dashspeed: 0.04
-  slowspeed: 0.005
+  slowspeed: 0.01
   stopSpeed: 5
   jumpSpeed: 0.1
   smoothStopIntensity: 0.05

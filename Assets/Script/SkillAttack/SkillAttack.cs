@@ -5,7 +5,7 @@ using UnityEngine;
 public class SkillAttack : MonoBehaviour
 {
     [Header("Damage")]
-    public float skillDamageValue;
+    public int skillDamageValue;
 
     [Space]
     [Header("Master Setting")]

@@ -18,7 +18,7 @@ public class PlayerAttack : MonoBehaviour
     private bool isAttack;
 
     [Header("Damage")]
-    public static float normalDamage = 10; // player normal attack damage.
+    public static int normalDamage = 10; // player normal attack damage.
 
     [Header("Effects")]
     public GameObject targetMarker;
@@ -190,7 +190,7 @@ public class PlayerAttack : MonoBehaviour
             var cornerDist = screenPos - screenCenter;
             var absCornerDist = new Vector3(Mathf.Abs(cornerDist.x), Mathf.Abs(cornerDist.y), Mathf.Abs(cornerDist.z));
 
-            // Find target near center of the screen
+            // If you want find target near center of the screen => screenCenter.x / 3, screenCenter.y / 3
             if (absCornerDist.x < screenCenter.x && absCornerDist.y < screenCenter.y
                     
                     

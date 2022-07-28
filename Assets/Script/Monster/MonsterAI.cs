@@ -18,7 +18,7 @@ public class MonsterAI : MonoBehaviour
     public bool m_isInRange = false;
     public int myIndex;
     float m_health;
-    float m_attack;
+    int m_attack;
     float m_attackDelay = 1f;
     float m_time = 0f;
     bool m_isDeath = false;
@@ -60,7 +60,7 @@ public class MonsterAI : MonoBehaviour
         m_agent = GetComponent<NavMeshAgent>();
         m_agent.speed = m_stage * 1.6f;
         m_health = m_stage * 1.4f;
-        m_attack = m_stage * 1.5f;
+        m_attack = m_stage * 1;
         if (m_isBoss) {
             m_agent.avoidancePriority = 0;
         } else {
