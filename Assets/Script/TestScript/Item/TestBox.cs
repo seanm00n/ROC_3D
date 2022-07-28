@@ -7,9 +7,9 @@ public class TestBox : MonoBehaviour, IItem
 {
     [Header("Event")]
     public UnityEvent OpenBox;
-    
+
     //End use.
-    bool end = false;
+    private bool end = false;
 
     PauseGame pause;
 

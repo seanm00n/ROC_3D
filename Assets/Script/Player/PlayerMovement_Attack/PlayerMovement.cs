@@ -36,9 +36,9 @@ public class PlayerMovement : MonoBehaviour
 
     [Space]
     [Header("Jump Setting")]
-    [SerializeField] float jumpSpeed = 0.08f;
-    [SerializeField] float smoothStopIntensity = 0.05f;
-    [SerializeField] float levitateMinusTime = 0.06f;
+    [SerializeField] private float jumpSpeed = 0.08f;
+    [SerializeField] private float smoothStopIntensity = 0.05f;
+    [SerializeField] private float levitateMinusTime = 0.06f;
     public float antiInertia = 8;
     private float currJumpSpeed;
     public bool isJumping;

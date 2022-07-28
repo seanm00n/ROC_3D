@@ -35,7 +35,7 @@ public class Turret : MonoBehaviour
     [Space]
     [Header("Attack Setting")]
 
-    public GameObject attack;
+    private GameObject attack;
     public GameObject attackPrefab;
 
     // Auto Setting
@@ -70,19 +70,7 @@ public class Turret : MonoBehaviour
     private void Update()
     {
         var transformPos = transform.position;
-        var targetTransformPos = target.transform.position;
-
-        if (target != null) // Check distance with Target.
-        {
-            Vector3 pos = new(transformPos.x, 0, transformPos.z);
-            Vector3 targetPos = new(targetTransformPos.x, 0, targetTransformPos.z);
-            
-            if (Vector3.Distance(pos, targetPos) > radius)
-            {
-                target = null;
-            }
-        }
-        
+      
         if (isAlive) // Change HpBar value and show emergency effect when Hp is low. 
         {
             if (hpBar && (int)hpBar.value != hp)
@@ -116,8 +104,19 @@ public class Turret : MonoBehaviour
             }
         }
 
-        if (target != null) // Check Target is live.
+        if (target != null) 
         {
+            // Check distance with Target.
+            var targetTransformPos = target.transform.position;
+            Vector3 pos = new(transformPos.x, 0, transformPos.z);
+            Vector3 targetPos = new(targetTransformPos.x, 0, targetTransformPos.z);
+
+            if (Vector3.Distance(pos, targetPos) > radius)
+            {
+                target = null;
+            }
+
+            // Check Target is live.
             if (target.GetComponent<MonsterAI>())
             {
                 if (target.GetComponent<Animator>().GetBool("Death"))
