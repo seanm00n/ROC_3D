@@ -17,9 +17,14 @@ public class CameraManager : MonoBehaviour
 
     public Transform target;
     public int targetNum = 1;
+    // targetNum
+    // 1: middle view but closer to wall
+    // 2: top view
+    // 3: down view
+
     public Transform targetPosition;
 
-    public float cameraRotSpeed = 200;
+    public static float cameraRotSpeed = 200;
     Vector3 cameraMoveVelocity;
 
     [Space]
@@ -27,16 +32,20 @@ public class CameraManager : MonoBehaviour
     private float currentAngle;
     private float earlyTopAngle;
     private float earlyDownAngle;
-    public float topAngle = 50;
+    public float topAngle = 60;
 
-    public float downAngle;
+    public float downAngle = -20;
     public float maxAngle = 80;
     public float minAngle = -40f;
 
     [Space]
     
-    public int[] exceptLayerNum;
-    public float clampedPos; // Block camera collision with wall.
+    public int[] exceptLayerNum; // Exception about clampedPos. 
+    public float clampedPos;
+    // clampedPos : Block camera collision with wall. 
+    // 0 : Normal
+    // 1 : When object cover player.
+    // 2 : When other stay behind player.
 
     // Singleton stuff
     public static CameraManager instance { get; private set; }
@@ -93,6 +102,7 @@ public class CameraManager : MonoBehaviour
     }
 
     // This method sets the player's Y position when looking at the sky or ground
+    #region
     void RotateCamera()
     {
         float pointX = transform.eulerAngles.x - Input.GetAxisRaw("Mouse Y") * cameraRotSpeed * Time.deltaTime;
@@ -118,7 +128,7 @@ public class CameraManager : MonoBehaviour
             }
         }
 
-        if (!fpsMode)
+        if (!fpsMode) // TPS MODE
         {
             float pointX_ = 0;
             if (pointX > 300 && downAngle < 0)
@@ -203,7 +213,9 @@ public class CameraManager : MonoBehaviour
         
         Player.instance.animationController.SetAngle(upperAngle);
     }
-    float ResetCamera(Camera cam)
+    #endregion
+
+    float ResetCamera(Camera cam) // Return to original camera position.
     {
         var newClampedPos = 0;
         var ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, -3));
@@ -228,10 +240,5 @@ public class CameraManager : MonoBehaviour
         else newClampedPos = 0;
 
         return newClampedPos;
-    }
-
-    public void SetCameraSensitivity(float rot)
-    {
-        cameraRotSpeed = rot;
     }
 }

@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
 
     //Single Tone Stuff//
     public static Player instance;
-    public static GameObject playerCamera;
+    public GameObject playerCamera;
 
     private void Awake()
     {
@@ -55,7 +55,7 @@ public class Player : MonoBehaviour
             GameObject instance = Instantiate(uiPrefab);
             ui = instance.GetComponent<UIController>();
         }
-        if (!playerCamera)
+        if (instance && !instance.playerCamera)
             playerCamera = Instantiate(cameraPrefab, transform.position, Quaternion.identity);
     }
     private void Update()

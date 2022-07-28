@@ -17,9 +17,9 @@ public class ItemInteractionManager : MonoBehaviour
         {
             if (hit.collider.gameObject.layer == 9) // 9: item layer
             {
-                // Cast into testbox and call Use
+                // Cast into item.
                 TestBox boxItem;
-                if (boxItem = hit.collider.gameObject.GetComponent<TestBox>())
+                if (boxItem = hit.collider.gameObject.GetComponent<TestBox>()) // if item is boxitem.
                 {
                     if (Input.GetKeyDown(KeyCode.F)) // Use Item.
                     {

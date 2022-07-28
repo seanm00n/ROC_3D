@@ -27,8 +27,8 @@ public class Turret : MonoBehaviour
 
     [Space]
     [Header("UI")]
-    public GameObject hui; // TODO: Get Slider instead of GameObject and rename this field to huiSlider
-    public Slider hpbar; // TODO: Rename this field to "hpBar"
+    public GameObject hui; // Need it to delete hp ui when turret is gone.
+    public Slider hpBar;
     public GameObject target;
     public LayerMask targetName;
 
@@ -43,9 +43,8 @@ public class Turret : MonoBehaviour
 
     [Space]
     [Header("Turret Status")]
-    public float hp = 100;
-    public bool isLive; // TODO: Rename this field to "isAlive"
-    
+    public int hp = 100;
+    public bool isAlive;    
     private float fullHp;
     private bool die;
 
@@ -84,11 +83,11 @@ public class Turret : MonoBehaviour
             }
         }
         
-        if (isLive) // Change HpBar value and show emergency effect when Hp is low. 
+        if (isAlive) // Change HpBar value and show emergency effect when Hp is low. 
         {
-            if (hui && hui.GetComponentInChildren<Slider>().maxValue == hpbar.maxValue && (int)hpbar.value != (int)hp)
+            if (hpBar && (int)hpBar.value != hp)
             {
-                hpbar.value -= damageSpeed * Time.deltaTime;
+                hpBar.value -= damageSpeed * Time.deltaTime;
             }
 
             if (hp <= fullHp / 2 && emergency[0] && !emergency[0].activeSelf)

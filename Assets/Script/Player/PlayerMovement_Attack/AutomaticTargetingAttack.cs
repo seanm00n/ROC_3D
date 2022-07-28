@@ -23,8 +23,7 @@ public class AutomaticTargetingAttack : MonoBehaviour
     [Space]
     [Header("0n Particle Collision Setting")]
 
-    // TODO: Rename the field to "destroyMainEffect"
-    public bool destoyMainEffect = true;
+    public bool destroyMainEffect = true;
 
     // Personal setting
     public bool useWorldSpacePosition;     
@@ -53,6 +52,7 @@ public class AutomaticTargetingAttack : MonoBehaviour
                     var instance = Instantiate(effect, collisionEvents[i].intersection + collisionEvents[i].normal * offset, new Quaternion());
                     instance.GetComponent<SkillAttack>().skillDamageValue = PlayerAttack.normalDamage; // Skill damage setting.
 
+                    // Apply setting value.
                     if (!useWorldSpacePosition)
                         instance.transform.parent = transform;
 
@@ -73,8 +73,9 @@ public class AutomaticTargetingAttack : MonoBehaviour
                     Destroy(instance, destroyTimeDelay);
                 }
             }
-            
-            if (destoyMainEffect)
+
+            // Apply setting value.
+            if (destroyMainEffect)
             {
                 Destroy(gameObject, destroyTimeDelay + 0.5f);
             }

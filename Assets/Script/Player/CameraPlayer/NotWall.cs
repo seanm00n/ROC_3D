@@ -12,10 +12,10 @@ public class NotWall : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if (transform.parent != Player.instance.transform) return;
+        if (transform.parent != Player.instance.transform) return; // Ignore other player
         
-        if (other.gameObject.CompareTag("PlayerAttack")) return;
-        
+        if (other.gameObject.CompareTag("PlayerAttack")) return; // Ignore attack
+
         for (int i = 0; i < cam.exceptLayerNum.Length; i++)
         {
             if (other.gameObject.layer == cam.exceptLayerNum[i])

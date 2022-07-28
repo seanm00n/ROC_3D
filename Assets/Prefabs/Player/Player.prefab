@@ -958,6 +958,7 @@ MonoBehaviour:
   playerAttack: {fileID: 0}
   movement: {fileID: 0}
   ui: {fileID: 0}
+  playerCamera: {fileID: 0}
 --- !u!114 &4216857114147659665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -982,7 +983,7 @@ MonoBehaviour:
   slowspeed: 0.005
   stopSpeed: 5
   jumpSpeed: 0.1
-  SmoothStopIntensity: 0.05
+  smoothStopIntensity: 0.05
   levitateMinusTime: 0.06
   antiInertia: 8
   isJumping: 1
@@ -1040,7 +1041,7 @@ MonoBehaviour:
   obstacle:
     serializedVersion: 2
     m_Bits: 1
-  Monster:
+  monster:
     serializedVersion: 2
     m_Bits: 64
   player:

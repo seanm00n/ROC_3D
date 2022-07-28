@@ -13,7 +13,7 @@ public class SkillAttack : MonoBehaviour
 
     [Space]
     [Header("MonsterLayer")]
-    public int monsterlayerNumber; // TODO: Change this field's name to "monsterLayerNumber"
+    public int monsterLayerNumber; 
 
     [Space]
     [Header("Effect")]
@@ -35,7 +35,7 @@ public class SkillAttack : MonoBehaviour
     {
         if (turretAttack) return;
         
-        if (other.gameObject.layer == monsterlayerNumber)
+        if (other.gameObject.layer == monsterLayerNumber) // Attack
         {
             GameObject explosionEffect = Instantiate(explosion, other.gameObject.transform.transform.position, Quaternion.identity);
                 

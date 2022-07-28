@@ -13,8 +13,7 @@ public class PlayerAttack : MonoBehaviour
 {
     // Check whether player using mp or not.
     private bool isUseMp;
-    private bool isNotUseMp; // TODO: 직관적인 변수 네이밍 요구
-
+    private bool isRecoverMp; 
     // Check whether player attack or not.
     private bool isAttack;
 
@@ -25,8 +24,15 @@ public class PlayerAttack : MonoBehaviour
     public GameObject targetMarker;
 
     [Space]
-    public GameObject[] prefabs; // TODO: 각 인덱스가 무얼 의미하는지 문서화 필요
+    public GameObject[] prefabs;
+    
+    // prefabs Index.
+    // 8 : Normal attack invoke effect.
+    
     public GameObject[] prefabsCast;
+
+    // prefabsCast Index.
+    // 8 : Normal attack invoke effect.
 
     private ParticleSystem currEffect;
     private ParticleSystem effect;
@@ -34,7 +40,7 @@ public class PlayerAttack : MonoBehaviour
     [Space]
     [Header("Layer")]
     public LayerMask obstacle;
-    public LayerMask Monster; // TODO: Rename this field to "monster"
+    public LayerMask monster; 
     public LayerMask player;
     public LayerMask collidingLayer = ~0; // Target marker can only collide with scene layer
 
@@ -73,9 +79,9 @@ public class PlayerAttack : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!isNotUseMp && !isAttack)
+        if (!isRecoverMp && !isAttack)
         {
-            isNotUseMp = true;
+            isRecoverMp = true;
             StartCoroutine(RevertMp());
         } // Mp Recover
 
@@ -95,7 +101,7 @@ public class PlayerAttack : MonoBehaviour
 
         #region View Distance
         // VIEW DISTANCE ----------------------------------------
-        var col = Physics.OverlapSphere(transform.position, viewDistance, Monster);
+        var col = Physics.OverlapSphere(transform.position, viewDistance, monster);
         
         screenTargets.Clear();
         target = null;
@@ -134,7 +140,7 @@ public class PlayerAttack : MonoBehaviour
                 var shouldAimObject = aim.enabled && targetIsActive;
                 var actualTarget = target;
                 
-                if (shouldAimObject)
+                if (!shouldAimObject)
                 {
                     Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
 
@@ -170,11 +176,6 @@ public class PlayerAttack : MonoBehaviour
         else isAttack = false;
     }
 
-    // TODO: Mark whether this is used in inspector
-    public void CastSoundPlay()
-    {
-        soundComponentCast.Play(0);
-    }
 
     private void UserInterface()
     {
@@ -182,21 +183,19 @@ public class PlayerAttack : MonoBehaviour
         var targetPos = screenCenter;
         if (target)
         {
+            // Other way you can find target on the full screen
+            // if (screenPos.z > 0 && screenPos.x > 0 && screenPos.x < Screen.width && screenPos.y > 0 && screenPos.y < Screen.height)
+
             var screenPos = Camera.main.WorldToScreenPoint(target.position + (Vector3)uiOffset);
             var cornerDist = screenPos - screenCenter;
             var absCornerDist = new Vector3(Mathf.Abs(cornerDist.x), Mathf.Abs(cornerDist.y), Mathf.Abs(cornerDist.z));
 
-            // This way you can find target on the full screen
-            // if (screenPos.z > 0 && screenPos.x > 0 && screenPos.x < Screen.width && screenPos.y > 0 && screenPos.y < Screen.height)
-
-            // {screenPos.x > 0 && screenPos.y > 0 && screenPos.z > 0} - disable target if enemy backside
-
             // Find target near center of the screen
             if (absCornerDist.x < screenCenter.x && absCornerDist.y < screenCenter.y
                     
-                    // If target is in the middle of the screen
-                    && screenPos.x > 0 && screenPos.y > 0 && screenPos.z > 0
                     
+                    && screenPos.x > 0 && screenPos.y > 0 && screenPos.z > 0 // disable target if enemy backside
+
                     // If player can see the target
                     && !Physics.Linecast(transform.position + (Vector3)uiOffset, target.position + (Vector3)uiOffset * 2, obstacle))
             {
@@ -219,7 +218,7 @@ public class PlayerAttack : MonoBehaviour
         aim.transform.position = Vector3.MoveTowards(aim.transform.position, targetPos, Time.deltaTime * 3000);
     }
 
-    private int TargetIndex()
+    private int TargetIndex() // Targeting according to distance.
     {
         var screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
         var distances = new float[screenTargets.Count];
@@ -262,7 +261,7 @@ public class PlayerAttack : MonoBehaviour
                 Player.instance.mp = 20;
         }
         
-        isNotUseMp = false;
+        isRecoverMp = false;
     }
 
 

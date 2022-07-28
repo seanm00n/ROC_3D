@@ -137,8 +137,7 @@ MonoBehaviour:
   target: {fileID: 0}
   targetNum: 1
   targetPosition: {fileID: 0}
-  cameraRotSpeed: 200
-  topAngle: 30
+  topAngle: 60
   downAngle: -20
   maxAngle: 80
   minAngle: -40

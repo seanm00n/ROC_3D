@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement Speed Setting")]
     public float speed = 0.02f;
     [SerializeField] float dashspeed = 0.04f;
-    public float slowspeed = 0.005f;
+    public float slowspeed = 0.01f;
 
     private float originalSpeed;
 
@@ -59,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 hitNormal = hit.normal;
         if (Physics.Raycast(transform.position, -transform.up, (playerBody.height / (playerBody.height * 2)), ~playerLayer))
         {
-            if (Vector3.Angle(Vector3.up, hitNormal) <= playerBody.slopeLimit)
+            if (Vector3.Angle(Vector3.up, hitNormal) <= playerBody.slopeLimit) // Use collider to check grond slope.
             {
                 slideSpeedX = 0;
                 slideSpeedZ = 0;
@@ -83,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Update()
     {
-        if (!Physics.Raycast(transform.position, -transform.up, (playerBody.height / (playerBody.height * 2)), ~playerLayer))
+        if (!Physics.Raycast(transform.position, -transform.up, (playerBody.height / (playerBody.height * 2)), ~playerLayer)) // Player is float on air.
             notTiltedGround = false;
 
         if (notTiltedGround)
@@ -149,13 +149,12 @@ public class PlayerMovement : MonoBehaviour
         }
 
         /////////////////////////////////////////////////////////////////
-        
-        ChMove(horizontalMove, verticalMove);
-        ChJump(horizontalMove, verticalMove);
+
+        MovePlayer(horizontalMove, verticalMove);
+        JumpPlayer(horizontalMove, verticalMove);
     }
 
-    // TODO: Rename this method to "MovePlayer"
-    public void ChMove(float horizontalMove, float verticalMove) // Character Move
+    public void MovePlayer(float horizontalMove, float verticalMove) // Character Move
     {
         if (gravity_Max > gravity && !isJumping)
             gravity += gravitySpeed * Time.unscaledDeltaTime;
@@ -196,16 +195,17 @@ public class PlayerMovement : MonoBehaviour
             moveZ = verticalMove;
 
         ////// Set player animator parameter. ///////////////////
-
+        #region
         if (Player.instance && Player.instance.animationController)
         {
             Player.instance.animationController.animator.SetBool(DashID, speed > originalSpeed && !CameraManager.fpsMode);
             Player.instance.animationController.animator.SetBool(CrouchID, speed < originalSpeed);
             Player.instance.animationController.AnimationWork(new Vector2(horizontalMove, verticalMove));
         }
+        #endregion
 
         /////////////////// Movement when player sliding ///////////////////////////
-        
+        #region
         if (slideSpeedZ != 0 && isJumping && !notTiltedGround)
         {
             moveZ /= 2;
@@ -222,17 +222,16 @@ public class PlayerMovement : MonoBehaviour
         myVelocity += Vector3.Normalize(transform.forward * moveZ) * speed;
 
         playerBody.Move(new Vector3(myVelocity.x, (-gravity + currJumpSpeed), myVelocity.z) * (200 * Time.unscaledDeltaTime));
-
+        #endregion
     }
 
-    // TODO: Rename this method to "JumpPlayer"
-    public void ChJump(float horizontalMove, float verticalMove) // Player Jump
+    public void JumpPlayer(float horizontalMove, float verticalMove) // Player Jump
     { 
         // Check Ground Slope;
         var playerHeight = playerBody.height;
         Debug.DrawRay(transform.position, -transform.up * (playerHeight / (playerHeight * 2)), Color.green);
         
-        if (notTiltedGround || playerBody.isGrounded)
+        if (notTiltedGround || playerBody.isGrounded) // Make Player can Jump 
         {
             if (!isJumping)
             {
@@ -241,7 +240,7 @@ public class PlayerMovement : MonoBehaviour
                 currJumpSpeed = airSpeedX = airSpeedZ = 0;
             }
         }
-        else 
+        else // Make Player can't Jump
         {
             isJumping = false; 
             
@@ -250,7 +249,7 @@ public class PlayerMovement : MonoBehaviour
                 Player.instance.animationController.Air();
                 
                 if (doJump != true)
-                    Player.instance.animationController.WaitngJump();
+                    Player.instance.animationController.waitngJump();
             }
         }
 
@@ -263,13 +262,14 @@ public class PlayerMovement : MonoBehaviour
                 
             if (Player.instance && Player.instance.animationController)
             {
-                Player.instance.animationController.Jump();
+                Player.instance.animationController.Jump(); // Play jump animation.
             }
-            var velocity = new Vector3(horizontalMove * speed, jumpSpeed, verticalMove * speed);
+            var velocity = new Vector3(horizontalMove * speed, jumpSpeed, verticalMove * speed); // Movement when player Jump.
             currJumpSpeed = jumpSpeed;
             playerBody.Move(velocity * Time.unscaledDeltaTime);
 
-            if (speed == dashspeed)
+            // Make fast turn is impossible.
+            if (speed == dashspeed) 
             {
                 airSpeedX = horizontalMove * speed / antiInertia;
                     

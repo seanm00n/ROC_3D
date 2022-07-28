@@ -20,6 +20,13 @@ public class UIController : MonoBehaviour
     [Header("Setting")]
     public GameObject setting;
 
+    Canvas canvas;
+
+    private void Awake()
+    {
+        canvas = GetComponent<Canvas>();
+        canvas.worldCamera = Camera.main;
+    }
     private void Update()
     {
         // Show Option
