@@ -5,6 +5,19 @@ using UnityEngine.Serialization;
 
 public class CameraManager : MonoBehaviour
 {
+    [Space]
+    [Header("Camera Stop")]
+    public bool stop = false;
+    [Space]
+    [Header("Camera Shake")]
+    public float amplitude;
+    public float frequency;
+    public float duration;
+    public float timeRemaining;
+    private Vector3 noiseOffset;
+    private Vector3 noise;
+    private AnimationCurve smoothCurve = new AnimationCurve(new Keyframe(0.0f, 0.0f, Mathf.Deg2Rad * 0.0f, Mathf.Deg2Rad * 720.0f), new Keyframe(0.2f, 1.0f), new Keyframe(1.0f, 0.0f));
+
     [Header("FPS Mode Options")]
     // handheld object that is always static to camera
     public GameObject bookVisibleFps;
@@ -62,7 +75,12 @@ public class CameraManager : MonoBehaviour
         target = Player.instance.transform;
         earlyTopAngle = topAngle;
         earlyDownAngle = downAngle;
-        
+
+        //Shake noise setting
+        float rand = 32.0f;
+        noiseOffset.x = Random.Range(0.0f, rand);
+        noiseOffset.y = Random.Range(0.0f, rand);
+        noiseOffset.z = Random.Range(0.0f, rand);
         // semi-disable clipping
         Camera.main.nearClipPlane = 0.01f;
     }
@@ -71,10 +89,12 @@ public class CameraManager : MonoBehaviour
     {
         // Prevent exception from method calls below
         if (!target) return;
-        
-        MoveCamera();
-        RotateCamera();
 
+        if (!stop)
+        {
+            MoveCamera();
+            RotateCamera();
+        }
         // Toggle fps mode (first-person-perspective?)
         if (Input.GetKeyDown(KeyCode.V))
         {
@@ -85,6 +105,27 @@ public class CameraManager : MonoBehaviour
                 bookVisibleFps.SetActive(fpsMode);
             }
         }
+
+        if (timeRemaining <= 0)
+            return;
+
+        float deltaTime = Time.deltaTime;
+        timeRemaining -= deltaTime;
+        float noiseOffsetDelta = deltaTime * frequency;
+
+        noiseOffset.x += noiseOffsetDelta;
+        noiseOffset.y += noiseOffsetDelta;
+        noiseOffset.z += noiseOffsetDelta;
+
+        noise.x = Mathf.PerlinNoise(noiseOffset.x, 0.0f);
+        noise.y = Mathf.PerlinNoise(noiseOffset.y, 1.0f);
+        noise.z = Mathf.PerlinNoise(noiseOffset.z, 2.0f);
+
+        noise -= Vector3.one * 0.5f;
+        noise *= amplitude;
+
+        float agePercent = 1.0f - (timeRemaining / duration);
+        noise *= smoothCurve.Evaluate(agePercent);
     }
     
     // This method not only moves the camera, but also rotates player's angles
@@ -94,7 +135,7 @@ public class CameraManager : MonoBehaviour
         var destination = new Vector3(position.x, position.y, position.z);
             
         transform.position = destination;
-
+        transform.position += noise;
         var pointY = target.eulerAngles.y + Input.GetAxisRaw("Mouse X") * cameraRotSpeed * Time.deltaTime;
             
         // Rotate player
@@ -152,7 +193,6 @@ public class CameraManager : MonoBehaviour
                     if (transform.localEulerAngles.x > topAngle) targetNum = 3; else if (pointX < downAngle) targetNum = 2;
                 }
 
-                transform.eulerAngles = rotateVelocity;
             }
             else if (targetNum == 2)
             {
@@ -167,7 +207,6 @@ public class CameraManager : MonoBehaviour
                 rotateVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
                 
 
-                transform.eulerAngles = rotateVelocity;
                 if (downAngle < pointX_ && pointX_ != 0) targetNum = 1;
 
             }
@@ -180,10 +219,10 @@ public class CameraManager : MonoBehaviour
                 
                 currentAngle = transform.eulerAngles.x;
                 rotateVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
-                transform.eulerAngles = rotateVelocity;
                 
                 if (30 > transform.eulerAngles.x) targetNum = 1;
             }
+            transform.eulerAngles = rotateVelocity;
         }
         else
         {
@@ -210,7 +249,9 @@ public class CameraManager : MonoBehaviour
         {
             upperAngle = 0.9999f;
         }
-        
+
+
+        transform.eulerAngles += noise;
         Player.instance.animationController.SetAngle(upperAngle);
     }
     #endregion
@@ -240,5 +281,22 @@ public class CameraManager : MonoBehaviour
         else newClampedPos = 0;
 
         return newClampedPos;
+    }
+
+    public IEnumerator Shake(float amp, float freq, float dur, float wait)
+    {
+        yield return new WaitForSeconds(wait);
+        float rand = 32.0f;
+        noiseOffset.x = Random.Range(0.0f, rand);
+        noiseOffset.y = Random.Range(0.0f, rand);
+        noiseOffset.z = Random.Range(0.0f, rand);
+        amplitude = amp;
+        frequency = freq;
+        duration = dur;
+        timeRemaining += dur;
+        if (timeRemaining > dur)
+        {
+            timeRemaining = dur;
+        }
     }
 }
