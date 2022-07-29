@@ -33635,7 +33635,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ae864a8579e05a42927f83cb6345a00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MonsterPref: {fileID: 5734518295392883112, guid: 5232686be244dbf489a6e721cab4be5f, type: 3}
+  MonsterPref: {fileID: 9022935257624592601, guid: 818200aae52262d4db26e645b5ece320, type: 3}
   MonsterBossPref: {fileID: 7920001953888836634, guid: f43545fb29a367248abf7b61449cd798, type: 3}
   ItemPref: {fileID: 5107814733925504306, guid: 5f5e50691085cbe4589c8be2dd132c3a, type: 3}
   Monster: []

@@ -39,10 +39,10 @@ private void OnDrawGizmosSelected () {
         Move();
     }
 
-    public void Hit (int attack) {
-        m_health -= attack;
+    public void Hit (int damage) {
+        m_health -= damage;
     }
-    public void Attack (string other) {//Move to Battle.cs
+    public void Attack (Collider other) {//Move to Battle.cs
         if (m_isDeath) {
             return;
         }
@@ -54,8 +54,8 @@ private void OnDrawGizmosSelected () {
         }
         if (!m_isAttacked) {
             if (0.5f < m_cooltime) {
-                GameObject.Find(other).GetComponent<IBattle>().Hit(m_attack);
-                m_isAttacked = true;//애니메이션 1회 당 1번 공격
+                other.GetComponent<IBattle>().Hit(m_attack);
+                m_isAttacked = true;
             }
         }
     }
@@ -125,7 +125,7 @@ private void OnDrawGizmosSelected () {
             other.gameObject.tag == "HQ" ||
             other.gameObject.tag == "Turret") {
             m_isInRange = true;
-            Attack(other.gameObject.tag);
+            Attack(other);
         }
     }
 

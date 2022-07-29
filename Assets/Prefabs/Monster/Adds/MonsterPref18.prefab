@@ -18265,7 +18265,7 @@ GameObject:
   - component: {fileID: 2807354936980759421}
   - component: {fileID: 4086153992916568506}
   m_Layer: 0
-  m_Name: Orc 2
+  m_Name: MonsterPref18
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
