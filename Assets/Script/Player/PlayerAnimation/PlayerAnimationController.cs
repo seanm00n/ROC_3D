@@ -94,6 +94,15 @@ public class PlayerAnimationController : MonoBehaviour
         animator.SetBool(AnimatorHashID.OnAttackID, false);
     }
 
+    public void FrontSkill()
+    {
+        animator.SetTrigger(AnimatorHashID.FrontAttackID);
+    }
+    public void HandUpSkill()
+    {
+        animator.SetTrigger(AnimatorHashID.HandUpID);
+    }
+
     public void SetAngle(float angle) // Player Head Rotate.
     {
         animator.SetFloat(AnimatorHashID.AngleID, angle);

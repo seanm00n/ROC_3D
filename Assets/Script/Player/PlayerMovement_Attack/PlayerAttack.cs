@@ -37,7 +37,6 @@ public class PlayerAttack : MonoBehaviour
 
     [Header("Effects")]
     public GameObject targetMarker;
-    public GameObject targetMarker2;
     public Transform parentPlace;
    
     private int currNumber;
@@ -440,26 +439,23 @@ public class PlayerAttack : MonoBehaviour
 
     public IEnumerator FrontAttack(int EffectNumber)
     {
-        if (targetMarker2 && casting == false)
+        if (casting == false)
         {
             aim.enabled = false;
-            targetMarker2.SetActive(true);
             //Waiting for confirm or deny
             while (true)
             {
                 var forwardCamera = Camera.main.transform.forward;
                 forwardCamera.y = 0.0f;
-                targetMarker2.transform.rotation = Quaternion.LookRotation(forwardCamera);
                 var vecPos = transform.position + forwardCamera * 4;
 
-                if (Input.GetMouseButtonDown(0) && casting == false)
-                {
                     Player.instance.movement.enabled = false;
                     cameraManager.stop = true;
                     casting = true;
                     canMove = false;
-                    targetMarker2.SetActive(false);
-                    
+
+                    Player.instance.animationController.FrontSkill();
+
                     StartCoroutine(cameraManager.Shake(0.4f, 7, 0.45f, 1f));
 
                     //Play sound FX if exist
@@ -481,16 +477,7 @@ public class PlayerAttack : MonoBehaviour
                     Player.instance.movement.enabled = true;
                     cameraManager.stop = false;
                     yield break;
-                }
-                else if (Input.GetMouseButtonDown(1) || skillBreak)
-                {
-                    skillBreak = false;
-                    canMove = true;
-                    targetMarker2.SetActive(false);
-                    aim.enabled = true;
-                    yield break;
-                }
-                yield return null;
+                
             }
         }
     }
@@ -729,8 +716,9 @@ public class PlayerAttack : MonoBehaviour
         {
             casting = true;
             canMove = false;
-            //SetAnimZero;
-            //anim.SetTrigger("Attack3");
+
+            Player.instance.animationController.HandUpSkill();
+
             StartCoroutine(cameraManager.Shake(0.4f, 5, 1f, 0.4f));
             if (EffectNumber == 5) StartCoroutine(cameraManager.Shake(0.5f, 5, 2f, castDelay));
             if (EffectNumber == 7) yield return new WaitForSeconds(0.4f);
@@ -805,13 +793,22 @@ public class PlayerAttack : MonoBehaviour
                     //SetAnimZero;
                 }
 
+                if (EffectNumber == 3)
+                {
+                    RaycastHit hit;
+                    if (Physics.Raycast(transform.position, -transform.up, out hit, 10f, ~player))
+                    {
+                        prefabsCast[EffectNumber].transform.up = hit.normal;
+                    }
+                }
+
                 casting = false;
                 canMove = true;
 
                 //Delay so that the effect returns to the character only after stopping
                 yield return new WaitForSeconds(endDelay);
                 prefabsCast[EffectNumber].transform.parent = parentPlace;
-                prefabsCast[EffectNumber].transform.position = parentPlace.position;
+                prefabsCast[EffectNumber].transform.position = parentPlace.position + prefabsCast[EffectNumber].transform.up;
             }
         }
         yield break;
