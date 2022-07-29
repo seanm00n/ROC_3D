@@ -5,6 +5,19 @@ using UnityEngine.Serialization;
 
 public class CameraManager : MonoBehaviour
 {
+    [Space]
+    [Header("Camera Stop")]
+    public bool stop = false;
+    [Space]
+    [Header("Camera Shake")]
+    public float amplitude;
+    public float frequency;
+    public float duration;
+    public float timeRemaining;
+    private Vector3 noiseOffset;
+    private Vector3 noise;
+    private AnimationCurve smoothCurve = new AnimationCurve(new Keyframe(0.0f, 0.0f, Mathf.Deg2Rad * 0.0f, Mathf.Deg2Rad * 720.0f), new Keyframe(0.2f, 1.0f), new Keyframe(1.0f, 0.0f));
+
     [Header("FPS Mode Options")]
     // handheld object that is always static to camera
     public GameObject bookVisibleFps;
@@ -17,9 +30,14 @@ public class CameraManager : MonoBehaviour
 
     public Transform target;
     public int targetNum = 1;
+    // targetNum
+    // 1: middle view but closer to wall
+    // 2: top view
+    // 3: down view
+
     public Transform targetPosition;
 
-    public float cameraRotSpeed = 200;
+    public static float cameraRotSpeed = 200;
     Vector3 cameraMoveVelocity;
 
     [Space]
@@ -27,16 +45,20 @@ public class CameraManager : MonoBehaviour
     private float currentAngle;
     private float earlyTopAngle;
     private float earlyDownAngle;
-    public float topAngle = 50;
+    public float topAngle = 60;
 
-    public float downAngle;
+    public float downAngle = -20;
     public float maxAngle = 80;
     public float minAngle = -40f;
 
     [Space]
     
-    public int[] exceptLayerNum;
-    public float clampedPos; // Block camera collision with wall.
+    public int[] exceptLayerNum; // Exception about clampedPos. 
+    public float clampedPos;
+    // clampedPos : Block camera collision with wall. 
+    // 0 : Normal
+    // 1 : When object cover player.
+    // 2 : When other stay behind player.
 
     // Singleton stuff
     public static CameraManager instance { get; private set; }
@@ -53,7 +75,12 @@ public class CameraManager : MonoBehaviour
         target = Player.instance.transform;
         earlyTopAngle = topAngle;
         earlyDownAngle = downAngle;
-        
+
+        //Shake noise setting
+        float rand = 32.0f;
+        noiseOffset.x = Random.Range(0.0f, rand);
+        noiseOffset.y = Random.Range(0.0f, rand);
+        noiseOffset.z = Random.Range(0.0f, rand);
         // semi-disable clipping
         Camera.main.nearClipPlane = 0.01f;
     }
@@ -62,10 +89,12 @@ public class CameraManager : MonoBehaviour
     {
         // Prevent exception from method calls below
         if (!target) return;
-        
-        MoveCamera();
-        RotateCamera();
 
+        if (!stop)
+        {
+            MoveCamera();
+            RotateCamera();
+        }
         // Toggle fps mode (first-person-perspective?)
         if (Input.GetKeyDown(KeyCode.V))
         {
@@ -76,6 +105,27 @@ public class CameraManager : MonoBehaviour
                 bookVisibleFps.SetActive(fpsMode);
             }
         }
+
+        if (timeRemaining <= 0)
+            return;
+
+        float deltaTime = Time.deltaTime;
+        timeRemaining -= deltaTime;
+        float noiseOffsetDelta = deltaTime * frequency;
+
+        noiseOffset.x += noiseOffsetDelta;
+        noiseOffset.y += noiseOffsetDelta;
+        noiseOffset.z += noiseOffsetDelta;
+
+        noise.x = Mathf.PerlinNoise(noiseOffset.x, 0.0f);
+        noise.y = Mathf.PerlinNoise(noiseOffset.y, 1.0f);
+        noise.z = Mathf.PerlinNoise(noiseOffset.z, 2.0f);
+
+        noise -= Vector3.one * 0.5f;
+        noise *= amplitude;
+
+        float agePercent = 1.0f - (timeRemaining / duration);
+        noise *= smoothCurve.Evaluate(agePercent);
     }
     
     // This method not only moves the camera, but also rotates player's angles
@@ -85,7 +135,7 @@ public class CameraManager : MonoBehaviour
         var destination = new Vector3(position.x, position.y, position.z);
             
         transform.position = destination;
-
+        transform.position += noise;
         var pointY = target.eulerAngles.y + Input.GetAxisRaw("Mouse X") * cameraRotSpeed * Time.deltaTime;
             
         // Rotate player
@@ -93,6 +143,7 @@ public class CameraManager : MonoBehaviour
     }
 
     // This method sets the player's Y position when looking at the sky or ground
+    #region
     void RotateCamera()
     {
         float pointX = transform.eulerAngles.x - Input.GetAxisRaw("Mouse Y") * cameraRotSpeed * Time.deltaTime;
@@ -118,7 +169,7 @@ public class CameraManager : MonoBehaviour
             }
         }
 
-        if (!fpsMode)
+        if (!fpsMode) // TPS MODE
         {
             float pointX_ = 0;
             if (pointX > 300 && downAngle < 0)
@@ -142,7 +193,6 @@ public class CameraManager : MonoBehaviour
                     if (transform.localEulerAngles.x > topAngle) targetNum = 3; else if (pointX < downAngle) targetNum = 2;
                 }
 
-                transform.eulerAngles = rotateVelocity;
             }
             else if (targetNum == 2)
             {
@@ -157,7 +207,6 @@ public class CameraManager : MonoBehaviour
                 rotateVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
                 
 
-                transform.eulerAngles = rotateVelocity;
                 if (downAngle < pointX_ && pointX_ != 0) targetNum = 1;
 
             }
@@ -170,10 +219,10 @@ public class CameraManager : MonoBehaviour
                 
                 currentAngle = transform.eulerAngles.x;
                 rotateVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);
-                transform.eulerAngles = rotateVelocity;
                 
                 if (30 > transform.eulerAngles.x) targetNum = 1;
             }
+            transform.eulerAngles = rotateVelocity;
         }
         else
         {
@@ -200,10 +249,14 @@ public class CameraManager : MonoBehaviour
         {
             upperAngle = 0.9999f;
         }
-        
+
+
+        transform.eulerAngles += noise;
         Player.instance.animationController.SetAngle(upperAngle);
     }
-    float ResetCamera(Camera cam)
+    #endregion
+
+    float ResetCamera(Camera cam) // Return to original camera position.
     {
         var newClampedPos = 0;
         var ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, -3));
@@ -230,8 +283,20 @@ public class CameraManager : MonoBehaviour
         return newClampedPos;
     }
 
-    public void CameraSensitivity(float Rot)
+    public IEnumerator Shake(float amp, float freq, float dur, float wait)
     {
-        cameraRotSpeed = Rot;
+        yield return new WaitForSeconds(wait);
+        float rand = 32.0f;
+        noiseOffset.x = Random.Range(0.0f, rand);
+        noiseOffset.y = Random.Range(0.0f, rand);
+        noiseOffset.z = Random.Range(0.0f, rand);
+        amplitude = amp;
+        frequency = freq;
+        duration = dur;
+        timeRemaining += dur;
+        if (timeRemaining > dur)
+        {
+            timeRemaining = dur;
+        }
     }
 }

@@ -4,41 +4,43 @@ using UnityEngine;
 
 public class GridStructure : MonoBehaviour
 {
-    [Header("Install Position Setting")]
-    public bool minus = false; // Minus => Down, Left
-    public bool installX = false;
-    public bool installY = false;
-    public bool installZ = false;
-
     [Space]
     [Header("Install Position Preview")]
     public Vector3 posPreview;
 
-    void Start()
+    [Space]
+    [Header("Install Direction")]
+    [Space]
+    public bool minus; // if minus is true => (Up -> Down, Right -> Left, Forward -> Backward)
+    [Space]
+    [Header("(0 or Anything = Up, 1 = Right, 2 = Forward)")]
+    public float installDirection;
+
+    private void Start()
     {
+        var scale = transform.parent.localScale;
+
         // Set install position.
-        if (minus)
+        positionSetting();
+    }
+    private void positionSetting() // Set install position.
+    {
+        Vector3 dir;
+
+        switch (installDirection) 
         {
-            if (installX == true)
-                posPreview = transform.position - new Vector3(transform.localScale.x * 2 + 0.005f, 0,0);
+            case 1:
+                dir = transform.parent.right;
+                break;
 
-            if (installY == true)
-                posPreview = transform.position - new Vector3(0, transform.localScale.y + 0.001f, 0);
+            case 2:
+                dir = transform.parent.forward;
+                break;
 
-            if (installZ == true)
-                posPreview = transform.position - new Vector3(0, 0, transform.localScale.z * 2 + 0.05f);
+            default:
+                dir = transform.parent.up;
+                break;
         }
-        else
-        {
-            if (installX == true)
-                posPreview = transform.position + new Vector3(transform.localScale.x * 2 + 0.005f, 0, 0);
-
-            if (installY == true)
-                posPreview = transform.position + new Vector3(0, transform.localScale.y + 0.001f, 0);
-
-            if (installZ == true)
-                posPreview = transform.position + new Vector3(0, 0, transform.localScale.z * 2 + 0.05f);
-        }
-        
+        posPreview = transform.parent.position + (dir * (transform.parent.localScale.y + 0.001f) * (minus? -1 : 1));
     }
 }

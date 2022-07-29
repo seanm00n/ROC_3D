@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IBattle
 {
 
     [Space]
@@ -35,11 +35,11 @@ public class Player : MonoBehaviour
     public PlayerAnimationController animationController;
     public PlayerAttack playerAttack;
     public PlayerMovement movement;
-    public UiController ui;
+    public UIController ui;
 
     //Single Tone Stuff//
     public static Player instance;
-    public static GameObject playerCamera;
+    public GameObject playerCamera;
 
     private void Awake()
     {
@@ -53,11 +53,12 @@ public class Player : MonoBehaviour
         if (!ui)
         {
             GameObject instance = Instantiate(uiPrefab);
-            ui = instance.GetComponent<UiController>();
+            ui = instance.GetComponent<UIController>();
         }
-        if (!playerCamera)
+        if (instance && !instance.playerCamera)
             playerCamera = Instantiate(cameraPrefab, transform.position, Quaternion.identity);
     }
+
     private void Update()
     {
         HpRefresh(); // Always hp value is changing.
@@ -97,7 +98,7 @@ public class Player : MonoBehaviour
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
     
-    public void Hit(float damage)
+    public void Hit(int damage)
     {
         if (hit == false && hp != 0)
         {

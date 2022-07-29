@@ -15,7 +15,7 @@ public class StructureSpawn_Test : MonoBehaviour
     public float distance = 15;
 
     [Space]
-    [Header("Install Object Positon")]
+    [Header("Install Object Position")]
     public Vector3 changePosValue;
 
     [Space]
@@ -69,13 +69,13 @@ public class StructureSpawn_Test : MonoBehaviour
 
                     if (structureMode == false)
                     {
-                        if (area && areaLayer != 0) area.SetActive(true);
+                        if (area && areaLayer != 0) area.SetActive(true); // Visible area.
                         structureMode = true;
                         Player.instance.playerAttack.enabled = false;
                     }
                     else
                     {
-                        if (area && areaLayer != 0) area.SetActive(false);
+                        if (area && areaLayer != 0) area.SetActive(false); // Unvisible area.
                         structureMode = false;
 
                     }
@@ -119,25 +119,33 @@ public class StructureSpawn_Test : MonoBehaviour
         }
         //////////////////////////////
         
-        if (structureMode == true) 
+        if (structureMode == true)
         {
+            //Mouse fixed
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+
             // Check Install is possible.
 
             Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-            //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); Other Way.
+            // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); Other Way.
 
             RaycastHit hit;
 
-            //Debug.DrawRay(ray.origin, ray.direction * distance,Color.red); If you want see...
+            // Debug.DrawRay(ray.origin, ray.direction * distance,Color.red); If you want see...
 
             if (Physics.Raycast(ray, out hit, distance, installLayer))
             {
                 Debug.DrawRay(hit.point, hit.normal, Color.blue);
 
-                if (hit.collider.gameObject.GetComponent<GridStructure>() != null)
-                    changePosValue = hit.collider.gameObject.GetComponent<GridStructure>().posPreview;
+                // install fixed position.
+                GridStructure grid;
+                if ((grid = hit.collider.gameObject.GetComponent<GridStructure>()) != null) 
+                {
+                    changePosValue = grid.posPreview;
+                } 
 
-                else changePosValue = new Vector3(0, 0, 0);
+                else changePosValue = new(0, 0, 0);
 
                 if (target == null && selectedPrefab[selectNumber])
                 {
@@ -149,10 +157,13 @@ public class StructureSpawn_Test : MonoBehaviour
                     if (changePosValue != new Vector3(0, 0, 0))
                     {
                         target.transform.position = changePosValue;
+                        target.transform.rotation = grid.transform.rotation;
                     }
                     else
+                    {
                         target.transform.position = hit.point;
-
+                        target.transform.up = hit.normal; // Set rotation according to ground slope.
+                    }
                 }
             }
             else if (target != null)
@@ -182,18 +193,22 @@ public class StructureSpawn_Test : MonoBehaviour
                         GameObject install;
                         if (changePosValue != new Vector3(0, 0, 0))
                         {
-                            install = Instantiate(prefab[selectNumber], changePosValue, Quaternion.identity);
+                            install = Instantiate(prefab[selectNumber], changePosValue, target.transform.rotation); // Set rotation according to preview.
                         }
                         else
                         {
                             install = Instantiate(prefab[selectNumber], hit.point, Quaternion.identity);
+
+                            if (install)
+                                install.transform.up = hit.normal; // Set rotation according to ground slope.
                         }
+
                         Turret t = install.GetComponentInChildren<Turret>();
-                        if (t != null)
+                        if (t != null) // If player spawn turret.
                         {
                             GameObject installHUI = Instantiate(prefabHUI[TurretNum], liveParent.transform);
-                            t.hui = installHUI;
-                            Slider turrets = install.GetComponentInChildren<Turret>().hpbar = installHUI.GetComponentInChildren<Slider>();
+                            t.hui = installHUI; // Need it to delete hp ui when turret is gone.
+                            Slider turrets = install.GetComponentInChildren<Turret>().hpBar = installHUI.GetComponentInChildren<Slider>(); // Set hp view.
                             turrets.maxValue = t.hp;
                             turrets.value = t.hp;
                         }
@@ -203,7 +218,7 @@ public class StructureSpawn_Test : MonoBehaviour
                 {
                     for (int i = 0; i < Install.renderers.Length; i++)
                     {
-                        Install.renderers[i].material.color = Color.red;
+                        Install.renderers[i].material.color = Color.red; // Change color when collision with obstacle.
                     }
                 }
             }

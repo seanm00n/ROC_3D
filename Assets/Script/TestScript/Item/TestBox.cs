@@ -7,17 +7,21 @@ public class TestBox : MonoBehaviour, IItem
 {
     [Header("Event")]
     public UnityEvent OpenBox;
-    
+
     //End use.
-    bool end = false;
+    private bool end = false;
 
-    // Used UI
-    GameObject skillWindow;
-    GameObject blackScreen;
+    PauseGame pause;
 
+    UIController ui;
+    private void Start()
+    {
+        pause = PauseGame.instance;
+    }
     private void Update()
     {
-        if(end == true && skillWindow && skillWindow.activeSelf == false)
+        if (!pause) return;
+        if(end == true && pause.skillWindow && pause.skillWindow.activeSelf == false)
         {
             Player.instance.movement.enabled = true;
             FindObjectOfType<CameraManager>().enabled = true;
@@ -26,33 +30,27 @@ public class TestBox : MonoBehaviour, IItem
     }
     public void Use() // Use Test Box
     {
-        Time.timeScale = 0f; // Stop time.
         OpenBox.Invoke(); // Start Event.
 
-        GetComponentInChildren<Canvas>().worldCamera = Camera.main;
-        
-        skillWindow = GameObject.Find("InGame_UI_sample").transform.Find("Skill_Upgrade").gameObject;
-        skillWindow.SetActive(true);
-        blackScreen = GameObject.Find("InGame_UI_sample").transform.Find("BlackOut").gameObject;
-        blackScreen.SetActive(true);
+        if (pause)
+        {
+            pause.blackScreen.SetActive(true);
+            pause.StopGame();
+            pause.skillWindow.SetActive(true);
+        }
 
-        Player.instance.movement.enabled = false;
-        Player.instance.playerAttack.enabled = false;
-        FindObjectOfType<CameraManager>().enabled = false;
-
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
         end = true;
     }
 
     public void UseEnd() // End use Test Box.
     {
-        Time.timeScale = 1f; // Time goes by. 
-
-        GetComponentInChildren<Canvas>().gameObject.SetActive(false);
-        if (StructureSpawn_Test.structureMode == false)
-        Player.instance.playerAttack.enabled = true;
-
+        
+        if (pause)
+        {
+            pause.skillWindow.SetActive(true);
+            pause.PlayGame();
+            pause.blackScreen.SetActive(false);
+        }
         Destroy(gameObject);
     }
 }

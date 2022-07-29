@@ -111,8 +111,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d15d96f85c48004ab1888899db2c04f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Compatibility: 1
-  remderers:
+  compatibility: 1
+  exceptLayer: 8
+  exceptLayer_2: 10
+  renderers:
   - {fileID: 3169894178894405034}
 --- !u!54 &73791530770720622
 Rigidbody:

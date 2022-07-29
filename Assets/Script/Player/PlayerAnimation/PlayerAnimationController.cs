@@ -1,10 +1,11 @@
+using ROC;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using TMPro;
 using UnityEngine.Serialization;
+using TMPro;
 
 public class PlayerAnimationController : MonoBehaviour
 {
@@ -19,8 +20,8 @@ public class PlayerAnimationController : MonoBehaviour
     [Space]
     [Header("Player Animator")]
     public Animator animator;
-    
-    void Awake()
+
+    private void Awake()
     {
         animator = GetComponent<Animator>();
     }
@@ -45,9 +46,9 @@ public class PlayerAnimationController : MonoBehaviour
         }
     }
 
-    public void WaitngJump()
+    public void waitngJump()
     {
-        animator.SetTrigger("JumpWaiting");
+        animator.SetTrigger(AnimatorHashID.JumpWaitingID);
         Player.instance.movement.doJump = false; // Block jump when "JumpWaiting" animation is work.
     }
 
@@ -55,47 +56,47 @@ public class PlayerAnimationController : MonoBehaviour
     {
         if (state == AnimationState.Jump || state == AnimationState.Air)
         {
-            animator.ResetTrigger("OnAir");
+            animator.ResetTrigger(AnimatorHashID.OnAirID);
             return;
         }
-        animator.SetTrigger("OnAir"); // End Jump, fall.
+        animator.SetTrigger(AnimatorHashID.OnAirID); // End Jump, fall.
     }
 
     public void AnimationWork(Vector2 move)
     {
         if (CameraManager.fpsMode == false)
         {
-            animator.SetFloat("Horizontal", move.x);
-            animator.SetFloat("Vertical", move.y);
+            animator.SetFloat(AnimatorHashID.HorizontalID, move.x);
+            animator.SetFloat(AnimatorHashID.VerticalID, move.y);
         }
     }
     public void Jump()
     {
-        animator.ResetTrigger("JumpWaiting");
+        animator.ResetTrigger(AnimatorHashID.JumpWaitingID);
 
         if (state == AnimationState.Jump) // Block repetitive animation.
             return;
 
-        animator.ResetTrigger("OnAir");
-        animator.SetTrigger("Jump");
+        animator.ResetTrigger(AnimatorHashID.OnAirID);
+        animator.SetTrigger(AnimatorHashID.JumpID);
     }
 
     public void Attack()
     {
-        if (CameraManager.fpsMode == false)
+        if (!CameraManager.fpsMode)
         {
-            animator.SetBool("OnAttack",true); //OnAttack help that player remain attack state.
-            animator.SetTrigger("Attack");
+            animator.SetBool(AnimatorHashID.OnAttackID, true); //OnAttack help that player remain attack state.
+            animator.SetTrigger(AnimatorHashID.AttackID);
         }
     }
     public void AttackEnd()
     {
-        animator.SetBool("OnAttack", false);
+        animator.SetBool(AnimatorHashID.OnAttackID, false);
     }
 
     public void SetAngle(float angle) // Player Head Rotate.
     {
-        animator.SetFloat("Angle", angle);
+        animator.SetFloat(AnimatorHashID.AngleID, angle);
     }
 
 }

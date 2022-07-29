@@ -585,27 +585,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b958d3d8da73e9f48a22872a13795c6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DamageSpeed: 30
-  Emergency:
+  damageSpeed: 30
+  attackCycleTime: 0.5
+  radius: 8
+  scope: {fileID: 5151253315898664019}
+  emergency:
   - {fileID: 3955156088194784119}
   - {fileID: 58375814435919531}
   - {fileID: 4448125832985897601, guid: 1efbe09027ce5a449b92c9d258d4b2bf, type: 3}
-  DamageEffect: {fileID: 3955156087321414750, guid: abfaa00760f785d4288878fb5224f9dc, type: 3}
-  ParentObject: {fileID: 5151253315898664023}
-  FirePosition: {fileID: 1104251782}
-  isLive: 1
-  Hui: {fileID: 0}
-  Hpbar: {fileID: 0}
-  HP: 100
-  AttackPrefab: {fileID: 7359820963638954428, guid: cde212bba52523b49b0fe5543f845ee1, type: 3}
+  damageEffect: {fileID: 3955156087321414750, guid: abfaa00760f785d4288878fb5224f9dc, type: 3}
+  parentObject: {fileID: 5151253315898664023}
+  firePosition: {fileID: 1104251782}
+  hui: {fileID: 0}
+  hpBar: {fileID: 0}
   target: {fileID: 0}
-  Attack: {fileID: 0}
   targetName:
     serializedVersion: 2
     m_Bits: 64
-  radius: 8
-  scope: {fileID: 5151253315898664019}
-  attackCycleTime: 0.5
+  attackPrefab: {fileID: 7359820963638954428, guid: cde212bba52523b49b0fe5543f845ee1, type: 3}
+  hp: 100
+  isAlive: 1
 --- !u!1 &8097911297172472265
 GameObject:
   m_ObjectHideFlags: 0
