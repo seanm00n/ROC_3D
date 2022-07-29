@@ -37,7 +37,7 @@ public class PlayerAttack : MonoBehaviour
 
     [Header("Effects")]
     public GameObject targetMarker;
-    public GameObject TargetMarker2;
+    public GameObject targetMarker2;
     public Transform parentPlace;
    
     private int currNumber;
@@ -440,17 +440,16 @@ public class PlayerAttack : MonoBehaviour
 
     public IEnumerator FrontAttack(int EffectNumber)
     {
-        if (TargetMarker2 && casting == false)
+        if (targetMarker2 && casting == false)
         {
             aim.enabled = false;
-            TargetMarker2.SetActive(true);
+            targetMarker2.SetActive(true);
             //Waiting for confirm or deny
             while (true)
             {
-                
                 var forwardCamera = Camera.main.transform.forward;
                 forwardCamera.y = 0.0f;
-                TargetMarker2.transform.rotation = Quaternion.LookRotation(forwardCamera);
+                targetMarker2.transform.rotation = Quaternion.LookRotation(forwardCamera);
                 var vecPos = transform.position + forwardCamera * 4;
 
                 if (Input.GetMouseButtonDown(0) && casting == false)
@@ -459,7 +458,7 @@ public class PlayerAttack : MonoBehaviour
                     cameraManager.stop = true;
                     casting = true;
                     canMove = false;
-                    TargetMarker2.SetActive(false);
+                    targetMarker2.SetActive(false);
                     
                     StartCoroutine(cameraManager.Shake(0.4f, 7, 0.45f, 1f));
 
@@ -487,7 +486,7 @@ public class PlayerAttack : MonoBehaviour
                 {
                     skillBreak = false;
                     canMove = true;
-                    TargetMarker2.SetActive(false);
+                    targetMarker2.SetActive(false);
                     aim.enabled = true;
                     yield break;
                 }
