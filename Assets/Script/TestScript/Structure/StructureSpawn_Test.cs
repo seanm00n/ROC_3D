@@ -65,13 +65,13 @@ public class StructureSpawn_Test : MonoBehaviour
             {
                 if (skillWindow.activeSelf == false)
                 {
-                    Player.instance.playerAttack.enabled = true;
+                    Player.instance.playerAttackSkill.enabled = true;
 
                     if (structureMode == false)
                     {
                         if (area && areaLayer != 0) area.SetActive(true); // Visible area.
                         structureMode = true;
-                        Player.instance.playerAttack.enabled = false;
+                        Player.instance.playerAttackSkill.enabled = false;
                     }
                     else
                     {

@@ -9,7 +9,7 @@ public class PauseGame : MonoBehaviour
     [Space]
     [Header("Player And Camera")] // Need to stop game.
     public PlayerMovement playerMovement;
-    public PlayerAttack playerAttack;
+    public PlayerAttackSkill playerAttackSkill;
     public CameraManager cameraManager;
 
     [Space]
@@ -20,7 +20,7 @@ public class PauseGame : MonoBehaviour
     //Single Tone
     public static PauseGame instance;
 
-    private void Start()
+    private void Awake()
     {
         if (!instance)
             instance = this;       
@@ -52,8 +52,8 @@ public class PauseGame : MonoBehaviour
         if (playerMovement)
             playerMovement.enabled = true;
 
-        if (playerAttack && StructureSpawn_Test.structureMode == false)
-            playerAttack.enabled = true;
+        if (playerAttackSkill && StructureSpawn_Test.structureMode == false)
+            playerAttackSkill.enabled = true;
 
         if (cameraManager)
             cameraManager.enabled = true;
@@ -69,11 +69,11 @@ public class PauseGame : MonoBehaviour
             if (!cameraManager) // Stop Control
             {
                 playerMovement = Player.instance.movement;
-                playerAttack = Player.instance.playerAttack;
+                playerAttackSkill = Player.instance.playerAttackSkill;
                 cameraManager = Player.instance.playerCamera.GetComponent<CameraManager>();
             }
             playerMovement.enabled = false;
-            playerAttack.enabled = false;
+            playerAttackSkill.enabled = false;
             cameraManager.enabled = false;
         }
         // Stop cursor lock

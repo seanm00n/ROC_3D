@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SkillAttack : MonoBehaviour
 {
+    public PlayerAttackSkill.skill skillName;
+
     [Header("Damage")]
     public int skillDamageValue;
 
@@ -21,13 +23,30 @@ public class SkillAttack : MonoBehaviour
 
     private Rigidbody skillRigidbody;
 
-    void Start()
+    private void Start()
     {
         if (turretAttack)
         {
             skillRigidbody = GetComponent<Rigidbody>();
             skillRigidbody.AddForce(transform.forward * 500f);
             Destroy(gameObject, 2f);
+        }
+    }
+
+    public void Update()
+    {
+        if (skillDamageValue != 0) return;
+        if (Player.instance.playerAttackSkill.qSkill == skillName) 
+        {
+            skillDamageValue = PlayerAttackSkill.qSkillData.damage;
+        }
+        else if (Player.instance.playerAttackSkill.eSkill == skillName)
+        {
+            skillDamageValue = PlayerAttackSkill.eSkillData.damage;
+        }
+        else if (Player.instance.playerAttackSkill.rSkill == skillName)
+        {
+            skillDamageValue = PlayerAttackSkill.rSkillData.damage;
         }
     }
 

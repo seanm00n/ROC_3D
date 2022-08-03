@@ -5,11 +5,10 @@ using UnityEngine.Events;
 
 public class Player : MonoBehaviour, IBattle
 {
-
     [Space]
     [Header("Player Status")]
-    public float hp = 100;
-    public float mp = 20;
+    public int hp = 100;
+    public int mp = 20;
     
     [Space]
     [Header("Case : Player is damaged")]
@@ -33,7 +32,7 @@ public class Player : MonoBehaviour, IBattle
     [Space]
     [Header("Player Feature")]
     public PlayerAnimationController animationController;
-    public PlayerAttack playerAttack;
+    public PlayerAttackSkill playerAttackSkill;
     public PlayerMovement movement;
     public UIController ui;
 
@@ -41,19 +40,25 @@ public class Player : MonoBehaviour, IBattle
     public static Player instance;
     public GameObject playerCamera;
 
+    // Absolute Value
+    public static int maxHp = 100;
+    public static int maxMp = 20;
+
     private void Awake()
     {
         if (!instance)
             instance = this;
 
         animationController = GetComponent<PlayerAnimationController>();
-        playerAttack = GetComponent<PlayerAttack>();
+        playerAttackSkill = GetComponent<PlayerAttackSkill>();
         movement = GetComponent<PlayerMovement>();
 
         if (!ui)
         {
             GameObject instance = Instantiate(uiPrefab);
             ui = instance.GetComponent<UIController>();
+
+            PauseGame.instance = ui.setting.GetComponent<PauseGame>();
         }
         if (instance && !instance.playerCamera)
             playerCamera = Instantiate(cameraPrefab, transform.position, Quaternion.identity);
@@ -81,7 +86,6 @@ public class Player : MonoBehaviour, IBattle
             else if (ui.hpBar.value > hp)
                 ui.hpBar.value -= 40 * Time.deltaTime; // 40 = Contractible Speed
         }
-        hp = (int)hp;
         ui.hpText.text = hp.ToString() + "/" + 100.ToString(); // Hp value is marked by hpText.text.
     }
 

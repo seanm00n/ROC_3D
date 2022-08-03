@@ -133,6 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5ccc332b6e247740bfd513af1bacb46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stop: 0
   amplitude: 0
   frequency: 0
   duration: 0
@@ -198,7 +199,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   exceptLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1535
 --- !u!54 &2709692016158783348
 Rigidbody:
   m_ObjectHideFlags: 0
