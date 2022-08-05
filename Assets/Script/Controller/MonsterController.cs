@@ -21,7 +21,6 @@ public class MonsterController : MonoBehaviour {
     void Init () {
         Monster = new GameObject[MaxMonsters];
     }
-    //스테이지별 재화 금액, 체력, 속도, 마릿수 등등 추가
     void MonsterGen () {
         if (Input.GetKeyDown(KeyCode.J)) {
             if (MIndex < MaxMonsters) {

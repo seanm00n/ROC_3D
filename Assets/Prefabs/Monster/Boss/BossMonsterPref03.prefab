@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 458774}
   - component: {fileID: 9545436}
-  - component: {fileID: 713130181}
   - component: {fileID: 713130180}
   - component: {fileID: 713130179}
   - component: {fileID: 713130178}
+  - component: {fileID: 6663885246749437236}
   m_Layer: 0
   m_Name: BossMonsterPref03
   m_TagString: Untagged
@@ -58,20 +58,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!64 &713130181
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100720}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 2f4e6492f506bbb4a8aeba850e3bb52f, type: 3}
 --- !u!54 &713130180
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -122,14 +108,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cd3ccc2ad8902a4484a0b910120b573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_stage: 3
-  m_isInRange: 0
   myIndex: 0
-  m_isBoss: 0
+  m_health: 15000
+  m_attack: 40
   Alliance:
     serializedVersion: 2
     m_Bits: 8
-  m_SightDistance: 10
+--- !u!136 &6663885246749437236
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100720}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &102148
 GameObject:
   m_ObjectHideFlags: 0
