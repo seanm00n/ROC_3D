@@ -38,12 +38,15 @@ public class SkillUpgrade : MonoBehaviour
 
 
     // Skill information
-    private static int[] skillGrade = new int[3]; // Player skill grade [ 0 : Q skill, 1: E skill, 2 : R skill]
-    private static bool[] skillComplete = new bool[3]; // Player skill grade [ 0 : Q skill, 1: E skill, 2 : R skill]
+    private static int[] skillGrade = new int[4]; // Player skill grade [ 0 : Q skill, 1: E skill, 2 : R skill] + 3 is passive skill
+    private static bool[] skillComplete = new bool[4]; // Player skill grade [ 0 : Q skill, 1: E skill, 2 : R skill] + 3 is passive skill
 
     private string[] skillDescriptions = new string[3];
     private string[] skillValues = new string[3];
     private string[] skillValuesEarly = new string[3];
+
+    // BoxType
+    public static int skillType = 0;
 
     // Sprite
     private Sprite selectedSkillView;
@@ -76,17 +79,35 @@ public class SkillUpgrade : MonoBehaviour
         savedSkillData[1] = new SkillData();
         savedSkillData[2] = new SkillData();
 
-        if (Player.instance.playerAttackSkill.rSkill == PlayerAttackSkill.skill.None)
-            ResetSkill();
-        else
-            ResetFinishedSkill();
-        if (PlayerAttackSkill.qSkillData == null)
+        if (Player.instance.ui.Hide.Length != 0)
         {
-            for(int i = 0; i < skillGrade.Length; i++)
-            skillGrade[i] = 0;
+            for (int j = 0; j < Player.instance.ui.Hide.Length; j++)
+            {
+                if (Player.instance.ui.Hide[j])
+                    Player.instance.ui.Hide[j].SetActive(true);
+            }
+        }
 
+        if (skillType == 0) 
+        {
+            if (Player.instance.playerAttackSkill.rSkill == PlayerAttackSkill.skill.None)
+                ResetSkill();
+            else
+                ResetFinishedSkill(); 
+        }
+        else if(skillType == 1)
+        {
+            if (Player.instance.playerAttackSkill.passiveSkill == PlayerAttackSkill.skill.None)
+                ResetSkill();
+            else
+                ResetFinishedSkill();
+        }
+        if (PlayerAttackSkill.qSkillData == null && PlayerAttackSkill.passiveSkillData == null)
+        {
+            for (int i = 0; i < skillGrade.Length; i++) 
+                    skillGrade[i] = 0;
             for (int i = 0; i < skillComplete.Length; i++)
-                skillComplete[i] = false;
+                    skillComplete[i] = false; 
         }
 
         if (PlayerAttackSkill.rSkillData == null)
@@ -138,12 +159,24 @@ public class SkillUpgrade : MonoBehaviour
                 retry = false;
                 comparativeValue = (int)Random.Range(1, 10);
 
-                if (skillView[comparativeValue - 1] == Player.instance.ui.qSkill.sprite)
+                // SkillType => 0 : normal 1: passive 
+                if (skillType == 0)
+                {
+                    if (skillView[comparativeValue - 1] == Player.instance.ui.qSkill.sprite)
+                        retry = true;
+                    else if (skillView[comparativeValue - 1] == Player.instance.ui.eSkill.sprite)
+                        retry = true;
+                    else if (skillView[comparativeValue - 1] == Player.instance.ui.rSkill.sprite)
+                        retry = true;
+
+                    if ((comparativeValue == 1) || (comparativeValue == 6) || (comparativeValue == 8)) retry = true;
+                }
+
+                else if(skillType == 1)
+                {
                     retry = true;
-                else if (skillView[comparativeValue - 1] == Player.instance.ui.eSkill.sprite)
-                    retry = true;
-                else if (skillView[comparativeValue - 1] == Player.instance.ui.rSkill.sprite)
-                    retry = true;
+                    if ((comparativeValue == 1) || (comparativeValue == 6) || (comparativeValue == 8)) retry = false;
+                }
             }
             while (((skillNumber == comparativeValue) || (comparativeValue == comparativeValueFirst)) || retry == true);
 
@@ -164,34 +197,49 @@ public class SkillUpgrade : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            int comparativeValue = 0; // When skill view already have skill.
+            int comparativeValue; // When skill view already have skill.
             bool retry = false; // When player already have skill.
 
             do
             {
                 retry = true;
                 comparativeValue = (int)Random.Range(1, 11);
+                if (skillType == 0)
+                {
+                    if (skillView[comparativeValue - 1] == Player.instance.ui.qSkill.sprite ||
+                        skillView[comparativeValue - 1] == Player.instance.ui.eSkill.sprite ||
+                        skillView[comparativeValue - 1] == Player.instance.ui.rSkill.sprite ||
+                        (comparativeValue) == 10)
+                        retry = false;
 
-                if (skillView[comparativeValue - 1] == Player.instance.ui.qSkill.sprite ||
-                    skillView[comparativeValue - 1] == Player.instance.ui.eSkill.sprite ||
-                    skillView[comparativeValue - 1] == Player.instance.ui.rSkill.sprite ||
-                    (comparativeValue) == 10)
-                    retry = false;
-
-                if(skillView[comparativeValue - 1] == skillView[0])
-                    retry = true;
+                    if (skillView[comparativeValue - 1] == skillView[0])
+                        retry = true;
+                }
+                else if(skillType == 1)
+                {
+                    if (Player.instance.ui.Hide.Length != 0)
+                    {
+                        for (int j = 0; j < Player.instance.ui.Hide.Length; j++)
+                        {
+                            if (Player.instance.ui.Hide[j])
+                                Player.instance.ui.Hide[j].SetActive(false);
+                        }
+                    }
+                    if (PlayerAttackSkill.passiveSkillData.thisSkill == InformationOfSkill.SkillName(comparativeValue))
+                        retry = false;
+                }
             }
-            while (((skillNumber == comparativeValue) || (comparativeValue == comparativeValueFirst)) || retry == true);
+            while ((skillType == 0 && ((skillNumber == comparativeValue) || (comparativeValue == comparativeValueFirst))) || retry == true);
             skillNumber = comparativeValue;
 
-            if (comparativeValueFirst == 0)
+            if (skillType == 0 && comparativeValueFirst == 0)
                 comparativeValueFirst = comparativeValue;
 
             selectedSkill(skillNumber, i);
             subjectOfApplicationSkillView[i].sprite = selectedSkillView;
 
+            currentSkill = 1;
         }
-        currentSkill = 1;
     }
 
     // Used in inspector
@@ -205,53 +253,76 @@ public class SkillUpgrade : MonoBehaviour
     {
         int skillGradeNumber = SkillButton(skill[skillNumber]);
         Sprite skillView = subjectOfApplicationSkillView[skillNumber].sprite;
-        
-        for (int i = 0; i < 3; i++)
-        {
-            if (Player.instance.ui.skillView[i] == null)
-            {
-                Player.instance.ui.skillView[i] = skillView;
-                switch (i) 
-                {
-                    case 0:
-                        Player.instance.playerAttackSkill.qSkill = skill[skillNumber];
-                        PlayerAttackSkill.qSkillData = savedSkillData[skillNumber];
-                        break;
-                    case 1:
-                        Player.instance.playerAttackSkill.eSkill = skill[skillNumber];
-                        PlayerAttackSkill.eSkillData = savedSkillData[skillNumber];
-                        break;
-                    case 2:
-                        Player.instance.playerAttackSkill.rSkill = skill[skillNumber];
-                        PlayerAttackSkill.rSkillData = savedSkillData[skillNumber];
-                        break;
-                }
-                currentSkillGrade = i;
-                break;
-            }
-        }
-
-        if (skill[skillNumber] == PlayerAttackSkill.skill.None)
+          if (skill[skillNumber] == PlayerAttackSkill.skill.None)
         {
             PlayerAttackSkill.normalDamage = savedSkillData[skillNumber].damage;
             PlayerAttackSkill.normalAttackMp = savedSkillData[skillNumber].usedMp;
         }
-        else if (skill[skillNumber] == PlayerAttackSkill.skill.Magic_1 || skill[skillNumber] == PlayerAttackSkill.skill.Shine_1)
+      else
+      {
+        if (skillType == 0)
         {
-            Player.instance.playerAttackSkill.SkillAvailable[currentSkillGrade] = true;
+            for (int i = 0; i < 3; i++)
+            {
+                if (Player.instance.ui.skillView[i] == null)
+                {
+                    Player.instance.ui.skillView[i] = skillView;
+                    switch (i)
+                    {
+                        case 0:
+                            Player.instance.playerAttackSkill.qSkill = skill[skillNumber];
+                            PlayerAttackSkill.qSkillData = savedSkillData[skillNumber];
+                            break;
+                        case 1:
+                            Player.instance.playerAttackSkill.eSkill = skill[skillNumber];
+                            PlayerAttackSkill.eSkillData = savedSkillData[skillNumber];
+                            break;
+                        case 2:
+                            Player.instance.playerAttackSkill.rSkill = skill[skillNumber];
+                            PlayerAttackSkill.rSkillData = savedSkillData[skillNumber];
+                            break;
+                    }
+                    currentSkillGrade = i;
+                    break;
+                }
+                }
+                InsertData(currentSkillGrade, skillNumber);
+                if (skillGradeNumber < 2)
+                {
+                    skillGrade[currentSkillGrade]++;
+                }
+                else
+                {
+                    skillComplete[currentSkillGrade] = true;
+                }
         }
-        else
+        else if (skillType == 1)
         {
-            if (skillGradeNumber < 2)
-                skillGrade[currentSkillGrade]++;
+            Player.instance.ui.passiveSkill.sprite = skillView;
+            Player.instance.ui.passiveSkill.gameObject.SetActive(true);
+
+            if (savedSkillData[skillNumber].thisSkill != PlayerAttackSkill.skill.Angel_2)
+                PassiveSkillEffect(savedSkillData[skillNumber].thisSkill);
+            InsertData(3, skillNumber);
+            if (Player.instance.playerAttackSkill.passiveSkill == PlayerAttackSkill.skill.None)
+            {
+                Player.instance.playerAttackSkill.passiveSkill = skill[skillNumber];
+                PlayerAttackSkill.passiveSkillData = savedSkillData[skillNumber];
+            }
+
+            if (skillGrade[3] < 2)
+            {
+                skillGrade[3]++;
+            }
             else
             {
-                skillComplete[currentSkillGrade] = true;
+                skillComplete[3] = true;
             }
         }
+      }
     }
 
-    int SkillButton(PlayerAttackSkill.skill skillQWE) // Show which is button. 
+    private int SkillButton(PlayerAttackSkill.skill skillQWE) // Show which is button. 
     {
         if (PlayerAttackSkill.qSkillData != null && PlayerAttackSkill.qSkillData.thisSkill == skillQWE)
         { 
@@ -264,6 +335,10 @@ public class SkillUpgrade : MonoBehaviour
         else if (PlayerAttackSkill.rSkillData != null && PlayerAttackSkill.rSkillData.thisSkill == skillQWE)
         {
             currentSkillGrade = 2;
+        }
+        else if (PlayerAttackSkill.passiveSkillData != null && PlayerAttackSkill.passiveSkillData.thisSkill == skillQWE)
+        {
+            currentSkillGrade = 3;
         }
         else
         {
@@ -278,7 +353,7 @@ public class SkillUpgrade : MonoBehaviour
 
     // All Skill
     #region
-    void selectedSkill(int choosedSkill, int skillNth)
+    private void selectedSkill(int choosedSkill, int skillNth)
     {
         int attack = 0;
         int percentValue = 0;
@@ -326,9 +401,9 @@ public class SkillUpgrade : MonoBehaviour
                 SetSkillInformation(skillNth, (choosedSkill - 1), PlayerAttackSkill.skill.Nature_1, choosedSkill);
                 grade = SkillButton(skill[skillNth]);
                 SetSkillPercentValue(ref choosedSkill, grade, ref percentValue, ref percentValueEarly, ref timeValue, ref timeValueEarly, skillNth);
-                skillValues[skillNth] = "체력 회복률 : " + percentValue + " 쿨타임 : " + timeValue;
+                skillValues[skillNth] = "체력 회복률 : " + percentValue + "%" + "      쿨타임 : " + timeValue;
                 if (grade > 0)
-                    skillValuesEarly[skillNth] = "[현재] 체력 회복률 : " + percentValueEarly + "%" + " 쿨타임 : " + timeValueEarly;
+                    skillValuesEarly[skillNth] = "[현재] 체력 회복률 : " + percentValueEarly + "%" + "      쿨타임 : " + timeValueEarly;
                 SaveSkillData(skillNth, 0, timeValue, 0, 0, 0, percentValue);
                 break;
 
@@ -370,7 +445,7 @@ public class SkillUpgrade : MonoBehaviour
         if (choosedSkill != 10) savedSkillData[skillNth].thisSkill = skill[skillNth];
     }
 
-    void SaveSkillData(int skillNth, int attack, int timeValue, int mp, int rebirthHp, int rebirthMp, int percentValue)
+    private void SaveSkillData(int skillNth, int attack, int timeValue, int mp, int rebirthHp, int rebirthMp, float percentValue)
     {
         savedSkillData[skillNth].damage = attack;
         savedSkillData[skillNth].limitTime = timeValue;
@@ -378,11 +453,11 @@ public class SkillUpgrade : MonoBehaviour
         savedSkillData[skillNth].rebirthHp = rebirthHp;
         savedSkillData[skillNth].rebirthMp = rebirthMp;
         savedSkillData[skillNth].declinedTime = percentValue / 100;
-        savedSkillData[skillNth].heal = percentValue / 100;
+        savedSkillData[skillNth].heal = (int) ((percentValue /100f) * Player.maxHp);
         savedSkillData[skillNth].addDamage = percentValue / 100;
     }
 
-    void AllSetAttackFucntion(ref int choosedSkill, ref int grade, ref int attack, ref int timeValue, ref int mp, ref int attackEarly, ref int timeValueEarly, ref int mpEarly, int skillNth)
+    private void AllSetAttackFucntion(ref int choosedSkill, ref int grade, ref int attack, ref int timeValue, ref int mp, ref int attackEarly, ref int timeValueEarly, ref int mpEarly, int skillNth)
     {
         grade = SkillButton(skill[skillNth]);
                 
@@ -391,7 +466,7 @@ public class SkillUpgrade : MonoBehaviour
         SaveSkillData(skillNth, attack, timeValue, mp, 0, 0, 0);
     }
 
-    void AllSetPercentFucntion(ref int choosedSkill, ref int grade, ref int percentValue, ref int percentValueEarly, string text, string textEarly, int skillNth, ref int timeValue, ref int timeValueEarly)
+    private void AllSetPercentFucntion(ref int choosedSkill, ref int grade, ref int percentValue, ref int percentValueEarly, string text, string textEarly, int skillNth, ref int timeValue, ref int timeValueEarly)
     {
         grade = SkillButton(skill[skillNth]);
 
@@ -400,14 +475,14 @@ public class SkillUpgrade : MonoBehaviour
         SaveSkillData(skillNth, 0, 0, 0, 0, 0, percentValue);
     }
 
-    void SetSkillInformation(int skillNth, int skillViewNum, PlayerAttackSkill.skill skillname, int choosedSkill)
+    private void SetSkillInformation(int skillNth, int skillViewNum, PlayerAttackSkill.skill skillname, int choosedSkill)
     {
         skill[skillNth] = skillname;
         selectedSkillView = skillView[skillViewNum];
         skillDescriptions[skillNth] = InformationOfSkill.Information(choosedSkill).skillDescription;
     }
 
-    void SetNormalAttack(int choosedSkill, ref int attack, ref int mp, ref int attackEarly, ref int mpEarly, int previous, int next, int skillNth)
+    private void SetNormalAttack(int choosedSkill, ref int attack, ref int mp, ref int attackEarly, ref int mpEarly, int previous, int next, int skillNth)
     {
         attack = InformationOfSkill.Information(choosedSkill).attack[previous];
         mp = InformationOfSkill.Information(choosedSkill).mp[previous];
@@ -416,7 +491,7 @@ public class SkillUpgrade : MonoBehaviour
         mpEarly = InformationOfSkill.Information(choosedSkill).mp[next];
     }
 
-    void SetSkillAttackValue(ref int choosedSkill, int grade, ref int attack, ref int timeValue, ref int mp, ref int attackEarly, ref int timeValueEarly, ref int mpEarly, int skillNth)
+    private void SetSkillAttackValue(ref int choosedSkill, int grade, ref int attack, ref int timeValue, ref int mp, ref int attackEarly, ref int timeValueEarly, ref int mpEarly, int skillNth)
     {
         attack = skillGradeCheck(grade, InformationOfSkill.Information(choosedSkill).attack[1], InformationOfSkill.Information(choosedSkill).attack[2]);
         timeValue = skillGradeCheck(grade, InformationOfSkill.Information(choosedSkill).timeValue[1], InformationOfSkill.Information(choosedSkill).timeValue[2]);
@@ -442,7 +517,7 @@ public class SkillUpgrade : MonoBehaviour
         if (timeValueEarly == 0) timeValueEarly = InformationOfSkill.Information(choosedSkill).timeValue[0];
         if (mpEarly == 0) mpEarly = InformationOfSkill.Information(choosedSkill).mp[0];
     }
-    void SetSkillPercentValue(ref int choosedSkill, int grade, ref int percentValue, ref int percentValueEarly, ref int timeValue, ref int timeValueEarly, int skillNth)
+    private void SetSkillPercentValue(ref int choosedSkill, int grade, ref int percentValue, ref int percentValueEarly, ref int timeValue, ref int timeValueEarly, int skillNth)
     {
         percentValue = skillGradeCheck(grade, InformationOfSkill.Information(choosedSkill).percentValue[1], InformationOfSkill.Information(choosedSkill).percentValue[2]);
         timeValue = skillGradeCheck(grade, InformationOfSkill.Information(choosedSkill).timeValue[1], InformationOfSkill.Information(choosedSkill).timeValue[2]);
@@ -464,18 +539,52 @@ public class SkillUpgrade : MonoBehaviour
         if (timeValueEarly == 0) timeValueEarly = InformationOfSkill.Information(choosedSkill).timeValue[0];
     }
 
-    void SetAttackSkillValueDescription(int skillNth, int grade, int attack, int timeValue, int mp, int attackEarly, int timeValueEarly, int mpEarly)
+    private void SetAttackSkillValueDescription(int skillNth, int grade, int attack, int timeValue, int mp, int attackEarly, int timeValueEarly, int mpEarly)
     {
         skillValues[skillNth] = "공격력 : " + attack + "       쿨타임 : " + timeValue + "       소비 마나 : " + mp;
         if (grade > 0)
             skillValuesEarly[skillNth] = "[현재] 공격력 : " + attackEarly + "       쿨타임 : " + timeValueEarly + "       소비 마나 : " + mpEarly;
     }
 
-    void SetPercentSkillValueDescription(int skillNth, int grade, int percentValue, int percentValueEarly, string text, string textEarly)
+    private void SetPercentSkillValueDescription(int skillNth, int grade, int percentValue, int percentValueEarly, string text, string textEarly)
     {
-        skillValues[skillNth] = text + percentValue;
+        skillValues[skillNth] = text + percentValue + "%";
         if (grade > 0)
-            skillValuesEarly[skillNth] = textEarly + percentValueEarly;
+            skillValuesEarly[skillNth] = textEarly + percentValueEarly + "%";
     }
 
+    private void InsertData(int Data, int skillNumber)
+    {
+        switch (Data)
+        {
+            case 0:
+                if (PlayerAttackSkill.qSkillData != null)
+                {
+                    PlayerAttackSkill.qSkillData = savedSkillData[skillNumber];
+                }
+                break;
+            case 1:
+                if (PlayerAttackSkill.eSkillData != null)
+                {
+                    PlayerAttackSkill.eSkillData = savedSkillData[skillNumber];
+                }
+                break;
+            case 2:
+                if (PlayerAttackSkill.rSkillData != null)
+                {
+                    PlayerAttackSkill.rSkillData = savedSkillData[skillNumber];
+                }
+                break;
+            case 3:
+                if (PlayerAttackSkill.passiveSkillData != null)
+                {
+                    PlayerAttackSkill.passiveSkillData = savedSkillData[skillNumber];
+                }
+                break;
+        }
+    }
+    private void PassiveSkillEffect(PlayerAttackSkill.skill skill)
+    {
+        Player.instance.playerAttackSkill.PassiveEffect(skill);
+    }
 }

@@ -7,9 +7,11 @@ public class Player : MonoBehaviour, IBattle
 {
     [Space]
     [Header("Player Status")]
-    public int hp = 100;
+    public float hp = 100;
     public int mp = 20;
-    
+    public bool unbeatable = false;
+    public static int theNumberOfDeaths = 0;
+
     [Space]
     [Header("Case : Player is damaged")]
     public bool hit; // Hit show that player is damaged.
@@ -22,8 +24,8 @@ public class Player : MonoBehaviour, IBattle
     [Space]
     [Header("Prefabs")]
     public GameObject uiPrefab;
-    public GameObject cameraPrefab;
     public GameObject gameoverPrefab;
+    public CameraManager cameraPrefab;
 
     [Space]
     [Header("Player View")]
@@ -36,9 +38,11 @@ public class Player : MonoBehaviour, IBattle
     public PlayerMovement movement;
     public UIController ui;
 
+    public bool cameraStop = false;
+
     //Single Tone Stuff//
     public static Player instance;
-    public GameObject playerCamera;
+    public CameraManager playerCamera;
 
     // Absolute Value
     public static int maxHp = 100;
@@ -69,11 +73,26 @@ public class Player : MonoBehaviour, IBattle
         HpRefresh(); // Always hp value is changing.
         MpRefresh(); // Always mp value is changing.
 
+        if(cameraStop && playerCamera.stop != true)
+            playerCamera.stop = true;
+        if(!cameraStop && playerCamera.stop == true)
+            playerCamera.stop = false;
+
+
         if (Input.GetKeyDown(KeyCode.K))
         {
-            onDeath.Invoke();
+            Hit(100);
         }
+
     }
+    private void StopPlaying(bool stopPlaying)
+    {
+        cameraStop = stopPlaying;
+        unbeatable = stopPlaying;
+        movement.enabled = !stopPlaying;
+        playerAttackSkill.enabled = !stopPlaying;
+    }
+
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -94,16 +113,18 @@ public class Player : MonoBehaviour, IBattle
         if ((int)(ui.mpBar.value - mp) != 0 || (int)(ui.mpBar.value) != mp)
         {
             if (ui.mpBar.value < mp)
-                ui.mpBar.value += 10 * Time.deltaTime;
+                ui.mpBar.value += 10 * Time.deltaTime; // 10 = Rise Speed
             else if (ui.mpBar.value > mp)
-                ui.mpBar.value -= 10 * Time.deltaTime;
+                ui.mpBar.value -= 10 * Time.deltaTime; // 10 = Contractible Speed
         }
+        ui.mpText.text = mp.ToString() + "/" + 20.ToString(); // Mp value is marked by mpText.text.
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
     
     public void Hit(int damage)
     {
+        if (unbeatable) return;
         if (hit == false && hp != 0)
         {
             hit = true;
@@ -118,14 +139,30 @@ public class Player : MonoBehaviour, IBattle
             if (hp == 0)
             {
                 hit = false;
-                onDeath.Invoke();
-                animationController.animator.SetTrigger("Death");
+                animationController.OnDeath();
+                CameraManager.fpsMode = false;
+                playerCamera.bookVisibleFps.SetActive(false);
+                if (theNumberOfDeaths == 0 && playerAttackSkill.passiveSkill == PlayerAttackSkill.skill.Angel_2)
+                {
+                    playerCamera.stop = true;
+                    playerCamera.gameObject.transform.position = playerCamera.dieCameraTransform.position;
+                    StopPlaying(true);
+                    animationController.OnRebirth();
+                    theNumberOfDeaths++;
 
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-                return;
+                    return;
+                }
+
+                else
+                {
+                    onDeath.Invoke();
+
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.None;
+                    return;
+                }
             }
-            animationController.animator.SetTrigger("Damaged");
+            animationController.OnDamaged();
             StartCoroutine(PlayerDamageRotator());
         }
     }
@@ -135,6 +172,14 @@ public class Player : MonoBehaviour, IBattle
         Camera.main.gameObject.SetActive(false);
         ui.gameObject.SetActive(false);
         GameObject gameover = Instantiate(gameoverPrefab);
+    }
+
+    public void Rebirth()
+    {
+        hp = PlayerAttackSkill.passiveSkillData.rebirthHp;
+        mp = PlayerAttackSkill.passiveSkillData.rebirthMp;
+
+        StopPlaying(false);
     }
 
     IEnumerator PlayerDamageRotator()

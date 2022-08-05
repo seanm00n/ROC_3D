@@ -7,7 +7,6 @@ namespace ROC
     public class InformationOfSkill
     {
         public static SkillValue skill = new SkillValue();
-
         private static void SetSkillValue(int attack01, int attack02, int attack03, int timeValue01, int timeValue02, int timeValue03, int mp01, int mp02, int mp03)
         {
             // Attack
@@ -34,12 +33,38 @@ namespace ROC
             skill.percentValue[2] = percent03;
         }
 
+        public static PlayerAttackSkill.skill SkillName(int skillNumber)
+        {
+            switch (skillNumber)
+            {
+                case 1:
+                    return PlayerAttackSkill.skill.Angel_2;
+                case 2: // Attack Skill
+                    return PlayerAttackSkill.skill.EnergyStrike_1;
+                case 3: // Attack Skill
+                    return PlayerAttackSkill.skill.Energy_1;
+                case 4: // Attack Skill
+                    return PlayerAttackSkill.skill.FrontExplosion_2;
+                case 5: // Attack Skill
+                    return PlayerAttackSkill.skill.LightRay_1;
+                case 6:
+                    return PlayerAttackSkill.skill.Magic_1;
+                case 7:
+                    return PlayerAttackSkill.skill.Nature_1;
+                case 8:
+                    return PlayerAttackSkill.skill.Shine_1;
+                case 9: // Attack Skill
+                    return PlayerAttackSkill.skill.Shine_2;
+            }
+            return PlayerAttackSkill.skill.None;
+        }
+
         public static SkillValue Information(int skillNum)
         {
             switch (skillNum) 
             {
                 case 1:
-                    skill.skillDescription = "[천사의 은총 / 특수 스킬] 죽을시 단 한번 부활 가능하다.";
+                    skill.skillDescription = "[천사의 은총 / 특수 스킬] 죽을 시 단 한번 부활 가능하다.                             (절반의 Hp,Mp를 가지고 부활)";
                     break;
 
                 case 2:

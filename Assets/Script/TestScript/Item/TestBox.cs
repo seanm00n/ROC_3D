@@ -5,6 +5,11 @@ using UnityEngine.Events;
 
 public class TestBox : MonoBehaviour, IItem
 {
+    // SkillType => 0 : normal 1: passive 
+    [Header("SkillType")]
+    public int skillType = 0;
+
+    [Space]
     [Header("Event")]
     public UnityEvent OpenBox;
 
@@ -36,6 +41,7 @@ public class TestBox : MonoBehaviour, IItem
         OpenBox.Invoke(); // Start Event.
         if (pause)
         {
+            SkillUpgrade.skillType = skillType;
             pause.blackScreen.SetActive(true);
             pause.StopGame();
             pause.skillWindow.SetActive(true);

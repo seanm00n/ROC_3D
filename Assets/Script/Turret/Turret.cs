@@ -119,11 +119,11 @@ public class Turret : MonoBehaviour, IBattle
             // Check Target is live.
             if (target.GetComponent<MonsterAI>())
             {
-                if (target.GetComponent<Animator>().GetBool("Death"))
-                {
-                    target = null;
-                    return;
-                }
+                //if (target.GetComponent<Animator>().GetBool("Death"))
+                //{
+                //    target = null;
+                //    return;
+                //}
             }
             
             transform.LookAt(target.transform);

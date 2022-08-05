@@ -48,36 +48,46 @@ public class PauseGame : MonoBehaviour
 
     public void PlayGame() // Start Gameplay again.
     {
-        // Can control again.
-        if (playerMovement)
-            playerMovement.enabled = true;
+        if (Player.instance)
+            Player.instance.unbeatable = false;
 
-        if (playerAttackSkill && StructureSpawn_Test.structureMode == false)
-            playerAttackSkill.enabled = true;
+        if (Player.instance.hp != 0)
+        {
+            // Can control again.
+            if (playerMovement)
+                playerMovement.enabled = true;
 
-        if (cameraManager)
-            cameraManager.enabled = true;
+            if (playerAttackSkill && StructureSpawn_Test.structureMode == false)
+                playerAttackSkill.enabled = true;
 
+            if (cameraManager)
+                cameraManager.enabled = true;
+        }
         Time.timeScale = 1f; // Unfreeze time
     }
     public void StopGame() // Stop Game Play
     {
-
-        Time.timeScale = 0f; // Freeze time
         if (Player.instance)
+            Player.instance.unbeatable = true;
+        Time.timeScale = 0f; // Freeze time
+
+        if (Player.instance.hp != 0)
         {
-            if (!cameraManager) // Stop Control
+            if (Player.instance)
             {
-                playerMovement = Player.instance.movement;
-                playerAttackSkill = Player.instance.playerAttackSkill;
-                cameraManager = Player.instance.playerCamera.GetComponent<CameraManager>();
+                if (!cameraManager) // Stop Control
+                {
+                    playerMovement = Player.instance.movement;
+                    playerAttackSkill = Player.instance.playerAttackSkill;
+                    cameraManager = Player.instance.playerCamera.GetComponent<CameraManager>();
+                }
+                playerMovement.enabled = false;
+                playerAttackSkill.enabled = false;
+                cameraManager.enabled = false;
             }
-            playerMovement.enabled = false;
-            playerAttackSkill.enabled = false;
-            cameraManager.enabled = false;
+            // Stop cursor lock
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
-        // Stop cursor lock
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
     }
 }

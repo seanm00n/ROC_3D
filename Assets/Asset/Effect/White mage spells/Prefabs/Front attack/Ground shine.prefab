@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4313419358257980}
   - component: {fileID: 198714679785221142}
   - component: {fileID: 199903657085327748}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Lightning
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5001,7 +5001,7 @@ GameObject:
   - component: {fileID: 4641414820480770}
   - component: {fileID: 198644199647043608}
   - component: {fileID: 199022299154830806}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Flash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9883,9 +9883,12 @@ GameObject:
   - component: {fileID: 4171303629630768}
   - component: {fileID: 198254599480890864}
   - component: {fileID: 199614621488648482}
-  m_Layer: 0
+  - component: {fileID: 7421738372440521681}
+  - component: {fileID: 4086881580800408210}
+  - component: {fileID: 3014567174052390089}
+  m_Layer: 1
   m_Name: Ground shine
-  m_TagString: Untagged
+  m_TagString: PlayerAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14775,6 +14778,53 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &7421738372440521681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515678706149418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76a6346bf6fbe4247ab6baf5b5a81f9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: 3
+  skillDamageValue: 0
+  sustainmentTime: 0.25
+  turretAttack: 0
+  monsterLayerNumber: 6
+  explosion: {fileID: 1795992203533318, guid: 890aba7398207db48978724168fac5a7, type: 3}
+--- !u!65 &4086881580800408210
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515678706149418}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 3.5901, z: 1}
+  m_Center: {x: 0, y: 1.7475008, z: 0}
+--- !u!54 &3014567174052390089
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515678706149418}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 14
+  m_CollisionDetection: 0
 --- !u!1 &1531938089252582
 GameObject:
   m_ObjectHideFlags: 0
@@ -14786,7 +14836,7 @@ GameObject:
   - component: {fileID: 4369482624360920}
   - component: {fileID: 198807374343772774}
   - component: {fileID: 199787182400946330}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Lightning
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19668,7 +19718,7 @@ GameObject:
   - component: {fileID: 4489713281878910}
   - component: {fileID: 198590352994400668}
   - component: {fileID: 199339165606993558}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Distortion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24608,7 +24658,7 @@ GameObject:
   - component: {fileID: 4936077721812808}
   - component: {fileID: 198210154486955892}
   - component: {fileID: 199813636309517124}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Derbis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29499,7 +29549,7 @@ GameObject:
   - component: {fileID: 4956720745080002}
   - component: {fileID: 198655493159971384}
   - component: {fileID: 199145032718265904}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: FireBurst
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34390,7 +34440,7 @@ GameObject:
   - component: {fileID: 4077709579837946}
   - component: {fileID: 198010778062115782}
   - component: {fileID: 199930338331232068}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Ray
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39281,7 +39331,7 @@ GameObject:
   - component: {fileID: 4181373253187636}
   - component: {fileID: 198276146724834998}
   - component: {fileID: 199490451199303694}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44172,7 +44222,7 @@ GameObject:
   - component: {fileID: 4124474306134142}
   - component: {fileID: 198973447039181006}
   - component: {fileID: 199434091046256944}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Rays
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49054,7 +49104,7 @@ GameObject:
   - component: {fileID: 4380280519623572}
   - component: {fileID: 198630977823533948}
   - component: {fileID: 199591916534172870}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Crater
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53936,7 +53986,7 @@ GameObject:
   - component: {fileID: 4101366457094644}
   - component: {fileID: 198900845645954900}
   - component: {fileID: 199775061228536758}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58827,7 +58877,7 @@ GameObject:
   - component: {fileID: 4618082767195150}
   - component: {fileID: 198184386804028632}
   - component: {fileID: 199439874094653094}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: RayCore
   m_TagString: Untagged
   m_Icon: {fileID: 0}

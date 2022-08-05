@@ -15,7 +15,7 @@ public class SkillData
     public int heal = 0;
     public int rebirthHp = 0;
     public int rebirthMp = 0;
-    public int addDamage;
+    public float addDamage;
     
     public float declinedTime = 0;
     public float limitTime = 0;
@@ -34,13 +34,17 @@ public class PlayerAttackSkill : MonoBehaviour
     public skill qSkill = skill.None;
     public skill eSkill = skill.None;
     public skill rSkill = skill.None;
+    
+    public skill passiveSkill = skill.None;
 
-    public bool[] SkillAvailable = new bool[3];
+    public bool[] SkillAvailable = new bool[4];
 
     public static int normalAttackMp = 4; // Mp for player normal attack.
     public static SkillData qSkillData;
     public static SkillData eSkillData;
     public static SkillData rSkillData;
+
+    public static SkillData passiveSkillData;
 
     bool skillBreak; // Stop skill
 
@@ -186,8 +190,9 @@ public class PlayerAttackSkill : MonoBehaviour
 
         ///// Skill Setting/////////////////////////////////////////////////////////////////
         if (qSkillData != null && qSkill != qSkillData.thisSkill) qSkill = qSkillData.thisSkill;
-        if (eSkillData != null && eSkill != eSkillData.thisSkill) qSkill = eSkillData.thisSkill;
-        if (rSkillData != null && rSkill != rSkillData.thisSkill) qSkill = rSkillData.thisSkill;
+        if (eSkillData != null && eSkill != eSkillData.thisSkill) eSkill = eSkillData.thisSkill;
+        if (rSkillData != null && rSkill != rSkillData.thisSkill) rSkill = rSkillData.thisSkill;
+        if (passiveSkillData != null && passiveSkill != passiveSkillData.thisSkill) passiveSkill = passiveSkillData.thisSkill;
 
         ///// Skill /////////////////////////////////////////////////////////////////
         int usedSkillNumber = 9;
@@ -206,6 +211,14 @@ public class PlayerAttackSkill : MonoBehaviour
 
         if (usedSkillNumber != 9) // 9 is break.
         {
+            
+            // Skill Delay Time is end //////////////////
+            if (SkillAvailable[usedSkillNumber] == false && Player.instance.ui.sLock[usedSkillNumber].fillAmount == 0)
+            {
+                SkillAvailable[usedSkillNumber] = true;
+            }
+            /////////////////////////////////////////////
+        
             if (!SkillAvailable[usedSkillNumber])
             {
                 usedSkillNumber = 9; 
@@ -300,13 +313,11 @@ public class PlayerAttackSkill : MonoBehaviour
 
     private void Skill(skill usedSkill, SkillData data, int usedSkillNumber)
     {
-        switch(usedSkill)
+        switch (usedSkill)
         {
             case skill.Angel_2 : // Skill 1 : one time
 
-                if (fastSkillrefresh[1] == false)
                     StartCoroutine(FastPlay(1, 0, 2.5f));
-                    SkillAvailable[usedSkillNumber] = false;
                 break;
 
             case skill.EnergyStrike_1: // Skill 2
@@ -326,6 +337,10 @@ public class PlayerAttackSkill : MonoBehaviour
                     Destroy(buff, buffPS.main.duration);
                     effect = prefabs[9].GetComponent<ParticleSystem>();
                     effect.Play();
+                    UseSkill(ref SkillAvailable[usedSkillNumber], data, usedSkillNumber);
+
+                    StartCoroutine(Player.instance.ui.LockskillView(Player.instance.ui.sLock[usedSkillNumber], data));
+
                     if (prefabs[9].GetComponent<AudioSource>())
                     {
                         soundComponent = prefabs[9].GetComponent<AudioSource>();
@@ -345,13 +360,16 @@ public class PlayerAttackSkill : MonoBehaviour
                     useUlt = true;
                 }
                 else
-                    StartCoroutine(PreCast(6,data, usedSkillNumber));
-                
+                {
+                    StartCoroutine(PreCast(6, data, usedSkillNumber));
+                }
+
                 break;
 
             case skill.FrontExplosion_2: // Skill 4
 
                 UseSkill(ref SkillAvailable[usedSkillNumber], data, usedSkillNumber);
+                StartCoroutine(Player.instance.ui.LockskillView(Player.instance.ui.sLock[usedSkillNumber], data));
                 Player.instance.mp -= data.usedMp;
                 canMove = false;
                 StartCoroutine(FrontAttack(4));
@@ -371,15 +389,26 @@ public class PlayerAttackSkill : MonoBehaviour
 
                 if (fastSkillrefresh[7] == false)
                     StartCoroutine(FastPlay(7, 1.1f, 0.5f));
-                    SkillAvailable[usedSkillNumber] = false;
                 break;
 
             case skill.Nature_1: // Skill 7 
+                
+                // Heal
+                if((Player.instance.hp + data.heal) <= Player.maxHp)
+                {
+                    Player.instance.hp += data.heal;
+                }
+                else
+                {
+                    Player.instance.hp = Player.maxHp;
+                }
 
                 UseSkill(ref SkillAvailable[usedSkillNumber], data, usedSkillNumber);
                 if (fastSkillrefresh[2] == false)
-                    StartCoroutine(FastPlay(2, 0.35f, 2.5f));                    
-                    SkillAvailable[usedSkillNumber] = false;
+                    StartCoroutine(FastPlay(2, 0.35f, 2.5f));
+                    StartCoroutine(Player.instance.ui.LockskillView(Player.instance.ui.sLock[usedSkillNumber], data));
+
+                SkillAvailable[usedSkillNumber] = false;
                 break;
 
             case skill.Shine_1: // Skill 8 : one time
@@ -392,6 +421,7 @@ public class PlayerAttackSkill : MonoBehaviour
 
                 UseSkill(ref SkillAvailable[usedSkillNumber], data, usedSkillNumber);
                 Player.instance.mp -= data.usedMp;
+                StartCoroutine(Player.instance.ui.LockskillView(Player.instance.ui.sLock[usedSkillNumber], data));
                 if (fastSkillrefresh[5] == false)
                     StartCoroutine(FastPlay(5, 1.5f, 2.5f));
                     SkillAvailable[usedSkillNumber] = false;
@@ -468,14 +498,71 @@ public class PlayerAttackSkill : MonoBehaviour
         return index;
     }
 
+    public float DeclineTime(SkillData skillData)
+    {
+        float declinedTime = 0;
+        if (passiveSkillData != null)
+        {
+            declinedTime = skillData.limitTime * passiveSkillData.declinedTime;
+        }
+
+        return declinedTime;
+    }
 
     public void UseSkill(ref bool skill, SkillData skillData, int skillNth)
     {
         skill = false;
-        StartCoroutine(WaitNextSkill(skillNth, skillData));
     }
 
-    private IEnumerator UseMp(int usedMp)
+    public void MainSoundPlay()
+    {
+        clip = soundComponent.clip;
+        soundComponent.PlayOneShot(clip);
+    }
+
+    public void CastSoundPlay()
+    {
+        soundComponentCast.Play(0);
+    }
+
+    public void StopCasting(int EffectNumber)
+    {
+        soundComponent = null;
+        soundComponentCast = null;
+        if (prefabsCast[EffectNumber])
+        {
+            prefabsCast[EffectNumber].transform.parent = parentPlace;
+            prefabsCast[EffectNumber].transform.localPosition = new Vector3(0, 0, 0);
+        }
+        currNumber = EffectNumber;
+        casting = false;
+        canMove = true;
+    }
+
+    public void PassiveEffect(skill effect)
+    {
+
+        switch (effect)
+        {
+            case skill.Magic_1 :
+                if (fastSkillrefresh[7] == false)
+                    StartCoroutine(FastPlay(7, 1.1f, 0.5f));
+                break;
+
+
+            case skill.Shine_1 :
+                if (fastSkillrefresh[3] == false)
+                    StartCoroutine(FastPlay(3, 0, 5));
+                break;
+
+            case skill.Angel_2: // Skill 1 : one time
+
+                StartCoroutine(FastPlay(1, 0, 2.5f));
+                break;
+
+        }
+    }
+        private IEnumerator UseMp(int usedMp)
     {
         yield return new WaitForSeconds(1f);
         if(Player.instance)
@@ -488,7 +575,7 @@ public class PlayerAttackSkill : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
 
-        if (Player.instance)
+        if (!Player.instance.unbeatable)
         {
             Player.instance.mp += 2;
             if (Player.instance.mp > 20)
@@ -580,7 +667,17 @@ public class PlayerAttackSkill : MonoBehaviour
                     currEffect = prefabsCast[EffectNumber].GetComponent<ParticleSystem>();
                     effect = prefabs[EffectNumber].GetComponent<ParticleSystem>();
                     effect.Play();
+                    if(EffectNumber == 0 || EffectNumber == 6)
+                    {
+                        Collider hitBox = prefabsCast[EffectNumber].GetComponent<Collider>();
+                        SkillAttack attack = prefabsCast[EffectNumber].GetComponent<SkillAttack>();
+                        hitBox.enabled = true;
+                        attack.enabled = true;
+                    }
                     Player.instance.mp -= data.usedMp;
+                    
+                    StartCoroutine(Player.instance.ui.LockskillView(Player.instance.ui.sLock[usedSkillNumber], data));
+
                     UseSkill(ref SkillAvailable[usedSkillNumber], data, usedSkillNumber);
                     //Get Audiosource from Prefabs if exist
                     if (prefabs[EffectNumber].GetComponent<AudioSource>())
@@ -719,37 +816,6 @@ public class PlayerAttackSkill : MonoBehaviour
             }
             yield return null;
         }
-    }
-
-    public IEnumerator WaitNextSkill(int skillNth, SkillData skillData) // Skill Effect
-    {
-        yield return new WaitForSeconds(skillData.limitTime);
-        SkillAvailable[skillNth] = true;
-    }
-
-    public void MainSoundPlay()
-    {
-        clip = soundComponent.clip;
-        soundComponent.PlayOneShot(clip);
-    }
-
-    public void CastSoundPlay()
-    {
-        soundComponentCast.Play(0);
-    }
-
-    public void StopCasting(int EffectNumber)
-    {
-        soundComponent = null;
-        soundComponentCast = null;
-        if (prefabsCast[EffectNumber])
-        {
-            prefabsCast[EffectNumber].transform.parent = parentPlace;
-            prefabsCast[EffectNumber].transform.localPosition = new Vector3(0, 0, 0);
-        }
-        currNumber = EffectNumber;
-        casting = false;
-        canMove = true;
     }
 
     public IEnumerator FastPlayTimer(int EffectNumber) // Skill Effect Timer
