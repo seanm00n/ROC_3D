@@ -115,7 +115,6 @@ public class SkillAttack : MonoBehaviour
         {
             yield return new WaitForSeconds(0.35f);
             hitbox.enabled = !hitbox.enabled;
-            Debug.Log("반복횟수 : " + i + "값" + hitbox.enabled);
             if (Time.timeScale != 0) i++;
         }
         hitbox.enabled = false;

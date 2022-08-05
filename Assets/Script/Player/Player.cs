@@ -40,8 +40,6 @@ public class Player : MonoBehaviour, IBattle
     public PlayerMovement movement;
     public UIController ui;
 
-    public bool cameraStop = false;
-
     //Single Tone Stuff//
     public static Player instance;
     public CameraManager playerCamera;
@@ -75,12 +73,6 @@ public class Player : MonoBehaviour, IBattle
         HpRefresh(); // Always hp value is changing.
         MpRefresh(); // Always mp value is changing.
 
-        if(cameraStop && playerCamera.stop != true)
-            playerCamera.stop = true;
-        if(!cameraStop && playerCamera.stop == true)
-            playerCamera.stop = false;
-
-
         if (Input.GetKeyDown(KeyCode.K))
         {
             Hit(100);
@@ -89,7 +81,7 @@ public class Player : MonoBehaviour, IBattle
     }
     private void StopPlaying(bool stopPlaying)
     {
-        cameraStop = stopPlaying;
+        playerCamera.stop = stopPlaying;
         unbeatable = stopPlaying;
         movement.enabled = !stopPlaying;
         playerAttackSkill.enabled = !stopPlaying;
@@ -152,9 +144,8 @@ public class Player : MonoBehaviour, IBattle
 
                 if (theNumberOfDeaths == 0 && playerAttackSkill.passiveSkill == PlayerAttackSkill.skill.Angel_2)
                 {
-                    playerCamera.stop = true;
-                    playerCamera.gameObject.transform.position = playerCamera.dieCameraTransform.position;
                     StopPlaying(true);
+                    playerCamera.gameObject.transform.position = playerCamera.dieCameraTransform.position;
                     animationController.OnRebirth();
                     theNumberOfDeaths++;
 

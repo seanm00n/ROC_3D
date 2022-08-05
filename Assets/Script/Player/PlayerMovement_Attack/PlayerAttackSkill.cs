@@ -37,6 +37,8 @@ public class PlayerAttackSkill : MonoBehaviour
     
     public skill passiveSkill = skill.None;
 
+    public skill[] noAimSkill;
+
     public bool[] SkillAvailable = new bool[4];
 
     public static int normalAttackMp = 4; // Mp for player normal attack.
@@ -46,7 +48,7 @@ public class PlayerAttackSkill : MonoBehaviour
 
     public static SkillData passiveSkillData;
 
-    bool skillBreak; // Stop skill
+    private KeyCode skillBreakButton; // Stop skill
 
     [Space]
     [Header("Camera Shaker script")]
@@ -196,6 +198,7 @@ public class PlayerAttackSkill : MonoBehaviour
 
         ///// Skill /////////////////////////////////////////////////////////////////
         int usedSkillNumber = 9;
+        
         if (qSkillData != null && Input.GetKeyDown(KeyCode.Q) && Player.instance && Player.instance.mp > 0 && Player.instance.mp >= qSkillData.usedMp) // Use Q Skill
         {
             usedSkillNumber = 0;
@@ -208,7 +211,7 @@ public class PlayerAttackSkill : MonoBehaviour
         {
             usedSkillNumber = 2;
         }
-
+        
         if (usedSkillNumber != 9) // 9 is break.
         {
             
@@ -225,17 +228,56 @@ public class PlayerAttackSkill : MonoBehaviour
                 return; 
             }
 
-            if(usedSkillNumber == 0)
-                UsedSkill(qSkill,usedSkillNumber, qSkillData);
-
+            if (usedSkillNumber == 0)
+            {
+                UsedSkill(qSkill, usedSkillNumber, qSkillData);
+                if (skillBreakButton == KeyCode.None && canMove)
+                {
+                    skillBreakButton = KeyCode.Q;
+                    for (int i = 0; i< noAimSkill.Length; i++)
+                    {
+                        if (qSkillData.thisSkill == noAimSkill[i])
+                        {
+                            skillBreakButton = KeyCode.None;
+                            break;
+                        }
+                    } 
+                }
+            }
 
             if (usedSkillNumber == 1)
+            {
                 UsedSkill(eSkill, usedSkillNumber, eSkillData);
-
+                if (skillBreakButton == KeyCode.None && canMove)
+                {
+                    skillBreakButton = KeyCode.E;
+                    for (int i = 0; i < noAimSkill.Length; i++)
+                    {
+                        if (qSkillData.thisSkill == noAimSkill[i])
+                        {
+                            skillBreakButton = KeyCode.None;
+                            break;
+                        }
+                    }
+                }
+            }
 
             if (usedSkillNumber == 2)
+            {
                 UsedSkill(rSkill, usedSkillNumber, rSkillData);
-
+                if (skillBreakButton == KeyCode.None && canMove)
+                {
+                    skillBreakButton = KeyCode.R;
+                    for (int i = 0; i < noAimSkill.Length; i++)
+                    {
+                        if (qSkillData.thisSkill == noAimSkill[i])
+                        {
+                            skillBreakButton = KeyCode.None;
+                            break;
+                        }
+                    }
+                }
+            }
             usedSkillNumber = 9;
         }
         /////////////////////////////////////////////////////////////////////////////
@@ -300,15 +342,8 @@ public class PlayerAttackSkill : MonoBehaviour
 
     private void UsedSkill(PlayerAttackSkill.skill usedSkill, int usedSkillNumber, SkillData skillData)
     {
-        if (canMove)
-        {
-            Skill(usedSkill,skillData,usedSkillNumber);
-        }
-        else
-        {
-            skillBreak = true;
-        }
-
+        if(canMove)
+        Skill(usedSkill,skillData,usedSkillNumber);
     }
 
     private void Skill(skill usedSkill, SkillData data, int usedSkillNumber)
@@ -392,9 +427,9 @@ public class PlayerAttackSkill : MonoBehaviour
                 break;
 
             case skill.Nature_1: // Skill 7 
-                
+
                 // Heal
-                if((Player.instance.hp + data.heal) <= Player.maxHp)
+                if ((Player.instance.hp + data.heal) <= Player.maxHp)
                 {
                     Player.instance.hp += data.heal;
                 }
@@ -426,10 +461,6 @@ public class PlayerAttackSkill : MonoBehaviour
                     StartCoroutine(FastPlay(5, 1.5f, 2.5f));
                     SkillAvailable[usedSkillNumber] = false;
                 break;
-        }
-        if (skillBreak)
-        {
-            skillBreak = false;
         }
     }
 
@@ -691,12 +722,13 @@ public class PlayerAttackSkill : MonoBehaviour
                     }
                     StartCoroutine(OnCast(EffectNumber));
                     StartCoroutine(Attack(EffectNumber));
+                    skillBreakButton = KeyCode.None;
                     yield break;
                 }
-                else if (Input.GetMouseButtonDown(1) || skillBreak)
+                else if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(skillBreakButton))
                 {
                     canMove = true;
-                    skillBreak = false;
+                    skillBreakButton = KeyCode.None;
                     aim.enabled = true;
                     targetMarker.SetActive(false);
                     yield break;
