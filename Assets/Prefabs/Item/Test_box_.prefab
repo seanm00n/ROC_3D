@@ -5131,6 +5131,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  uiEffect: {fileID: 427265528}
 --- !u!1 &5107814733925504308
 GameObject:
   m_ObjectHideFlags: 0

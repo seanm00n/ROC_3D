@@ -5,12 +5,13 @@ using UnityEngine.Events;
 
 public class Player : MonoBehaviour, IBattle
 {
-
     [Space]
     [Header("Player Status")]
     public float hp = 100;
-    public float mp = 20;
-    
+    public int mp = 20;
+    public bool unbeatable = false;
+    public static int theNumberOfDeaths = 0;
+
     [Space]
     [Header("Case : Player is damaged")]
     public bool hit; // Hit show that player is damaged.
@@ -19,12 +20,14 @@ public class Player : MonoBehaviour, IBattle
     [Space]
     [Header("Case : Player is die")]
     public UnityEvent onDeath;
+    private StructureSpawn_Test spawn;
+    private ItemInteractionManager itemInteraction;
 
     [Space]
     [Header("Prefabs")]
     public GameObject uiPrefab;
-    public GameObject cameraPrefab;
     public GameObject gameoverPrefab;
+    public CameraManager cameraPrefab;
 
     [Space]
     [Header("Player View")]
@@ -33,13 +36,19 @@ public class Player : MonoBehaviour, IBattle
     [Space]
     [Header("Player Feature")]
     public PlayerAnimationController animationController;
-    public PlayerAttack playerAttack;
+    public PlayerAttackSkill playerAttackSkill;
     public PlayerMovement movement;
     public UIController ui;
 
+    public bool cameraStop = false;
+
     //Single Tone Stuff//
     public static Player instance;
-    public GameObject playerCamera;
+    public CameraManager playerCamera;
+
+    // Absolute Value
+    public static int maxHp = 100;
+    public static int maxMp = 20;
 
     private void Awake()
     {
@@ -47,13 +56,15 @@ public class Player : MonoBehaviour, IBattle
             instance = this;
 
         animationController = GetComponent<PlayerAnimationController>();
-        playerAttack = GetComponent<PlayerAttack>();
+        playerAttackSkill = GetComponent<PlayerAttackSkill>();
         movement = GetComponent<PlayerMovement>();
 
         if (!ui)
         {
             GameObject instance = Instantiate(uiPrefab);
             ui = instance.GetComponent<UIController>();
+
+            PauseGame.instance = ui.setting.GetComponent<PauseGame>();
         }
         if (instance && !instance.playerCamera)
             playerCamera = Instantiate(cameraPrefab, transform.position, Quaternion.identity);
@@ -64,11 +75,26 @@ public class Player : MonoBehaviour, IBattle
         HpRefresh(); // Always hp value is changing.
         MpRefresh(); // Always mp value is changing.
 
+        if(cameraStop && playerCamera.stop != true)
+            playerCamera.stop = true;
+        if(!cameraStop && playerCamera.stop == true)
+            playerCamera.stop = false;
+
+
         if (Input.GetKeyDown(KeyCode.K))
         {
-            onDeath.Invoke();
+            Hit(100);
         }
+
     }
+    private void StopPlaying(bool stopPlaying)
+    {
+        cameraStop = stopPlaying;
+        unbeatable = stopPlaying;
+        movement.enabled = !stopPlaying;
+        playerAttackSkill.enabled = !stopPlaying;
+    }
+
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -81,7 +107,6 @@ public class Player : MonoBehaviour, IBattle
             else if (ui.hpBar.value > hp)
                 ui.hpBar.value -= 40 * Time.deltaTime; // 40 = Contractible Speed
         }
-        hp = (int)hp;
         ui.hpText.text = hp.ToString() + "/" + 100.ToString(); // Hp value is marked by hpText.text.
     }
 
@@ -90,16 +115,18 @@ public class Player : MonoBehaviour, IBattle
         if ((int)(ui.mpBar.value - mp) != 0 || (int)(ui.mpBar.value) != mp)
         {
             if (ui.mpBar.value < mp)
-                ui.mpBar.value += 10 * Time.deltaTime;
+                ui.mpBar.value += 10 * Time.deltaTime; // 10 = Rise Speed
             else if (ui.mpBar.value > mp)
-                ui.mpBar.value -= 10 * Time.deltaTime;
+                ui.mpBar.value -= 10 * Time.deltaTime; // 10 = Contractible Speed
         }
+        ui.mpText.text = mp.ToString() + "/" + 20.ToString(); // Mp value is marked by mpText.text.
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
     
     public void Hit(int damage)
     {
+        if (unbeatable) return;
         if (hit == false && hp != 0)
         {
             hit = true;
@@ -114,14 +141,36 @@ public class Player : MonoBehaviour, IBattle
             if (hp == 0)
             {
                 hit = false;
-                onDeath.Invoke();
-                animationController.animator.SetTrigger("Death");
+                animationController.OnDeath();
+                CameraManager.fpsMode = false;
+                playerCamera.bookVisibleFps.SetActive(false);
 
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-                return;
+                spawn = playerCamera.GetComponent<StructureSpawn_Test>();
+                itemInteraction = playerCamera.GetComponent<ItemInteractionManager>();
+                spawn.enabled = false;
+                itemInteraction.enabled = false;
+
+                if (theNumberOfDeaths == 0 && playerAttackSkill.passiveSkill == PlayerAttackSkill.skill.Angel_2)
+                {
+                    playerCamera.stop = true;
+                    playerCamera.gameObject.transform.position = playerCamera.dieCameraTransform.position;
+                    StopPlaying(true);
+                    animationController.OnRebirth();
+                    theNumberOfDeaths++;
+
+                    return;
+                }
+
+                else
+                {
+                    onDeath.Invoke();
+
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.None;
+                    return;
+                }
             }
-            animationController.animator.SetTrigger("Damaged");
+            animationController.OnDamaged();
             StartCoroutine(PlayerDamageRotator());
         }
     }
@@ -131,6 +180,19 @@ public class Player : MonoBehaviour, IBattle
         Camera.main.gameObject.SetActive(false);
         ui.gameObject.SetActive(false);
         GameObject gameover = Instantiate(gameoverPrefab);
+    }
+
+    public void Rebirth()
+    {
+        hp = PlayerAttackSkill.passiveSkillData.rebirthHp;
+        mp = PlayerAttackSkill.passiveSkillData.rebirthMp;
+
+        StopPlaying(false);
+        spawn = playerCamera.GetComponent<StructureSpawn_Test>();
+        itemInteraction = playerCamera.GetComponent<ItemInteractionManager>();
+        spawn.enabled = true;
+        itemInteraction.enabled = true;
+
     }
 
     IEnumerator PlayerDamageRotator()

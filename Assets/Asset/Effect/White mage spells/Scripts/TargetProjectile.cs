@@ -101,8 +101,20 @@ public class TargetProjectile : MonoBehaviour
             var hitInstance = Instantiate(hit, target.position + targetOffset, transform.rotation);
             if (hitInstance.GetComponent<SkillAttack>() != null)
             {
-                if(normalAttack == true)
-                hitInstance.GetComponent<SkillAttack>().skillDamageValue = PlayerAttack.normalDamage;
+                if (PlayerAttackSkill.passiveSkillData != null) // Add Damage
+                {
+                    int addDamage = 0;
+                    addDamage = (int)(PlayerAttackSkill.normalDamage * PlayerAttackSkill.passiveSkillData.addDamage);
+                    addDamage = (int)(addDamage * Random.Range(0.8f, 1.0f));
+
+                    if (normalAttack == true)
+                        hitInstance.GetComponent<SkillAttack>().skillDamageValue = PlayerAttackSkill.normalDamage + addDamage;
+                }
+                else 
+                {
+                    if (normalAttack == true)
+                        hitInstance.GetComponent<SkillAttack>().skillDamageValue = (int)(PlayerAttackSkill.normalDamage * Random.Range(0.8f, 1.0f));
+                }
             }
             var hitPs = hitInstance.GetComponent<ParticleSystem>();
             if (hitPs != null)

@@ -5,6 +5,11 @@ using UnityEngine.Events;
 
 public class TestBox : MonoBehaviour, IItem
 {
+    // SkillType => 0 : normal 1: passive 
+    [Header("SkillType")]
+    public int skillType = 0;
+
+    [Space]
     [Header("Event")]
     public UnityEvent OpenBox;
 
@@ -13,10 +18,13 @@ public class TestBox : MonoBehaviour, IItem
 
     PauseGame pause;
 
-    UIController ui;
+    [Header("Effect")]
+    public Canvas uiEffect;
+    
     private void Start()
     {
         pause = PauseGame.instance;
+        if (uiEffect) uiEffect.worldCamera = Camera.main;
     }
     private void Update()
     {
@@ -31,12 +39,14 @@ public class TestBox : MonoBehaviour, IItem
     public void Use() // Use Test Box
     {
         OpenBox.Invoke(); // Start Event.
-
         if (pause)
         {
+            SkillUpgrade.skillType = skillType;
             pause.blackScreen.SetActive(true);
             pause.StopGame();
             pause.skillWindow.SetActive(true);
+            Player.instance.ui.canvas.renderMode = RenderMode.ScreenSpaceCamera;
+            Player.instance.ui.canvas.worldCamera = Camera.main;
         }
 
         end = true;
@@ -47,9 +57,10 @@ public class TestBox : MonoBehaviour, IItem
         
         if (pause)
         {
-            pause.skillWindow.SetActive(true);
+            pause.skillWindow.SetActive(false);
             pause.PlayGame();
             pause.blackScreen.SetActive(false);
+            Player.instance.ui.canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         }
         Destroy(gameObject);
     }

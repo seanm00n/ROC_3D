@@ -28,7 +28,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void Update()
     {
-        animator.SetBool("Onground", Player.instance.movement.isJumping);
+        animator.SetBool(AnimatorHashID.OngroundID, Player.instance.movement.isJumping);
 
         if (CameraManager.fpsMode == true) // Fps mode don't need animation. 
         {
@@ -94,9 +94,31 @@ public class PlayerAnimationController : MonoBehaviour
         animator.SetBool(AnimatorHashID.OnAttackID, false);
     }
 
+    public void FrontSkill()
+    {
+        animator.SetTrigger(AnimatorHashID.FrontAttackID);
+    }
+    public void HandUpSkill()
+    {
+        animator.SetTrigger(AnimatorHashID.HandUpID);
+    }
+
     public void SetAngle(float angle) // Player Head Rotate.
     {
         animator.SetFloat(AnimatorHashID.AngleID, angle);
     }
 
+    public void OnDamaged()
+    {
+        animator.SetTrigger(AnimatorHashID.DamagedID);
+    }
+
+    public void OnDeath()
+    {
+        animator.SetTrigger(AnimatorHashID.DeathID);
+    }
+    public void OnRebirth()
+    {
+        animator.SetTrigger(AnimatorHashID.RebirthID);
+    }
 }

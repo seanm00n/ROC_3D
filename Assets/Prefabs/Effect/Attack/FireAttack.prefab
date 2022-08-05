@@ -5065,10 +5065,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76a6346bf6fbe4247ab6baf5b5a81f9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skill_Damage_Value: 10
+  skillName: 9
+  skillDamageValue: 0
   turretAttack: 1
-  monsterlayerNumber: 0
-  Explosion: {fileID: 3219235074987613225, guid: 44a83cdc8f5672343ae1a646f94c8cfa, type: 3}
+  monsterLayerNumber: 6
+  explosion: {fileID: 1746675453279186, guid: 01638115f50284b4fb616d584a6fabff, type: 3}
 --- !u!54 &7359820963638954429
 Rigidbody:
   m_ObjectHideFlags: 0

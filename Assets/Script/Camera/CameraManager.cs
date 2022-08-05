@@ -8,6 +8,8 @@ public class CameraManager : MonoBehaviour
     [Space]
     [Header("Camera Stop")]
     public bool stop = false;
+    public Transform dieCameraTransform; // If player is die.
+
     [Space]
     [Header("Camera Shake")]
     public float amplitude;
@@ -62,7 +64,7 @@ public class CameraManager : MonoBehaviour
 
     // Singleton stuff
     public static CameraManager instance { get; private set; }
-    public static bool fpsMode { get; private set; }
+    public static bool fpsMode;
     
     private void Awake()
     {

@@ -9,7 +9,7 @@ public class PauseGame : MonoBehaviour
     [Space]
     [Header("Player And Camera")] // Need to stop game.
     public PlayerMovement playerMovement;
-    public PlayerAttack playerAttack;
+    public PlayerAttackSkill playerAttackSkill;
     public CameraManager cameraManager;
 
     [Space]
@@ -20,7 +20,7 @@ public class PauseGame : MonoBehaviour
     //Single Tone
     public static PauseGame instance;
 
-    private void Start()
+    private void Awake()
     {
         if (!instance)
             instance = this;       
@@ -48,36 +48,53 @@ public class PauseGame : MonoBehaviour
 
     public void PlayGame() // Start Gameplay again.
     {
-        // Can control again.
-        if (playerMovement)
-            playerMovement.enabled = true;
+        if (Player.instance.hp != 0)
+        {
+            if (Player.instance)
+            {
+                Player.instance.unbeatable = false;
+                if (Player.instance.hp != 0 && Player.instance.playerCamera && CameraManager.fpsMode)
+                    Player.instance.playerCamera.bookVisibleFps.SetActive(true);
+            }
+            // Can control again.
+            if (playerMovement)
+                playerMovement.enabled = true;
 
-        if (playerAttack && StructureSpawn_Test.structureMode == false)
-            playerAttack.enabled = true;
+            if (playerAttackSkill && StructureSpawn_Test.structureMode == false)
+                playerAttackSkill.enabled = true;
 
-        if (cameraManager)
-            cameraManager.enabled = true;
-
+            if (cameraManager)
+                cameraManager.enabled = true;
+        }
         Time.timeScale = 1f; // Unfreeze time
     }
     public void StopGame() // Stop Game Play
     {
-
-        Time.timeScale = 0f; // Freeze time
         if (Player.instance)
         {
-            if (!cameraManager) // Stop Control
-            {
-                playerMovement = Player.instance.movement;
-                playerAttack = Player.instance.playerAttack;
-                cameraManager = Player.instance.playerCamera.GetComponent<CameraManager>();
-            }
-            playerMovement.enabled = false;
-            playerAttack.enabled = false;
-            cameraManager.enabled = false;
+            Player.instance.unbeatable = true;
+            if (Player.instance.playerCamera && CameraManager.fpsMode)
+                Player.instance.playerCamera.bookVisibleFps.SetActive(false);
         }
-        // Stop cursor lock
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        Time.timeScale = 0f; // Freeze time
+
+        if (Player.instance.hp != 0)
+        {
+            if (Player.instance)
+            {
+                if (!cameraManager) // Stop Control
+                {
+                    playerMovement = Player.instance.movement;
+                    playerAttackSkill = Player.instance.playerAttackSkill;
+                    cameraManager = Player.instance.playerCamera.GetComponent<CameraManager>();
+                }
+                playerMovement.enabled = false;
+                playerAttackSkill.enabled = false;
+                cameraManager.enabled = false;
+            }
+            // Stop cursor lock
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
     }
 }
