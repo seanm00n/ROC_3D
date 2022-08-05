@@ -7,7 +7,7 @@ using UnityEditor;
 
 #endif
 public class MonsterAI : MonoBehaviour, IBattle {
-    //if Boss avoidancePriority = 0 else avoidancePriority = 1
+    // Boss avoidancePriority = 0 else avoidancePriority = 1
 #if UNITY_EDITOR
 private void OnDrawGizmosSelected () {
         Handles.color = new Color(0, 0, 0, 0.1f);
@@ -15,19 +15,24 @@ private void OnDrawGizmosSelected () {
     }
 #endif
     public int myIndex;
+    
     bool m_isInRange = false;
     bool m_isDeath = false;
     bool m_isAttacked = false;
     float m_cooltime = 0f;
+    float m_deadTime = 0f;
+    float m_SightDistance = 10f;
     GameObject m_target;
     NavMeshAgent m_agent;
     GameObject HQ;
     GameObject m_Player;
-    GameObject MController;
+    GameObject Controller;
+
+    [SerializeField] bool isBoss;
     [SerializeField] int m_health;
     [SerializeField] int m_attack;
     [SerializeField] LayerMask Alliance;
-    float m_SightDistance = 10f;
+    
 
     void Start(){
         Init();
@@ -37,8 +42,17 @@ private void OnDrawGizmosSelected () {
         CheckDeath();
         SelectTarget();
         Move();
+
     }
 
+    void Init () {
+        Controller = GameObject.Find("MonsterController");
+        m_Player = GameObject.Find("Player");
+        HQ = GameObject.Find("HQ");//change in case : 'name value changes'
+        m_target = HQ;
+        m_agent = GetComponent<NavMeshAgent>();
+        m_agent.speed = 6f;
+    }
     public void Hit (int damage) {
         m_health -= damage;
     }
@@ -48,7 +62,7 @@ private void OnDrawGizmosSelected () {
         }
         m_cooltime += Time.deltaTime;
         GetComponent<Animator>().SetBool("Attack", true);
-        if(1f < m_cooltime) {
+        if (1f < m_cooltime) {
             m_isAttacked = false;
             m_cooltime = 0f;
         }
@@ -59,20 +73,9 @@ private void OnDrawGizmosSelected () {
             }
         }
     }
-    void Init () {
-        m_Player = GameObject.Find("Player");
-        MController = GameObject.Find("MonsterController");
-        HQ = GameObject.Find("HQ");//Must change if name changes
-        m_target = HQ;
-        m_agent = GetComponent<NavMeshAgent>();
-        m_agent.speed = 6f;
-    }
-
     void SelectTarget () {//Edit after adding turret
-        if (m_isDeath)
-            return;
-        if(m_target == null)
-            m_target = HQ;
+        if (m_isDeath) return;
+        if(m_target == null) m_target = HQ;
         Collider[] result = new Collider[1];
         Physics.OverlapSphereNonAlloc(transform.position, m_SightDistance, result, Alliance);
         if (result[0] && result[0].transform.CompareTag("Player")) {
@@ -137,10 +140,11 @@ private void OnDrawGizmosSelected () {
             GetComponent<Animator>().SetBool("Attack", false);
         }
     }
-
     IEnumerator DestroyMonster () {
-        yield return new WaitForSeconds(5f);
-        MController.GetComponent<MonsterController>().ItemGen(myIndex);
+        yield return new WaitForSeconds(3.0f);
+        if (isBoss) {
+            Controller.GetComponent<MonsterController>().ItemGen(myIndex);
+        }
         Destroy(gameObject);
     }
 }

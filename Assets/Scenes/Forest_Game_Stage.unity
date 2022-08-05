@@ -9314,7 +9314,8 @@ GameObject:
   - component: {fileID: 207830173}
   - component: {fileID: 207830172}
   - component: {fileID: 207830171}
-  m_Layer: 0
+  - component: {fileID: 207830175}
+  m_Layer: 3
   m_Name: HQ
   m_TagString: HQ
   m_Icon: {fileID: 0}
@@ -9399,6 +9400,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &207830175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 207830170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e858f3c7b7011c84bacec9197db9bd01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &209889287
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35483,6 +35496,7 @@ MonoBehaviour:
   skillName: 1
   skillDamageValue: 0
   sustainmentTime: 1
+  declinedDamageValue: 0
   turretAttack: 0
   monsterLayerNumber: 6
   explosion: {fileID: 1065618375357958, guid: 710c9f3c0237eda4f8fdcde46a451a83, type: 3}
@@ -96470,7 +96484,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ae864a8579e05a42927f83cb6345a00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MonsterPref: {fileID: 100720, guid: 34f5468399a164b43a3fb48726383ca3, type: 3}
+  MonsterPref: {fileID: 109776, guid: 168daa6ba665b884e8fac49088e983f5, type: 3}
   MonsterBossPref: {fileID: 7920001953888836634, guid: f43545fb29a367248abf7b61449cd798, type: 3}
   ItemPref: {fileID: 5107814733925504306, guid: 5f5e50691085cbe4589c8be2dd132c3a, type: 3}
   Monster: []

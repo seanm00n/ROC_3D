@@ -161,7 +161,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 939909090819483015, guid: 6ce345bfd3a0c4c4696ec8f46b95a588, type: 3}
       propertyPath: m_Name
-      value: Orc Variant10
+      value: MonsterPref01
       objectReference: {fileID: 0}
     - target: {fileID: 939909090819483015, guid: 6ce345bfd3a0c4c4696ec8f46b95a588, type: 3}
       propertyPath: m_Layer
@@ -1252,6 +1252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myIndex: 0
+  Controller: {fileID: 0}
   m_health: 40
   m_attack: 10
   Alliance:

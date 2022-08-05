@@ -22,7 +22,7 @@ public class MonsterController : MonoBehaviour {
         Monster = new GameObject[MaxMonsters];
     }
     void MonsterGen () {
-        if (Input.GetKeyDown(KeyCode.J)) {
+        if (Input.GetKeyDown(KeyCode.J)) {//임시 소환
             if (MIndex < MaxMonsters) {
                 Monster[MIndex] = Instantiate(MonsterPref, transform.position, transform.rotation);
                 Monster[MIndex].GetComponent<MonsterAI>().myIndex = MIndex;
