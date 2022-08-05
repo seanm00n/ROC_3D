@@ -9,7 +9,7 @@ public class SkillAttack : MonoBehaviour
     [Header("Damage")]
     public int skillDamageValue;
     public float sustainmentTime = 0;
-
+    public float declinedDamageValue;
     [Space]
     [Header("Master Setting")]
     public bool turretAttack;
@@ -88,6 +88,7 @@ public class SkillAttack : MonoBehaviour
         {
             StartCoroutine(delaySkillDamage(5));   
         }
+        if (declinedDamageValue != 0f) skillDamageValue = (int)(skillDamageValue * declinedDamageValue);
     }
 
     private void OnTriggerEnter(Collider other)

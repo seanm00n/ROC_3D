@@ -9788,12 +9788,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76a6346bf6fbe4247ab6baf5b5a81f9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: 9
-  skillDamageValue: 10
+  skillName: 8
+  skillDamageValue: 0
   sustainmentTime: 0.4
+  declinedDamageValue: 0.1
   turretAttack: 0
   monsterLayerNumber: 6
-  explosion: {fileID: 0}
+  explosion: {fileID: 1153730961705006, guid: f1aeeba2f9003904da5c0a24ba150198, type: 3}
 --- !u!135 &8007805650842610908
 SphereCollider:
   m_ObjectHideFlags: 0
