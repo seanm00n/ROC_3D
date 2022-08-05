@@ -59,48 +59,51 @@ public class StructureSpawn_Test : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.B)) // On/Off structure mode.
+        if (Time.timeScale != 0)
         {
-            if (skillWindow)
+            if (Input.GetKeyDown(KeyCode.B)) // On/Off structure mode.
             {
-                if (skillWindow.activeSelf == false)
+                if (skillWindow)
                 {
-                    Player.instance.playerAttackSkill.enabled = true;
-
-                    if (structureMode == false)
+                    if (skillWindow.activeSelf == false)
                     {
-                        if (area && areaLayer != 0) area.SetActive(true); // Visible area.
-                        structureMode = true;
-                        Player.instance.playerAttackSkill.enabled = false;
-                    }
-                    else
-                    {
-                        if (area && areaLayer != 0) area.SetActive(false); // Unvisible area.
-                        structureMode = false;
+                        Player.instance.playerAttackSkill.enabled = true;
 
+                        if (structureMode == false)
+                        {
+                            if (area && areaLayer != 0) area.SetActive(true); // Visible area.
+                            structureMode = true;
+                            Player.instance.playerAttackSkill.enabled = false;
+                        }
+                        else
+                        {
+                            if (area && areaLayer != 0) area.SetActive(false); // Unvisible area.
+                            structureMode = false;
+
+                        }
                     }
                 }
             }
-        }
-        // Change Object////////////////////////
+            // Change Object////////////////////////
 
-        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0) 
-        {
-            if (skillWindow)
+            if (Input.GetAxisRaw("Mouse ScrollWheel") > 0)
             {
-                if (skillWindow.activeSelf == false)
+                if (skillWindow)
                 {
-                    ChangeNext();
+                    if (skillWindow.activeSelf == false)
+                    {
+                        ChangeNext();
+                    }
                 }
             }
-        }
-        else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0)
-        {
-            if (skillWindow)
+            else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0)
             {
-                if (skillWindow.activeSelf == false)
+                if (skillWindow)
                 {
-                    ChangePrevious();
+                    if (skillWindow.activeSelf == false)
+                    {
+                        ChangePrevious();
+                    }
                 }
             }
         }

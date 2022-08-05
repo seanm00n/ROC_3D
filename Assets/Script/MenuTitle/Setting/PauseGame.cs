@@ -48,11 +48,14 @@ public class PauseGame : MonoBehaviour
 
     public void PlayGame() // Start Gameplay again.
     {
-        if (Player.instance)
-            Player.instance.unbeatable = false;
-
         if (Player.instance.hp != 0)
         {
+            if (Player.instance)
+            {
+                Player.instance.unbeatable = false;
+                if (Player.instance.hp != 0 && Player.instance.playerCamera && CameraManager.fpsMode)
+                    Player.instance.playerCamera.bookVisibleFps.SetActive(true);
+            }
             // Can control again.
             if (playerMovement)
                 playerMovement.enabled = true;
@@ -68,7 +71,11 @@ public class PauseGame : MonoBehaviour
     public void StopGame() // Stop Game Play
     {
         if (Player.instance)
+        {
             Player.instance.unbeatable = true;
+            if (Player.instance.playerCamera && CameraManager.fpsMode)
+                Player.instance.playerCamera.bookVisibleFps.SetActive(false);
+        }
         Time.timeScale = 0f; // Freeze time
 
         if (Player.instance.hp != 0)

@@ -20,6 +20,8 @@ public class Player : MonoBehaviour, IBattle
     [Space]
     [Header("Case : Player is die")]
     public UnityEvent onDeath;
+    private StructureSpawn_Test spawn;
+    private ItemInteractionManager itemInteraction;
 
     [Space]
     [Header("Prefabs")]
@@ -142,6 +144,12 @@ public class Player : MonoBehaviour, IBattle
                 animationController.OnDeath();
                 CameraManager.fpsMode = false;
                 playerCamera.bookVisibleFps.SetActive(false);
+
+                spawn = playerCamera.GetComponent<StructureSpawn_Test>();
+                itemInteraction = playerCamera.GetComponent<ItemInteractionManager>();
+                spawn.enabled = false;
+                itemInteraction.enabled = false;
+
                 if (theNumberOfDeaths == 0 && playerAttackSkill.passiveSkill == PlayerAttackSkill.skill.Angel_2)
                 {
                     playerCamera.stop = true;
@@ -180,6 +188,11 @@ public class Player : MonoBehaviour, IBattle
         mp = PlayerAttackSkill.passiveSkillData.rebirthMp;
 
         StopPlaying(false);
+        spawn = playerCamera.GetComponent<StructureSpawn_Test>();
+        itemInteraction = playerCamera.GetComponent<ItemInteractionManager>();
+        spawn.enabled = true;
+        itemInteraction.enabled = true;
+
     }
 
     IEnumerator PlayerDamageRotator()
