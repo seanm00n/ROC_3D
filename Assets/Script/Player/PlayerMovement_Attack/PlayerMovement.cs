@@ -124,30 +124,47 @@ public class PlayerMovement : MonoBehaviour
 
 
         // Default move value while player jumping.
+
         if (airSpeedX is > 0 or < 0)
         {
             airSpeedX -= airSpeedX * Time.unscaledDeltaTime;
         }
-        else airSpeedX = 0;
+        else { airSpeedX = 0; }
 
-        if (airSpeedZ is > 0 or < 0)
+        if (airSpeedZ > 0)
         {
             airSpeedZ -= airSpeedZ * Time.unscaledDeltaTime;
         }
-        else airSpeedZ = 0;
+        else if (airSpeedZ < 0)
+        {
+            airSpeedZ += airSpeedZ * Time.unscaledDeltaTime;
+        }
+        else { airSpeedZ = 0; }
 
-        if (airSpeedX is > 0 or < 0) 
+        ///////////////////////////////////////////////////////////////////// Stop speed part
+        
+        if ((airSpeedX) > 0)
         {
             airSpeedX += horizontalMove / 10 * smoothStopIntensity * Time.unscaledDeltaTime;
             if (airSpeedX < 0) airSpeedX = 0;
         }
-
-        if (airSpeedZ is > 0 or < 0)
+        else if ((airSpeedX) < 0)
         {
-            airSpeedZ += verticalMove / 10 * smoothStopIntensity * Time.unscaledDeltaTime; 
-            if (airSpeedZ < 0) airSpeedZ = 0;
+            airSpeedX += horizontalMove / 10 * smoothStopIntensity * Time.unscaledDeltaTime;
+            if (airSpeedX > 0) airSpeedX = 0;
         }
 
+        if ((airSpeedZ) > 0)
+        {
+            airSpeedZ += verticalMove / 10 * smoothStopIntensity * Time.unscaledDeltaTime;
+            if (airSpeedZ < 0) airSpeedZ = 0;
+        }
+        else if ((airSpeedZ) < 0)
+        {
+            airSpeedZ += verticalMove / 10 * smoothStopIntensity * Time.unscaledDeltaTime;
+            if (airSpeedZ > 0) airSpeedZ = 0;
+        }
+        
         /////////////////////////////////////////////////////////////////
 
         MovePlayer(horizontalMove, verticalMove);

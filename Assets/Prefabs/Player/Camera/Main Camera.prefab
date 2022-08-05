@@ -340,7 +340,7 @@ MonoBehaviour:
   downAngle: -20
   maxAngle: 80
   minAngle: -40
-  exceptLayerNum: 030000000400000009000000
+  exceptLayerNum: 030000000400000009000000060000000a000000
   clampedPos: 0
 --- !u!114 &6595030890674630526
 MonoBehaviour:
