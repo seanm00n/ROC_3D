@@ -99,6 +99,7 @@ private void OnDrawGizmosSelected () {
     }
 
     void Move () {
+        m_agent.speed = 6f;
         if (m_isDeath) {
             m_agent.enabled = false;
             return;
@@ -121,6 +122,11 @@ private void OnDrawGizmosSelected () {
         if (other.gameObject.tag == "PlayerAttack") {
             Hit(other.gameObject.GetComponent<SkillAttack>().skillDamageValue);
         }
+        if (other.gameObject.tag == "Player" ||
+            other.gameObject.tag == "HQ" ||
+            other.gameObject.tag == "Turret") {
+        }
+        
     }
 
     private void OnTriggerStay (Collider other) {
