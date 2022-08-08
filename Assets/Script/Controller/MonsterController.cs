@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MonsterController : MonoBehaviour {
     [SerializeField] GameObject[] MonsterPref;
-    [SerializeField] GameObject[] MonsterBossPref;
+    [SerializeField] GameObject[] BossMonsterPref;
     [SerializeField] GameObject ItemPref;
     public GameObject[] Monster;
     GameObject[] BMonster;
@@ -24,7 +24,7 @@ public class MonsterController : MonoBehaviour {
     void MonsterGen () {
         if (Input.GetKeyDown(KeyCode.J)) {//임시 소환
             if (MIndex < MaxMonsters) {
-                Monster[MIndex] = Instantiate(MonsterPref[0], transform.position, transform.rotation);
+                Monster[MIndex] = Instantiate(BossMonsterPref[0], transform.position, transform.rotation);
                 Monster[MIndex].GetComponent<MonsterAI>().myIndex = MIndex;
                 MIndex++;
             }

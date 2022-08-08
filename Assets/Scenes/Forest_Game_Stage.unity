@@ -33803,7 +33803,7 @@ MonoBehaviour:
   - {fileID: 5952629372017405920, guid: e623b8b3388abb6438d975a314e54922, type: 3}
   - {fileID: 5952629372017405920, guid: 18520093da6109c4985991d2f462229f, type: 3}
   - {fileID: 4701812188425539066, guid: 4f06e1de1888dc94482db241deea136d, type: 3}
-  MonsterBossPref:
+  BossMonsterPref:
   - {fileID: 130964, guid: 98f741552c221d8418ea12939cd0e3d0, type: 3}
   - {fileID: 109776, guid: 168daa6ba665b884e8fac49088e983f5, type: 3}
   - {fileID: 100720, guid: 90c3de17ad50bb746ada191d95ccab27, type: 3}
