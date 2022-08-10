@@ -161,11 +161,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 939909090819483015, guid: 6ce345bfd3a0c4c4696ec8f46b95a588, type: 3}
       propertyPath: m_Name
-      value: Orc Variant10
+      value: MonsterPref01
       objectReference: {fileID: 0}
     - target: {fileID: 939909090819483015, guid: 6ce345bfd3a0c4c4696ec8f46b95a588, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 939909092381843689, guid: 6ce345bfd3a0c4c4696ec8f46b95a588, type: 3}
       propertyPath: m_Layer

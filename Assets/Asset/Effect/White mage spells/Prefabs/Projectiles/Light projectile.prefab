@@ -4897,6 +4897,7 @@ GameObject:
   - component: {fileID: 199514712631262364}
   - component: {fileID: 108284476823858990}
   - component: {fileID: 7857039640692481145}
+  - component: {fileID: 2905917761483781805}
   m_Layer: 0
   m_Name: Light projectile
   m_TagString: Untagged
@@ -9714,6 +9715,7 @@ MonoBehaviour:
   hit: {fileID: 1408840603016568, guid: 04c37cc0cab73994280830cd0738ac85, type: 3}
   flash: {fileID: 0}
   Detached: []
+  normalAttack: 0
   sideAngle: 20
   upAngle: 15
 --- !u!199 &199514712631262364
@@ -9863,15 +9865,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b43fcb7cdaca0f8458747606b2748c77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  effectsOnCollision: []
   targetLayerNumber: 3
-  EffectsOnCollision: []
-  DestroyTimeDelay: 5
-  UseWorldSpacePosition: 0
-  Offset: 0
+  destroyTimeDelay: 5
+  offset: 0
   rotationOffset: {x: 0, y: 0, z: 0}
+  destroyMainEffect: 1
+  useWorldSpacePosition: 0
   useOnlyRotationOffset: 1
-  UseFirePointRotation: 0
-  DestoyMainEffect: 1
+  useFirePointRotation: 0
+--- !u!114 &2905917761483781805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184375899483656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 838a7ef678ec26e4a8c2ed9b7ad29a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allMusicSetting: {fileID: 0}
+  backgroundMusicSetting: {fileID: 0}
+  soundEffectSetting: {fileID: 0}
+  backgroundMusic: 0
 --- !u!1 &1843067764193598
 GameObject:
   m_ObjectHideFlags: 0

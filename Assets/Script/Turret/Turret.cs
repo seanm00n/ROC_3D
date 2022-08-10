@@ -29,6 +29,9 @@ public class Turret : MonoBehaviour, IBattle
     [Header("UI")]
     public GameObject hui; // Need it to delete hp ui when turret is gone.
     public Slider hpBar;
+
+    [Space]
+    [Header("Target")]
     public GameObject target;
     public LayerMask targetName;
 
@@ -37,6 +40,7 @@ public class Turret : MonoBehaviour, IBattle
 
     private GameObject attack;
     public GameObject attackPrefab;
+    public ParticleSystem fireEffect;
 
     // Auto Setting
     private float currTime;
@@ -117,28 +121,30 @@ public class Turret : MonoBehaviour, IBattle
             }
 
             // Check Target is live.
-            if (target.GetComponent<MonsterAI>())
+            if (target && target.GetComponent<MonsterAI>())
             {
-                //if (target.GetComponent<Animator>().GetBool("Death"))
-                //{
-                //    target = null;
-                //    return;
-                //}
+                if (target.GetComponent<Animator>().GetBool("Death"))
+                {
+                    target = null;
+                    return;
+                }
             }
-            
-            transform.LookAt(target.transform);
+            if(target)
+            transform.LookAt(target.transform.position + new Vector3(0, 1, 0));
             Debug.DrawLine(transformPos, targetTransformPos, Color.blue);
             Physics.Linecast(transformPos, targetTransformPos);
             
             if (attack != null)
             {
-                attack.transform.LookAt(target.transform.position);
+                if(target)
+                attack.transform.LookAt(target.transform.position + new Vector3(0,1,0));
             }
             
             if (Time.time > currTime + attackCycleTime)
             {
                 currTime = Time.time;
                 attack = Instantiate(attackPrefab, firePosition.position, transform.rotation);
+                fireEffect.Play();
             }
             
             return; // Block Repetitive Statement below.
