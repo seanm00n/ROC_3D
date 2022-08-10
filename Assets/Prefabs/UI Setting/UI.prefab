@@ -955,8 +955,8 @@ MonoBehaviour:
   playerMovement: {fileID: 0}
   playerAttackSkill: {fileID: 0}
   cameraManager: {fileID: 0}
-  skillWindow: {fileID: 0}
-  blackScreen: {fileID: 0}
+  skillWindow: {fileID: 5332624759924092559}
+  blackScreen: {fileID: 7290476353334538447}
 --- !u!1 &1395573564115403403
 GameObject:
   m_ObjectHideFlags: 0
