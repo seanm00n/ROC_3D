@@ -3,6 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+public class PlayerSaveData
+{
+    public static int gold = 0;
+    public int bone = 0;
+    public int maxHP = 0;
+    public int maxMP = 0;
+
+    public bool pet = false;
+    public bool petSpecial = false;
+
+    public bool getMoreGold = false;
+    public bool getMoreBone = false;
+
+}
 public class Player : MonoBehaviour, IBattle
 {
     [Space]
@@ -11,6 +25,8 @@ public class Player : MonoBehaviour, IBattle
     public int mp = 20;
     public bool unbeatable = false;
     public static int theNumberOfDeaths = 0;
+    public static int gold = 0;
+    public static int bone = 0;
 
     [Space]
     [Header("Case : Player is damaged")]

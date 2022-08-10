@@ -9886,6 +9886,7 @@ GameObject:
   - component: {fileID: 7421738372440521681}
   - component: {fileID: 4086881580800408210}
   - component: {fileID: 3014567174052390089}
+  - component: {fileID: -8115551193344316713}
   m_Layer: 1
   m_Name: Ground shine
   m_TagString: PlayerAttack
@@ -14792,9 +14793,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: 3
   skillDamageValue: 0
-  sustainmentTime: 0.25
+  sustainmentTime: 1
+  declinedDamageValue: 0
   turretAttack: 0
-  monsterLayerNumber: 6
   explosion: {fileID: 1795992203533318, guid: 890aba7398207db48978724168fac5a7, type: 3}
 --- !u!65 &4086881580800408210
 BoxCollider:
@@ -14807,8 +14808,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 3.5901, z: 1}
-  m_Center: {x: 0, y: 1.7475008, z: 0}
+  m_Size: {x: 1.644793, y: 3.5901, z: 1.9304521}
+  m_Center: {x: 0.021980207, y: 1.7475008, z: 0.17039666}
 --- !u!54 &3014567174052390089
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -14825,6 +14826,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 14
   m_CollisionDetection: 0
+--- !u!114 &-8115551193344316713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515678706149418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 838a7ef678ec26e4a8c2ed9b7ad29a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allMusicSetting: {fileID: 0}
+  backgroundMusicSetting: {fileID: 0}
+  soundEffectSetting: {fileID: 0}
+  backgroundMusic: 0
 --- !u!1 &1531938089252582
 GameObject:
   m_ObjectHideFlags: 0

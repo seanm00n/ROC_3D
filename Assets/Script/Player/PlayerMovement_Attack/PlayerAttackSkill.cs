@@ -178,7 +178,7 @@ public class PlayerAttackSkill : MonoBehaviour
         for (int i = 0; i < col.Length; i++)
         {
             Vector3 targetAngle = col[i].transform.position - transform.position;
-            if (Vector3.Angle(transform.forward, targetAngle) < fieldOfView)
+            if (Vector3.Angle(transform.forward, targetAngle) < fieldOfView && !col[i].GetComponent<Animator>().GetBool("Death"))
                 screenTargets.Add(col[i].transform);
         }
         #endregion
@@ -187,7 +187,9 @@ public class PlayerAttackSkill : MonoBehaviour
         {
             var targetIndex = TargetIndex();
             if (screenTargets.Count > targetIndex)
+            { 
                 target = screenTargets[targetIndex];
+            }
         }
 
         ///// Skill Setting/////////////////////////////////////////////////////////////////
@@ -312,12 +314,14 @@ public class PlayerAttackSkill : MonoBehaviour
                     
                     // several amounts of target
                     actualTarget = new GameObject().transform;
+
+                    Destroy(actualTarget.gameObject, 1f);
                     actualTarget.position = rayIntersectsCollider ? hit.point : (ray.origin + 100 * ray.direction);
                 }
 
                 GameObject projectile = Instantiate(prefabsCast[8], firePoint.position, firePoint.rotation);
                 projectile.GetComponent<TargetProjectile>().UpdateTarget(actualTarget, uiOffset);
-
+                
                 // Play that particle
                 effect = prefabs[8].GetComponent<ParticleSystem>();
                 effect.Play();
@@ -333,7 +337,6 @@ public class PlayerAttackSkill : MonoBehaviour
                 
                 fireCountdown = fireRate;
                 
-                Destroy(actualTarget.gameObject, 2f);
             }
         }
         else isAttack = false;
@@ -624,39 +627,37 @@ public class PlayerAttackSkill : MonoBehaviour
             //Waiting for confirm or deny
             while (true)
             {
+                Player.instance.animationController.FrontSkill();
+
+                casting = true;
+                canMove = false;
+
+
+                StartCoroutine(cameraManager.Shake(0.4f, 7, 0.45f, 1f));
+
+                //Play sound FX if exist
+                if (prefabs[EffectNumber].GetComponent<AudioSource>())
+                {
+                    soundComponent = prefabs[EffectNumber].GetComponent<AudioSource>();
+                    MainSoundPlay();
+                }
+
+                yield return new WaitForSeconds(1);
                 var forwardCamera = Camera.main.transform.forward;
                 forwardCamera.y = 0.0f;
                 var vecPos = transform.position + forwardCamera * 4;
 
-                    Player.instance.movement.enabled = false;
-                    cameraManager.stop = true;
-                    casting = true;
-                    canMove = false;
+                foreach (var component in prefabs[EffectNumber].GetComponentsInChildren<FrontAttack>())
+                {
+                    component.PrepeareAttack(vecPos);
+                }
 
-                    Player.instance.animationController.FrontSkill();
+                yield return new WaitForSeconds(castingTime[EffectNumber]);
+                StopCasting(EffectNumber);
+                aim.enabled = true;
+                Player.instance.movement.enabled = true;
+                yield break;
 
-                    StartCoroutine(cameraManager.Shake(0.4f, 7, 0.45f, 1f));
-
-                    //Play sound FX if exist
-                    if (prefabs[EffectNumber].GetComponent<AudioSource>())
-                    {
-                        soundComponent = prefabs[EffectNumber].GetComponent<AudioSource>();
-                        MainSoundPlay();
-                    }
-
-                    yield return new WaitForSeconds(1);
-                    foreach (var component in prefabs[EffectNumber].GetComponentsInChildren<FrontAttack>())
-                    {
-                        component.PrepeareAttack(vecPos);
-                    }
-                    
-                    yield return new WaitForSeconds(castingTime[EffectNumber]);
-                    StopCasting(EffectNumber);
-                    aim.enabled = true;
-                    Player.instance.movement.enabled = true;
-                    cameraManager.stop = false;
-                    yield break;
-                
             }
         }
     }

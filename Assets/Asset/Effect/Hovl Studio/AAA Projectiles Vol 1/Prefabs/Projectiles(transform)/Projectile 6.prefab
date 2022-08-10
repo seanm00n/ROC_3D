@@ -4851,6 +4851,7 @@ GameObject:
   - component: {fileID: 199367582972894178}
   - component: {fileID: 54853225561086176}
   - component: {fileID: 135686789400026036}
+  - component: {fileID: 6760681236530029374}
   m_Layer: 0
   m_Name: Projectile 6
   m_TagString: Untagged
@@ -9774,6 +9775,22 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6760681236530029374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1427661989262336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 838a7ef678ec26e4a8c2ed9b7ad29a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allMusicSetting: {fileID: 0}
+  backgroundMusicSetting: {fileID: 0}
+  soundEffectSetting: {fileID: 0}
+  backgroundMusic: 0
 --- !u!1 &1509662783125336
 GameObject:
   m_ObjectHideFlags: 0

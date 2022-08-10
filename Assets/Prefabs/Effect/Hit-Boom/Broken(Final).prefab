@@ -9775,6 +9775,7 @@ GameObject:
   - component: {fileID: 3960126020705216910}
   - component: {fileID: 3757606164944362058}
   - component: {fileID: 3756553226313619092}
+  - component: {fileID: 8509703519179987477}
   m_Layer: 0
   m_Name: Broken(Final)
   m_TagString: Untagged
@@ -14658,6 +14659,22 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &8509703519179987477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3955156087321414750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 838a7ef678ec26e4a8c2ed9b7ad29a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allMusicSetting: {fileID: 0}
+  backgroundMusicSetting: {fileID: 0}
+  soundEffectSetting: {fileID: 0}
+  backgroundMusic: 0
 --- !u!1 &9103374745395466356
 GameObject:
   m_ObjectHideFlags: 0

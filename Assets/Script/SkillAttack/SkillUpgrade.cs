@@ -87,7 +87,24 @@ public class SkillUpgrade : MonoBehaviour
                     Player.instance.ui.Hide[j].SetActive(true);
             }
         }
-
+        #region
+        if (skillType == 0)
+        {
+            for (int i = 0; i < skillComplete.Length - 1; i++)
+            {
+                if (!skillComplete[i]) break;
+                if (i == skillComplete.Length - 2) skillType = 2;
+            }
+        }
+        else if(skillType == 1)
+        {
+            InformationOfSkill.Information(10);
+            if (skillComplete[3])
+            {
+                skillType = 2;
+            }
+        }
+        #endregion
         if (skillType == 0) 
         {
             if (Player.instance.playerAttackSkill.rSkill == PlayerAttackSkill.skill.None)
@@ -101,6 +118,13 @@ public class SkillUpgrade : MonoBehaviour
                 ResetSkill();
             else
                 ResetFinishedSkill();
+        }
+        else if(skillType == 2)
+        {
+            // Skeleton
+            title.text = "Choose item you need!";
+            ResetItem();
+            return;
         }
         if (PlayerAttackSkill.qSkillData == null && PlayerAttackSkill.passiveSkillData == null)
         {
@@ -125,8 +149,16 @@ public class SkillUpgrade : MonoBehaviour
         if (currentSkill != 0)
         {
             skillDescription.text = skillDescriptions[currentSkillView - 1];
-            skillValue.text = skillValues[currentSkillView - 1];
-            skillValueEarly.text = skillValuesEarly[currentSkillView - 1];
+            if (skillType != 2)
+            {
+                skillValue.text = skillValues[currentSkillView - 1];
+                skillValueEarly.text = skillValuesEarly[currentSkillView - 1];
+            }
+            else
+            {
+                skillValue.text = "";
+                skillValueEarly.text = "";
+            }
         }
     }
 
@@ -242,6 +274,31 @@ public class SkillUpgrade : MonoBehaviour
         }
     }
 
+    public void ResetItem()
+    {
+        int comparativeValueFirst = 0;
+
+        for (int i = 0; i < 3; i++)
+        {
+            int comparativeValue = 0; // When skill view already have skill.
+
+            do
+            {
+                comparativeValue = (int)Random.Range(11, 14);
+            }
+            while (((skillNumber == comparativeValue) || (comparativeValue == comparativeValueFirst)));
+
+            skillNumber = comparativeValue;
+
+            if (comparativeValueFirst == 0)
+                comparativeValueFirst = comparativeValue;
+
+            selectedSkill(skillNumber, i);
+            subjectOfApplicationSkillView[i].sprite = skillView[skillNumber - 1];
+        }
+        currentSkill = 1;
+    }
+
     // Used in inspector
     public void ChangeSkillContent(int number)
     {
@@ -251,13 +308,42 @@ public class SkillUpgrade : MonoBehaviour
     // Used in inspector
     public void AddSkill(int skillNumber)
     {
-        int skillGradeNumber = SkillButton(skill[skillNumber]);
-        Sprite skillView = subjectOfApplicationSkillView[skillNumber].sprite;
-          if (skill[skillNumber] == PlayerAttackSkill.skill.None)
+        if (skillType == 2)
         {
+            PlayerSaveData data;
+            try
+            {
+                data = SaveManager.Load<PlayerSaveData>("PlayerData");
+            }
+            catch
+            {
+                data = new PlayerSaveData();
+            }
+            if (subjectOfApplicationSkillView[skillNumber].sprite == this.skillView[10])
+            {
+                PlayerSaveData.gold += 30;
+            }
+            if (subjectOfApplicationSkillView[skillNumber].sprite == this.skillView[11])
+            {
+                data.bone += 5;
+            }
+            if (subjectOfApplicationSkillView[skillNumber].sprite == this.skillView[12])
+            {
+                Player.instance.hp += 30;
+            }
+
+            SaveManager.Save("PlayerData", data);
+            return;
+        }
+
+        int skillGradeNumber = SkillButton(skill[skillNumber]);
+        Sprite skillView = subjectOfApplicationSkillView[skillNumber].sprite;      
+
+      if (skill[skillNumber] == PlayerAttackSkill.skill.None)
+      {
             PlayerAttackSkill.normalDamage = savedSkillData[skillNumber].damage;
             PlayerAttackSkill.normalAttackMp = savedSkillData[skillNumber].usedMp;
-        }
+      }
       else
       {
         if (skillType == 0)
@@ -303,6 +389,10 @@ public class SkillUpgrade : MonoBehaviour
 
             if (savedSkillData[skillNumber].thisSkill != PlayerAttackSkill.skill.Angel_2)
                 PassiveSkillEffect(savedSkillData[skillNumber].thisSkill);
+            else
+            {
+                skillComplete[3] = true;
+            }
             InsertData(3, skillNumber);
             if (Player.instance.playerAttackSkill.passiveSkill == PlayerAttackSkill.skill.None)
             {
@@ -438,6 +528,18 @@ public class SkillUpgrade : MonoBehaviour
 
                 SaveSkillData(skillNth, attack, 0, mp, 0, 0, 0);
                 break;
+
+            case 11:
+                skillDescriptions[skillNth] = "30 골드 획득";
+                return;
+            case 12:
+
+                skillDescriptions[skillNth] = "뼈 5개 획득";
+                return;
+            case 13:
+
+                skillDescriptions[skillNth] = "30만큼 체력 회복";
+                return;
         }
         #endregion 
         if(choosedSkill == 2 || choosedSkill == 3 || choosedSkill == 4 || choosedSkill == 5 || choosedSkill == 9) 

@@ -98066,6 +98066,7 @@ GameObject:
   - component: {fileID: 198731906798842980}
   - component: {fileID: 199392576695039694}
   - component: {fileID: 82751648903894608}
+  - component: {fileID: -461142999268338802}
   m_Layer: 0
   m_Name: Light ray
   m_TagString: Untagged
@@ -103071,3 +103072,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-461142999268338802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998893266685322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 838a7ef678ec26e4a8c2ed9b7ad29a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allMusicSetting: {fileID: 0}
+  backgroundMusicSetting: {fileID: 0}
+  soundEffectSetting: {fileID: 0}
+  backgroundMusic: 0

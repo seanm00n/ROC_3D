@@ -4838,6 +4838,7 @@ GameObject:
   - component: {fileID: 199290412375127048}
   - component: {fileID: 108340316821141184}
   - component: {fileID: -8605508038899531617}
+  - component: {fileID: 8965366373094486564}
   m_Layer: 0
   m_Name: Projectile Test
   m_TagString: Untagged
@@ -9828,8 +9829,25 @@ MonoBehaviour:
   hit: {fileID: 1296333435415890, guid: 1ca12621be8637941b21ffaad56522cf, type: 3}
   flash: {fileID: 0}
   Detached: []
+  normalAttack: 0
   sideAngle: 25
   upAngle: 20
+--- !u!114 &8965366373094486564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1094010528761658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 838a7ef678ec26e4a8c2ed9b7ad29a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allMusicSetting: {fileID: 0}
+  backgroundMusicSetting: {fileID: 0}
+  soundEffectSetting: {fileID: 0}
+  backgroundMusic: 0
 --- !u!1 &1142727812863216
 GameObject:
   m_ObjectHideFlags: 0
