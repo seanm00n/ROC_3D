@@ -21,6 +21,8 @@ public class SkillData
     public float limitTime = 0;
     public int usedMp;
     public PlayerAttackSkill.skill thisSkill;
+
+    public float AttackCycle = 0;
 }
 
 public class PlayerAttackSkill : MonoBehaviour
@@ -41,7 +43,7 @@ public class PlayerAttackSkill : MonoBehaviour
 
     public bool[] SkillAvailable = new bool[4];
 
-    public static int normalAttackMp = 4; // Mp for player normal attack.
+    public static int normalAttackMp = 3; // Mp for player normal attack.
     public static SkillData qSkillData;
     public static SkillData eSkillData;
     public static SkillData rSkillData;
@@ -115,7 +117,7 @@ public class PlayerAttackSkill : MonoBehaviour
     private bool targetIsActive;
     private float fireCountdown;
     
-    [Range(0,1)]public float fireRate = 1;
+    public static float fireRate = 0.14f;
     public float fieldOfView = 60;
     public float viewDistance = 20f;
 

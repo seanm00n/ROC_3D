@@ -110,7 +110,7 @@ namespace ROC
 
 
                 case 10:
-                    SetSkillValue(10, 25, 50, 0, 0, 0, 4, 3, 2);
+                    SetSkillValue(10, 20, 30, 14, 12, 10, 3, 2, 1);
                     skill.skillDescription = "[기본 공격 / 강화 가능] 적을 자동 조준하여 공격할 수 있다. 대상을 직접 조준하는 공격 또한 가능하다.";
                     break;
 

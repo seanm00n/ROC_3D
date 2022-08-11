@@ -7,6 +7,7 @@ public class SkillAttack : MonoBehaviour
     public PlayerAttackSkill.skill skillName = PlayerAttackSkill.skill.None;
 
     [Header("Damage")]
+    public static int petDamage;
     public int skillDamageValue;
     public float sustainmentTime = 0;
     public float declinedDamageValue;
@@ -28,6 +29,7 @@ public class SkillAttack : MonoBehaviour
 
     private void Start()
     {
+        if (petAttack) skillDamageValue = petDamage;
         AudioSource audioSource = GetComponent<AudioSource>();
         if (audioSource)
             audioSource.PlayOneShot(audioSource.clip);
@@ -111,6 +113,11 @@ public class SkillAttack : MonoBehaviour
         for (int i = 0; i < monsterLayerNumber.Length; i++)
             if (other.gameObject.layer == monsterLayerNumber[i])
             {
+                if (sustainmentTime == 0)
+                {
+                    hitbox.enabled = false;
+                    this.enabled = false;
+                }
                 if (explosion) // Attack
                 {
                     GameObject explosionEffect = Instantiate(explosion, other.gameObject.transform.transform.position, Quaternion.identity);

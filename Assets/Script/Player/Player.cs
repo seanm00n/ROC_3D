@@ -6,16 +6,17 @@ using UnityEngine.Events;
 public class PlayerSaveData
 {
     public static int gold = 0;
-    public int bone = 0;
-    public int maxHP = 0;
-    public int maxMP = 0;
+    public int bone = 1000;
+    public int maxHP = 200;
+    public int maxMP = 30;
 
     public bool pet = false;
     public bool petSpecial = false;
 
-    public bool getMoreGold = false;
-    public bool getMoreBone = false;
+    public int getMoreGold = 0;
+    public int getMoreBone = 0;
 
+    public int petDamage = 0;
 }
 public class Player : MonoBehaviour, IBattle
 {
@@ -61,8 +62,8 @@ public class Player : MonoBehaviour, IBattle
     public CameraManager playerCamera;
 
     // Absolute Value
-    public static int maxHp = 100;
-    public static int maxMp = 20;
+    public static int maxHp = 0;
+    public static int maxMp = 0;
 
     private void Awake()
     {

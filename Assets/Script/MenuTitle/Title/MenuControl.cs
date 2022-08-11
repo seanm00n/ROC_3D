@@ -18,7 +18,6 @@ public class MenuControl : MonoBehaviour
     }
     public void StartButton()
     {
-        // Data Reset
         StartCoroutine(FadeOut());
     }
     public void LoadButton()
@@ -32,43 +31,7 @@ public class MenuControl : MonoBehaviour
         animator.SetTrigger("exit");
     }
 
-    public void SaveLoad(int saveFileNumber = 0)
-    {
-        switch (saveFileNumber) 
-        {
-            case 1:
-                // Load save
-                break;
 
-            case 2:
-                // Load save
-                break;
-
-            case 3:
-                // Load save
-                break;
-        }
-
-        StartCoroutine(FadeOut());
-    }
-
-    public void ResetData(int saveFileNumber = 0)
-    {
-        switch (saveFileNumber)
-        {
-            case 1:
-                // Delete save
-                break;
-
-            case 2:
-                // Delete save
-                break;
-
-            case 3:
-                // Delete save
-                break;
-        }
-    }
 
     public void ExitButton()
     {
@@ -77,6 +40,7 @@ public class MenuControl : MonoBehaviour
 
     IEnumerator FadeOut() // Screen FadeOut
     {
+        Time.timeScale = 1;
         blockImage.gameObject.SetActive(true);
         Color c = new Color();
         

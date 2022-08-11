@@ -189,7 +189,7 @@ public class StructureSpawn_Test : MonoBehaviour
                         Install.renderers[i].material.color = color;
                     }
 
-                    if (Input.GetKeyDown(KeyCode.Mouse2))
+                    if (Input.GetMouseButtonDown(0))
                     {
 
                         //////// Install Object ///////////////

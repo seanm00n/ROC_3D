@@ -14798,9 +14798,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: 9
   skillDamageValue: 0
-  sustainmentTime: 0.1
+  sustainmentTime: 0
   declinedDamageValue: 0
   turretAttack: 0
+  petAttack: 0
   explosion: {fileID: 0}
 --- !u!114 &3615151487761492398
 MonoBehaviour:
