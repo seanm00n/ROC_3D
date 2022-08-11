@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3538242774478805294}
   - component: {fileID: 1482492770113473379}
   - component: {fileID: 5818321231718874343}
-  m_Layer: 3
+  m_Layer: 1
   m_Name: Box_sample
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,8 +112,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   compatibility: 1
-  exceptLayer: 8
-  exceptLayer_2: 10
+  structureLayer: 8
+  structureAreaLayer: 10
   renderers:
   - {fileID: 1835168795541579836}
 --- !u!54 &5818321231718874343
@@ -141,7 +141,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6821777712680375952}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Box (Test)_sample
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -247,6 +247,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MonsterPref09
       objectReference: {fileID: 0}
+    - target: {fileID: 3058493843349080294, guid: a387b3ef0fc11c9468de3c028fdd2604, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 3081328875592528552, guid: a387b3ef0fc11c9468de3c028fdd2604, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.000000002910383

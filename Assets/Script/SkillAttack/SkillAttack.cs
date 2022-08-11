@@ -7,16 +7,18 @@ public class SkillAttack : MonoBehaviour
     public PlayerAttackSkill.skill skillName = PlayerAttackSkill.skill.None;
 
     [Header("Damage")]
+    public static int petDamage;
     public int skillDamageValue;
     public float sustainmentTime = 0;
     public float declinedDamageValue;
     [Space]
     [Header("Master Setting")]
     public bool turretAttack;
+    public bool petAttack;
 
     [Space]
     [Header("MonsterLayer")]
-    public int monsterLayerNumber; 
+    private int[] monsterLayerNumber = new int[2]; 
 
     [Space]
     [Header("Effect")]
@@ -27,11 +29,25 @@ public class SkillAttack : MonoBehaviour
 
     private void Start()
     {
+        if (petAttack) skillDamageValue = petDamage;
+        AudioSource audioSource = GetComponent<AudioSource>();
+        if (audioSource)
+            audioSource.PlayOneShot(audioSource.clip);
+        //monsterLayer set
+        monsterLayerNumber[0] = 6;
+        monsterLayerNumber[1] = 11;
+
         if (turretAttack)
         {
             skillRigidbody = GetComponent<Rigidbody>();
             skillRigidbody.AddForce(transform.forward * 500f);
             Destroy(gameObject, 2f);
+        }
+        if (petAttack)
+        {
+            skillRigidbody = GetComponent<Rigidbody>();
+            skillRigidbody.AddForce(transform.forward * 500f);
+            Destroy(gameObject, 4f);
         }
         hitbox = GetComponent<Collider>();
 
@@ -89,18 +105,30 @@ public class SkillAttack : MonoBehaviour
             StartCoroutine(delaySkillDamage(5));   
         }
         if (declinedDamageValue != 0f) skillDamageValue = (int)(skillDamageValue * declinedDamageValue);
+        hitbox.enabled = true;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == monsterLayerNumber && explosion) // Attack
-        {
-            GameObject explosionEffect = Instantiate(explosion, other.gameObject.transform.transform.position, Quaternion.identity);     
-            Destroy(explosionEffect, 2f);
+        for (int i = 0; i < monsterLayerNumber.Length; i++)
+            if (other.gameObject.layer == monsterLayerNumber[i])
+            {
+                if (sustainmentTime == 0)
+                {
+                    hitbox.enabled = false;
+                    this.enabled = false;
+                }
+                if (explosion) // Attack
+                {
+                    GameObject explosionEffect = Instantiate(explosion, other.gameObject.transform.transform.position, Quaternion.identity);
+                    Destroy(explosionEffect, 2f);
 
-            if (skillName == PlayerAttackSkill.skill.None)
-                Destroy(gameObject);
-        }
+                    if (skillName == PlayerAttackSkill.skill.None)
+                        Destroy(gameObject);
+                    break;
+                }
+            }
+
     }
 
     private IEnumerator SustainmentTimeOfSkill()
@@ -115,7 +143,6 @@ public class SkillAttack : MonoBehaviour
         {
             yield return new WaitForSeconds(0.35f);
             hitbox.enabled = !hitbox.enabled;
-            Debug.Log("반복횟수 : " + i + "값" + hitbox.enabled);
             if (Time.timeScale != 0) i++;
         }
         hitbox.enabled = false;
