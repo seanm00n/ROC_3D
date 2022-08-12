@@ -5,19 +5,22 @@ TagManager:
   serializedVersion: 2
   tags:
   - Shootable
+  - HQ
+  - PlayerAttack
+  - Turret
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Alliance
   - Water
   - UI
-  - 
-  - 
-  - Lighting
-  - Ground
-  - Postprocessing
-  - 
+  - Boss
+  - Neutral
+  - Structure
+  - Item
+  - StructureArea
+  - Monster
   - 
   - 
   - 

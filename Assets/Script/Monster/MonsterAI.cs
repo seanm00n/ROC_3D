@@ -27,11 +27,14 @@ private void OnDrawGizmosSelected () {
     GameObject HQ;
     GameObject m_Player;
     GameObject Controller;
+    
 
     [SerializeField] bool isBoss;
     [SerializeField] int m_health;
     [SerializeField] int m_attack;
     [SerializeField] LayerMask Alliance;
+    [SerializeField] Transform AttactStart;
+    [SerializeField] GameObject AttackPref;
     
 
     void Start(){
@@ -42,7 +45,6 @@ private void OnDrawGizmosSelected () {
         CheckDeath();
         SelectTarget();
         Move();
-
     }
 
     void Init () {
@@ -71,6 +73,20 @@ private void OnDrawGizmosSelected () {
                 other.GetComponent<IBattle>().Hit(m_attack);
                 m_isAttacked = true;
             }
+        }
+    }
+    public void BossAttack (Collider other) {
+        if (m_isDeath) {
+            return;
+        }
+        m_cooltime += Time.deltaTime;
+        GetComponent<Animator>().SetBool("Attack", true);
+
+        if (1f < m_cooltime) {
+            m_isAttacked = false;
+            m_cooltime = 0f;
+            GameObject BossA = Instantiate(AttackPref,AttactStart.position, transform.rotation);
+            Destroy(BossA, 2f);
         }
     }
     void SelectTarget () {//Edit after adding turret
@@ -134,6 +150,10 @@ private void OnDrawGizmosSelected () {
             other.gameObject.tag == "HQ" ||
             other.gameObject.tag == "Turret") {
             m_isInRange = true;
+            if (isBoss) {
+                BossAttack(other);
+                return;
+            }
             Attack(other);
         }
     }
