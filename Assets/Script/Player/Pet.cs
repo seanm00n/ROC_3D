@@ -33,6 +33,7 @@ public class Pet : MonoBehaviour
     // Auto Setting
     private float currTime;
     private Animator animator;
+    private AudioSource audio;
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
@@ -45,6 +46,7 @@ public class Pet : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
+        audio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -102,6 +104,7 @@ public class Pet : MonoBehaviour
     {   
         attack = Instantiate(attackPrefab, firePosition.position, transform.rotation);
         fireEffect.Play();
+        audio.Play();
     }
     
 }
