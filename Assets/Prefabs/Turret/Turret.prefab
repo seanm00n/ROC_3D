@@ -5072,9 +5072,10 @@ GameObject:
   - component: {fileID: 2062385358052753697}
   - component: {fileID: 2070674840528427219}
   - component: {fileID: 8800621046053165114}
-  m_Layer: 0
+  - component: {fileID: 637090773905360929}
+  m_Layer: 3
   m_Name: CannonG_Barrel02
-  m_TagString: Untagged
+  m_TagString: Turret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5178,6 +5179,19 @@ MonoBehaviour:
   fireEffect: {fileID: 2173063723164991821}
   hp: 100
   isAlive: 1
+--- !u!65 &637090773905360929
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2084447687259441793}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.5885751, y: 2.1939857, z: 4.1735797}
+  m_Center: {x: 0.01529187, y: 1.0193249, z: 0.7242343}
 --- !u!1 &2084749610210772273
 GameObject:
   m_ObjectHideFlags: 0
@@ -5252,8 +5266,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5151253315898664019}
-  - component: {fileID: 1885312593}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Turret
   m_TagString: Turret
   m_Icon: {fileID: 0}
@@ -5277,19 +5290,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1885312593
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5151253315898664023}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 3.5885751, y: 2.1939857, z: 4.1735797}
-  m_Center: {x: 0.01529187, y: 1.0193249, z: 0.7242343}
 --- !u!1001 &1410766633
 PrefabInstance:
   m_ObjectHideFlags: 0

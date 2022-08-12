@@ -68,7 +68,7 @@ public class Turret : MonoBehaviour, IBattle
 
     private void Start()
     {
-        parentObjectCollider = parentObject.GetComponent<Collider>();
+        parentObjectCollider = GetComponent<Collider>();
     }
     
     private void Update()

@@ -242,12 +242,69 @@ public class SkillUpgrade : MonoBehaviour
                         skillView[comparativeValue - 1] == Player.instance.ui.eSkill.sprite ||
                         skillView[comparativeValue - 1] == Player.instance.ui.rSkill.sprite ||
                         (comparativeValue) == 10)
-                        retry = false;
+                    {
+                        int completedSkillAmount = 0;
+                        for (int num = 0; num < skillComplete.Length - 1; num++)
+                        {
+                            if (skillComplete[num]) completedSkillAmount++;
+                        }
+                        if (comparativeValue != 10)
+                        {
+                            SkillButton(InformationOfSkill.SkillName(comparativeValue));
+                            if (skillComplete[currentSkillGrade] != true)
+                            {
+                                retry = false;
+                            }
+                            else
+                            {
+                                if (completedSkillAmount == 1)
+                                {
+                                    InformationOfSkill.Information(10);
+                                    if (PlayerAttackSkill.normalDamage == InformationOfSkill.skill.attack[2])
+                                    {
+                                        completedSkillAmount = 2;
+                                    }
+                                    else
+                                        comparativeValue = 13;
+                                }
+                                if (completedSkillAmount == 2)
+                                {
+                                    comparativeValue = (int)Random.Range(11, 14);
+                                    if (comparativeValue != 12) retry = false;
+                                }
+                                else
+                                {
+                                    retry = false;
+                                }
+                                if (completedSkillAmount == 3)
+                                {
+                                    comparativeValue = (int)Random.Range(11, 14);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            InformationOfSkill.Information(10);
+                            Debug.Log(InformationOfSkill.skill.attack[2] +" : " + PlayerAttackSkill.normalDamage);
+                            if (PlayerAttackSkill.normalDamage == InformationOfSkill.skill.attack[2])
+                            {
+                                if (completedSkillAmount == 0)
+                                    comparativeValue = 13;
+                                if (completedSkillAmount >= 1)
+                                    comparativeValue = (int)Random.Range(11, 14);
+                                if (comparativeValue != 12) retry = false;
+                            }
+                            else
+                            {
+                                retry = false;
+                            }
+                        }
 
-                    if (skillView[comparativeValue - 1] == skillView[0])
-                        retry = true;
+                        if (skillView[comparativeValue - 1] == skillView[0])
+                            retry = true;
+                    }
                 }
-                else if(skillType == 1)
+                else if (skillType == 1)
                 {
                     if (Player.instance.ui.Hide.Length != 0)
                     {
@@ -268,8 +325,14 @@ public class SkillUpgrade : MonoBehaviour
                 comparativeValueFirst = comparativeValue;
 
             selectedSkill(skillNumber, i);
-            subjectOfApplicationSkillView[i].sprite = selectedSkillView;
-
+            if (comparativeValue < 11)
+            {
+                subjectOfApplicationSkillView[i].sprite = selectedSkillView;
+            }
+            else
+            {
+                subjectOfApplicationSkillView[i].sprite = skillView[skillNumber - 1];
+            }
             currentSkill = 1;
         }
     }

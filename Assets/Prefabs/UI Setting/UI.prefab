@@ -1095,7 +1095,6 @@ RectTransform:
   - {fileID: 8095965109734176945}
   - {fileID: 2082385609694464039}
   - {fileID: 2594437940705311193}
-  - {fileID: 7779828556385545825}
   - {fileID: 7913324758550724450}
   - {fileID: 7550184018214604092}
   - {fileID: 2358971680438059086}
@@ -1105,7 +1104,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00012207031, y: 0.000061035156}
+  m_AnchoredPosition: {x: 0.00024414062, y: 0}
   m_SizeDelta: {x: -21.148, y: -15.861}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5340610045244932481
@@ -1547,7 +1546,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7779828556385545825}
   m_Father: {fileID: 5736581825206814092}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1764,11 +1764,11 @@ RectTransform:
   m_Children:
   - {fileID: 8224859924347000035}
   m_Father: {fileID: 5736581825206814092}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 58.413513, y: 84.69993}
+  m_AnchoredPosition: {x: 58.413574, y: 84.69995}
   m_SizeDelta: {x: 2856.24, y: 708.3212}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &7905558767973394284
@@ -4288,6 +4288,7 @@ MonoBehaviour:
   getMoreGold: 0
   getMoreBone: 0
   priceView: {fileID: 0}
+  myValue: {fileID: 0}
   AlreadyBuy: {fileID: 0}
   Buybutton: {fileID: 0}
 --- !u!1 &4613377842209772339
@@ -4478,7 +4479,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.51989746, y: 0.8880615}
+  m_AnchoredPosition: {x: 0.52001953, y: 0.8880615}
   m_SizeDelta: {x: 289.527, y: 307.6398}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6647897632503921775
@@ -5337,7 +5338,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5736581825206814092}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -7387,14 +7388,14 @@ RectTransform:
   - {fileID: 3873476660988576643}
   - {fileID: 1292550522792996316}
   - {fileID: 6642866350100010007}
-  m_Father: {fileID: 5736581825206814092}
-  m_RootOrder: 8
+  m_Father: {fileID: 2594437940705311193}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 297, y: -141}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 161, y: 0}
   m_SizeDelta: {x: 160, y: 20}
-  m_Pivot: {x: 0, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6973763861616832986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9609,10 +9610,10 @@ RectTransform:
   m_Father: {fileID: 7216467207257026668}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -40}
-  m_SizeDelta: {x: 300, y: 80}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7216467208124272114
 CanvasRenderer:
@@ -10130,7 +10131,7 @@ RectTransform:
   - {fileID: 7051527519513815353}
   - {fileID: 4863628834086192296}
   m_Father: {fileID: 5736581825206814092}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -11427,6 +11428,7 @@ MonoBehaviour:
   getMoreGold: 0
   getMoreBone: 0
   priceView: {fileID: 0}
+  myValue: {fileID: 0}
   AlreadyBuy: {fileID: 0}
   Buybutton: {fileID: 0}
 --- !u!1 &8348212328311070491
@@ -12416,11 +12418,11 @@ RectTransform:
   m_Children:
   - {fileID: 3704465092630430995}
   m_Father: {fileID: 5736581825206814092}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -58.41391, y: 84.69988}
+  m_AnchoredPosition: {x: -58.41382, y: 84.69983}
   m_SizeDelta: {x: 2856.24, y: 708.3212}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &6548043682918159584
