@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using ROC;
 
 public class PlayerSaveData
 {
@@ -65,8 +66,20 @@ public class Player : MonoBehaviour, IBattle
     public static int maxHp = 0;
     public static int maxMp = 0;
 
+    private PlayerSaveData playerSaveData;
+
     private void Awake()
     {
+        try
+        {
+            playerSaveData = SaveManager.Load<PlayerSaveData>("PlayerData");
+        }
+        catch
+        {
+            playerSaveData = new PlayerSaveData();
+        }
+        hp = playerSaveData.maxHP;
+        mp = playerSaveData.maxMP;
         if (!instance)
             instance = this;
 
@@ -116,7 +129,7 @@ public class Player : MonoBehaviour, IBattle
             else if (ui.hpBar.value > hp)
                 ui.hpBar.value -= 40 * Time.deltaTime; // 40 = Contractible Speed
         }
-        ui.hpText.text = hp.ToString() + "/" + 100.ToString(); // Hp value is marked by hpText.text.
+        ui.hpText.text = hp.ToString() + "/" + maxHp.ToString(); // Hp value is marked by hpText.text.
     }
 
     public void MpRefresh() // Same
@@ -128,7 +141,7 @@ public class Player : MonoBehaviour, IBattle
             else if (ui.mpBar.value > mp)
                 ui.mpBar.value -= 10 * Time.deltaTime; // 10 = Contractible Speed
         }
-        ui.mpText.text = mp.ToString() + "/" + 20.ToString(); // Mp value is marked by mpText.text.
+        ui.mpText.text = mp.ToString() + "/" + maxMp.ToString(); // Mp value is marked by mpText.text.
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////

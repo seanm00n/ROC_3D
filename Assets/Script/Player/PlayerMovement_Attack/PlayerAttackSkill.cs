@@ -614,8 +614,8 @@ public class PlayerAttackSkill : MonoBehaviour
         if (!Player.instance.unbeatable)
         {
             Player.instance.mp += 2;
-            if (Player.instance.mp > 20)
-                Player.instance.mp = 20;
+            if (Player.instance.mp > Player.maxMp)
+                Player.instance.mp = Player.maxMp;
         }
         
         isRecoverMp = false;

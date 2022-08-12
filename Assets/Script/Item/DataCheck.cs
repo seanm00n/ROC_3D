@@ -73,7 +73,7 @@ public class DataCheck : MonoBehaviour
             myValue.text = ": " + playerSaveData.bone;
 
         Player.maxHp = playerSaveData.maxHP;
-        Player.maxHp = playerSaveData.maxMP;
+        Player.maxMp = playerSaveData.maxMP;
         SkillAttack.petDamage = playerSaveData.petDamage;
 
         if (AlreadyBuy && Buybutton)

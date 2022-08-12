@@ -16,9 +16,16 @@ public class MenuControl : MonoBehaviour
     {
         animator = GetComponent<Animator>();
     }
-    public void StartButton()
+    public void StartButton(int scene)
     {
-        StartCoroutine(FadeOut());
+        if(blockImage)
+        StartCoroutine(FadeOut(scene));
+        else
+        {
+            if (sceneNum == 0) SceneManager.LoadScene(scene, LoadSceneMode.Single);
+            else
+                SceneManager.LoadScene(sceneNum, LoadSceneMode.Single);
+        }
     }
     public void LoadButton()
     {
@@ -38,7 +45,7 @@ public class MenuControl : MonoBehaviour
         Application.Quit();
     }
 
-    IEnumerator FadeOut() // Screen FadeOut
+    IEnumerator FadeOut(int scene) // Screen FadeOut
     {
         Time.timeScale = 1;
         blockImage.gameObject.SetActive(true);
@@ -52,6 +59,8 @@ public class MenuControl : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.1f);
+        if(sceneNum == 0) SceneManager.LoadScene(scene, LoadSceneMode.Single);
+        else
         SceneManager.LoadScene(sceneNum, LoadSceneMode.Single);
     }
 }
