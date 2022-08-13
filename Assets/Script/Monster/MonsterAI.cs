@@ -15,11 +15,10 @@ private void OnDrawGizmosSelected () {
     }
 #endif
     public int myIndex;
-    
     bool m_isInRange = false;
     bool m_isDeath = false;
     bool m_isAttacked = false;
-    float m_cooltime = 0f;
+    float m_time = 0f;
     float m_deadTime = 0f;
     float m_SightDistance = 10f;
     GameObject m_target;
@@ -32,6 +31,7 @@ private void OnDrawGizmosSelected () {
     [SerializeField] bool isBoss;
     [SerializeField] int m_health;
     [SerializeField] int m_attack;
+    [SerializeField] float m_cooltime;
     [SerializeField] LayerMask Alliance;
     [SerializeField] Transform AttactStart;
     [SerializeField] GameObject AttackPref;
@@ -62,14 +62,14 @@ private void OnDrawGizmosSelected () {
         if (m_isDeath) {
             return;
         }
-        m_cooltime += Time.deltaTime;
+        m_time += Time.deltaTime;
         GetComponent<Animator>().SetBool("Attack", true);
-        if (1f < m_cooltime) {
+        if (1f < m_time) {
             m_isAttacked = false;
-            m_cooltime = 0f;
+            m_time = 0f;
         }
         if (!m_isAttacked) {
-            if (0.5f < m_cooltime) {
+            if (0.5f < m_time) {
                 other.GetComponent<IBattle>().Hit(m_attack);
                 m_isAttacked = true;
             }
@@ -79,16 +79,18 @@ private void OnDrawGizmosSelected () {
         if (m_isDeath) {
             return;
         }
-        m_cooltime += Time.deltaTime;
         GetComponent<Animator>().SetBool("Attack", true);
 
-        if (1f < m_cooltime) {
+        if (m_cooltime < m_time) {
             m_isAttacked = false;
-            m_cooltime = 0f;
+            m_time = 0f;
             GameObject BossA = Instantiate(AttackPref,AttactStart.position, transform.rotation);
+            BossA.GetComponent<BossAttack>().attack = m_attack;
             Destroy(BossA, 2f);
         }
+        m_time += Time.deltaTime;
     }
+    
     void SelectTarget () {//Edit after adding turret
         if (m_isDeath) return;
         if(m_target == null) m_target = HQ;

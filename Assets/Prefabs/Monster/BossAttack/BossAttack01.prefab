@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 53a63d52a4c231f4c8ef0f2bfc170425, type: 2}
+  - {fileID: 2100000, guid: 33ac4c11669ae174481259c5c11dff7b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -95,7 +95,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.1
+  m_Radius: 0.404669
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3975865304084400862
 GameObject:
@@ -9670,7 +9670,7 @@ GameObject:
   - component: {fileID: 5402598351499960385}
   - component: {fileID: 489904883833294801}
   m_Layer: 11
-  m_Name: FlameThrower
+  m_Name: BossAttack01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14522,3 +14522,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3e591754173b5343b3af95805914cbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attack: 0
+  isThrow: 1
