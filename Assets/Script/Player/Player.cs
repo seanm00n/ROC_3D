@@ -6,7 +6,9 @@ using ROC;
 
 public class PlayerSaveData
 {
-    public static int gold = 0;
+    public static int turretAmount = 0;
+    public static int turretAmountMax = 8;
+    public static int gold = 1000;
     public int bone = 1000;
     public int maxHP = 200;
     public int maxMP = 30;
@@ -18,6 +20,8 @@ public class PlayerSaveData
     public int getMoreBone = 0;
 
     public int petDamage = 0;
+
+    public static List<string> itemList = new List<string>();
 }
 public class Player : MonoBehaviour, IBattle
 {
@@ -27,8 +31,6 @@ public class Player : MonoBehaviour, IBattle
     public int mp = 20;
     public bool unbeatable = false;
     public static int theNumberOfDeaths = 0;
-    public static int gold = 0;
-    public static int bone = 0;
 
     [Space]
     [Header("Case : Player is damaged")]
@@ -107,6 +109,7 @@ public class Player : MonoBehaviour, IBattle
         {
             Hit(100);
         }
+        if (mp < 0) mp = 0;
 
     }
     private void StopPlaying(bool stopPlaying)

@@ -11,6 +11,10 @@ public class UIController : MonoBehaviour
     public Image aim;
 
     [Space]
+    [Header("Hide In Shop")]
+    public GameObject[] DeleteUI;
+
+    [Space]
     [Header("Skill Lock")]
     public Image[] sLock = new Image[3];
     private float declinedTime;
@@ -22,6 +26,7 @@ public class UIController : MonoBehaviour
     public Slider hpBar;
     public Slider mpBar;
     public GameObject turretHp;
+    public TextMeshProUGUI turretAmount;
     
     [Space]
     [Header("Hide GameObject")]
@@ -42,6 +47,10 @@ public class UIController : MonoBehaviour
     public GameObject setting;
 
     [HideInInspector] public Canvas canvas;
+
+    [Space]
+    [Header("Shop")]
+    public GameObject shopUI;
 
     private void Awake()
     {
@@ -68,6 +77,8 @@ public class UIController : MonoBehaviour
         {
             sLock[3].gameObject.SetActive(true);
         }
+
+        if (turretAmount) turretAmount.text = "Turret :  " + PlayerSaveData.turretAmount + "/" + PlayerSaveData.turretAmountMax;
     }
     
     public IEnumerator LockskillView(Image skillView, SkillData data)

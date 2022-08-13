@@ -64,6 +64,7 @@ public class Turret : MonoBehaviour, IBattle
     private void Awake()
     {
         fullHp = hp;
+        PlayerSaveData.turretAmount += 1;
     }
 
     private void Start()
@@ -95,6 +96,7 @@ public class Turret : MonoBehaviour, IBattle
 
         if (hp == 0 && die == false) // Turret is die.
         {
+            PlayerSaveData.turretAmount -= 1;
             die = true;
             parentObjectCollider.enabled = false;
             

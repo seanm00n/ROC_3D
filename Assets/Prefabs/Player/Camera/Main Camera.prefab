@@ -176,12 +176,8 @@ MonoBehaviour:
   selectNumber: 0
   selectedPrefab:
   - {fileID: 5151253315898664023, guid: 7e202205634b0d34e8ce286f164c93ba, type: 3}
-  - {fileID: 6821777712680376044, guid: eff39dc192c979f4a82678eef5a366a6, type: 3}
-  - {fileID: 8486257703457057009, guid: a4f2f8c115fea44449f4c91ac2c76401, type: 3}
   prefab:
   - {fileID: 5151253315898664023, guid: e00a81a3abd46eb41876c24bb30b048c, type: 3}
-  - {fileID: 6821777712680376044, guid: 57ef6637db36e3b449c11f548877424d, type: 3}
-  - {fileID: 8486257703457057009, guid: ca4ed68e48834044a88f1775cfd19b98, type: 3}
   prefabHUI:
   - {fileID: 5182943263930901904, guid: 4fdd2930e9d614a48af65eb08b4444cd, type: 3}
   - {fileID: 0}

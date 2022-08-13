@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using ROC;
 public class StructureSpawn_Test : MonoBehaviour
 {
     [Header("Area Setting")]
@@ -43,6 +43,7 @@ public class StructureSpawn_Test : MonoBehaviour
     Color color;
     GameObject target;
     GameObject skillWindow;
+    PlayerSaveData playerSaveData;
 
     private void Awake()
     {
@@ -124,10 +125,26 @@ public class StructureSpawn_Test : MonoBehaviour
         
         if (structureMode == true)
         {
+            try
+            {
+                playerSaveData = SaveManager.Load<PlayerSaveData>("PlayerData");
+            }
+            catch
+            {
+                playerSaveData = new PlayerSaveData();
+            }
+
+
             //Mouse fixed
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
+            if (!(PlayerSaveData.itemList.Count > selectNumber && PlayerSaveData.itemList[selectNumber] != null)) return;
+
+            if (PlayerSaveData.itemList[0] == "Turret Lv1") selectNumber = 0;
+
+            if (selectNumber == 0 && (PlayerSaveData.turretAmount == PlayerSaveData.turretAmountMax)) return;
+            
             // Check Install is possible.
 
             Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));

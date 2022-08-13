@@ -6,6 +6,12 @@ public class ItemInteractionManager : MonoBehaviour
 {
     [Header("Except certain layer when you find item")]
     public LayerMask exceptLayer;
+    public static GameObject shopUI;
+
+    private void Start()
+    {
+        shopUI = Player.instance.ui.shopUI;    
+    }
 
     void Update()
     {
@@ -17,6 +23,10 @@ public class ItemInteractionManager : MonoBehaviour
         {
             if (hit.collider.gameObject.layer == 9) // 9: item layer
             {
+                if(Time.timeScale != 0)
+                    shopUI.SetActive(true);
+                else
+                    shopUI.SetActive(false);
                 // Cast into item.
                 TestBox boxItem;
                 if (boxItem = hit.collider.gameObject.GetComponent<TestBox>()) // if item is boxitem.
@@ -27,6 +37,14 @@ public class ItemInteractionManager : MonoBehaviour
                     }
                 }
             }
+            else
+            {
+                shopUI.SetActive(false);
+            }
+        }
+        else
+        {
+            shopUI.SetActive(false);
         }
     }
 }

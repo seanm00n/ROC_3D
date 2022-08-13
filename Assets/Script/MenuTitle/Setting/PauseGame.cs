@@ -20,6 +20,9 @@ public class PauseGame : MonoBehaviour
     //Single Tone
     public static PauseGame instance;
 
+    //Menu
+    public MenuControl menu;
+
     private void Awake()
     {
         if (!instance)
