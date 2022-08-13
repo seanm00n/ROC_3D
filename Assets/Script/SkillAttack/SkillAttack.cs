@@ -11,6 +11,8 @@ public class SkillAttack : MonoBehaviour
     public int skillDamageValue;
     public float sustainmentTime = 0;
     public float declinedDamageValue;
+    public int waitTime = 0;
+
     [Space]
     [Header("Master Setting")]
     public bool turretAttack;
@@ -54,6 +56,10 @@ public class SkillAttack : MonoBehaviour
         if (sustainmentTime != 0)
         {
             StartCoroutine(SustainmentTimeOfSkill());
+        }
+        if (waitTime != 0)
+        {
+            StartCoroutine(WaitTimeOfSkill());
         }
     }
 
@@ -105,7 +111,10 @@ public class SkillAttack : MonoBehaviour
             StartCoroutine(delaySkillDamage(5));   
         }
         if (declinedDamageValue != 0f) skillDamageValue = (int)(skillDamageValue * declinedDamageValue);
-        hitbox.enabled = true;
+        if (waitTime == 0)
+        {
+            hitbox.enabled = true;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -115,8 +124,15 @@ public class SkillAttack : MonoBehaviour
             {
                 if (sustainmentTime == 0)
                 {
-                    hitbox.enabled = false;
-                    this.enabled = false;
+                    if (waitTime == 0)
+                    {
+                        hitbox.enabled = false;
+                        this.enabled = false;
+                    }
+                    else
+                    {
+                        Destroy(gameObject, 2f);
+                    }
                 }
                 if (explosion) // Attack
                 {
@@ -137,6 +153,16 @@ public class SkillAttack : MonoBehaviour
         hitbox.enabled = false;
         this.enabled = false;
     }
+    private IEnumerator WaitTimeOfSkill()
+    {
+        for (int i = 0; waitTime > i;)
+        {
+            yield return new WaitForSeconds(0.1f);
+            if (Time.timeScale != 0) i++;
+        }
+        hitbox.enabled = true;
+    }
+
     private IEnumerator delaySkillDamage(int repeat)
     {
         for (int i = 0; i< repeat;)

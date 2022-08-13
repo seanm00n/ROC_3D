@@ -968,6 +968,10 @@ public class PlayerAttackSkill : MonoBehaviour
                         prefabsCast[EffectNumber].transform.up = hit.normal;
                     }
                 }
+                if(EffectNumber == 5)
+                {
+                    Instantiate(prefabsCast[10], transform.position, Quaternion.identity);
+                }
 
                 casting = false;
                 canMove = true;

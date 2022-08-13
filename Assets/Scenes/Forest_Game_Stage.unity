@@ -80769,6 +80769,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 366769983738760029, guid: 202c7c3212ba46e42b648f9dc1d59b33, type: 3}
+      propertyPath: prefabsCast.Array.size
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 366769983738760029, guid: 202c7c3212ba46e42b648f9dc1d59b33, type: 3}
+      propertyPath: prefabsCast.Array.data[10]
+      value: 
+      objectReference: {fileID: 5829017269374810178, guid: 6d1845deca8a29840876edf7ec1dc6e3, type: 3}
     - target: {fileID: 2104586349847185021, guid: 202c7c3212ba46e42b648f9dc1d59b33, type: 3}
       propertyPath: m_RootOrder
       value: 4
