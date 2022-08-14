@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 766006261256793689}
   - component: {fileID: 8986652100008157793}
   - component: {fileID: 4329321629557271464}
-  m_Layer: 12
+  m_Layer: 13
   m_Name: MobPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}

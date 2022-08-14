@@ -8,8 +8,8 @@ public class PlayerSaveData
 {
     public static int turretAmount = 0;
     public static int turretAmountMax = 8;
-    public static int gold = 1000;
-    public int bone = 1000;
+    public static int gold = 200;
+    public int bone = 0;
     public int maxHP = 200;
     public int maxMP = 30;
 

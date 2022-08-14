@@ -43,10 +43,14 @@ public class Shop : MonoBehaviour
         if (PlayerSaveData.gold >= price[nthItem]) 
         {
             PlayerSaveData.gold -= price[nthItem];
-            CheckItem(nthItem, "Item-Turret.Lv1", "Turret Lv1");
-            CheckItem(nthItem, "Item-Turret.Lv2", "Turret Lv2");
-            CheckItem(nthItem, "Item-Turret.Lv3", "Turret Lv3");
-            CheckItem(nthItem, "Item-Turret.Lv4", "Turret Lv4");
+            if (nthItem == 0)
+                CheckItem(nthItem, "Item-Turret.Lv1", "Turret Lv1");
+            else if(nthItem == 1)
+                CheckItem(nthItem, "Item-Turret.Lv2", "Turret Lv2");
+            else if (nthItem == 2) 
+                CheckItem(nthItem, "Item-Turret.Lv3", "Turret Lv3");
+            else if (nthItem == 3) 
+                CheckItem(nthItem, "Item-Turret.Lv4", "Turret Lv4");
 
         }
     }
@@ -103,8 +107,6 @@ public class Shop : MonoBehaviour
         if (shopitem[nthItem].name == ("Item-Turret.Lv" + (nthItem+1).ToString()))
         {
             PlayerSaveData.itemList[nthItem] = itemName;
-            Debug.Log(PlayerSaveData.itemList[nthItem]);
-            Debug.Log(nthItem);
         }
     }
 }

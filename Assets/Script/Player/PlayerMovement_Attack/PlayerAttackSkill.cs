@@ -180,7 +180,7 @@ public class PlayerAttackSkill : MonoBehaviour
         for (int i = 0; i < col.Length; i++)
         {
             Vector3 targetAngle = col[i].transform.position - transform.position;
-            if (Vector3.Angle(transform.forward, targetAngle) < fieldOfView && !col[i].GetComponent<Animator>().GetBool("Death"))
+            if (Vector3.Angle(transform.forward, targetAngle) < fieldOfView && col[i].GetComponent<Animator>() != null && !col[i].GetComponent<Animator>().GetBool("Death"))
                 screenTargets.Add(col[i].transform);
         }
         #endregion

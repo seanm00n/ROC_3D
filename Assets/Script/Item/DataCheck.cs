@@ -13,7 +13,7 @@ public class DataCheck : MonoBehaviour
     public int price = 0;
 
     [Header("Price")]
-    List<DataCheck> allPrice = new List<DataCheck>(); 
+    private static List<DataCheck> allPrice = new List<DataCheck>(); 
 
     [Header("ability")]
     public int hp = 0;
@@ -39,7 +39,7 @@ public class DataCheck : MonoBehaviour
 
     private int maxPetDamage = 300;
 
-    private int refundBoneValue;
+    [SerializeField]private int refundBoneValue;
 
     private void Start()
     {
@@ -48,11 +48,20 @@ public class DataCheck : MonoBehaviour
         if (priceView) priceView.text = price.ToString();
 
         if (price != 0)
-            foreach (DataCheck item in allPrice)
+        {
+            if (allPrice.Count == 0) allPrice.Add(this);
+            else
             {
-                if(item != this)
-                allPrice.Add(this);
+                foreach (DataCheck item in allPrice)
+                {
+                    if (item != this)
+                    {
+                        allPrice.Add(this);
+                        break;
+                    }
+                }
             }
+        }
     }
 
     // Update is called once per frame
@@ -135,7 +144,7 @@ public class DataCheck : MonoBehaviour
         int bonePrice = 0;
         int petPrice = 0;
 
-        foreach (DataCheck item in allPrice) 
+        foreach (DataCheck item in allPrice)
         {
             if (item.hp != 0)
             {
@@ -204,8 +213,10 @@ public class DataCheck : MonoBehaviour
 
     public void Refund()
     {
+        playerSaveData.bone += refundBoneValue;
+        int amount = playerSaveData.bone;
         playerSaveData = new PlayerSaveData();
-        playerSaveData.bone += refundBoneValue; 
+        playerSaveData.bone = amount;
         SaveManager.Save("PlayerData", playerSaveData);
     }
 

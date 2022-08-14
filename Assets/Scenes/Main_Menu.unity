@@ -12109,6 +12109,7 @@ MonoBehaviour:
   backgroundMusicSetting: {fileID: 0}
   soundEffectSetting: {fileID: 0}
   backgroundMusic: 1
+  clips: []
 --- !u!4 &509249980 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5638036044195962550, guid: 9910d86121d299649af8a4badba84d01, type: 3}
@@ -12537,7 +12538,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 988855655}
   m_HandleRect: {fileID: 988855654}
   m_Direction: 2
-  m_Value: 1.0000006
+  m_Value: 0.9999997
   m_Size: 0.83717227
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -13719,6 +13720,7 @@ MonoBehaviour:
   myValue: {fileID: 228363249}
   AlreadyBuy: {fileID: 76876622}
   Buybutton: {fileID: 1459850416}
+  refundBoneValue: 0
 --- !u!1 &589364149
 GameObject:
   m_ObjectHideFlags: 0
@@ -27659,6 +27661,7 @@ MonoBehaviour:
   myValue: {fileID: 0}
   AlreadyBuy: {fileID: 0}
   Buybutton: {fileID: 0}
+  refundBoneValue: 0
 --- !u!1001 &1218833599
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29568,6 +29571,7 @@ MonoBehaviour:
   myValue: {fileID: 1576687473}
   AlreadyBuy: {fileID: 1460868156}
   Buybutton: {fileID: 1488008845}
+  refundBoneValue: 0
 --- !u!1001 &1278812327
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33221,6 +33225,7 @@ MonoBehaviour:
   myValue: {fileID: 1401378959}
   AlreadyBuy: {fileID: 1527696540}
   Buybutton: {fileID: 788223195}
+  refundBoneValue: 0
 --- !u!1001 &1436422537
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43797,6 +43802,7 @@ MonoBehaviour:
   myValue: {fileID: 595568456}
   AlreadyBuy: {fileID: 1545131499}
   Buybutton: {fileID: 1793803751}
+  refundBoneValue: 0
 --- !u!1001 &1820073677
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44935,6 +44941,7 @@ MonoBehaviour:
   backgroundMusicSetting: {fileID: 279930424}
   soundEffectSetting: {fileID: 1980753302}
   backgroundMusic: 0
+  clips: []
 --- !u!1001 &1856035388
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -49044,6 +49051,7 @@ MonoBehaviour:
   myValue: {fileID: 338441387}
   AlreadyBuy: {fileID: 823555957}
   Buybutton: {fileID: 1112991896}
+  refundBoneValue: 0
 --- !u!4 &2031039145 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6372004229413120080, guid: 941dfb6170fa38444b15f1166cef0216, type: 3}

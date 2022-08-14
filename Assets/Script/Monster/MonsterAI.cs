@@ -7,27 +7,32 @@ using UnityEditor;
 
 #endif
 public class MonsterAI : MonoBehaviour, IBattle {
-    //if Boss avoidancePriority = 0 else avoidancePriority = 1
+    // Boss avoidancePriority = 0 else avoidancePriority = 1
 #if UNITY_EDITOR
 private void OnDrawGizmosSelected () {
         Handles.color = new Color(0, 0, 0, 0.1f);
         Handles.DrawSolidDisc(transform.position, transform.up, m_SightDistance);
     }
 #endif
-    public int myIndex;
     bool m_isInRange = false;
     bool m_isDeath = false;
     bool m_isAttacked = false;
-    float m_cooltime = 0f;
+    float m_time = 0f;
+    float m_SightDistance = 10f;
     GameObject m_target;
     NavMeshAgent m_agent;
     GameObject HQ;
     GameObject m_Player;
-    GameObject MController;
+    GameObject Controller;
+    
+    [SerializeField] bool isBoss;
     [SerializeField] int m_health;
     [SerializeField] int m_attack;
+    [SerializeField] float m_cooltime;
     [SerializeField] LayerMask Alliance;
-    float m_SightDistance = 10f;
+    [SerializeField] Transform AttactStart;
+    [SerializeField] GameObject AttackPref;
+
 
     void Start(){
         Init();
@@ -39,6 +44,14 @@ private void OnDrawGizmosSelected () {
         Move();
     }
 
+    void Init () {
+        Controller = GameObject.Find("MonsterController");
+        m_Player = GameObject.Find("Player");
+        HQ = GameObject.Find("HQ");//change in case : 'name value changes'
+        m_target = HQ;
+        m_agent = GetComponent<NavMeshAgent>();
+        m_agent.speed = 6f;
+    }
     public void Hit (int damage) {
         m_health -= damage;
     }
@@ -46,56 +59,63 @@ private void OnDrawGizmosSelected () {
         if (m_isDeath) {
             return;
         }
-        m_cooltime += Time.deltaTime;
+        m_time += Time.deltaTime;
         GetComponent<Animator>().SetBool("Attack", true);
-        if(1f < m_cooltime) {
+        if (1f < m_time) {
             m_isAttacked = false;
-            m_cooltime = 0f;
+            m_time = 0f;
         }
         if (!m_isAttacked) {
-            if (0.5f < m_cooltime) {
+            if (0.5f < m_time) {
                 other.GetComponent<IBattle>().Hit(m_attack);
                 m_isAttacked = true;
             }
         }
     }
-    void Init () {
-        m_Player = GameObject.Find("Player");
-        MController = GameObject.Find("MonsterController");
-        HQ = GameObject.Find("HQ");//Must change if name changes
-        m_target = HQ;
-        m_agent = GetComponent<NavMeshAgent>();
-        m_agent.speed = 6f;
-    }
-
-    void SelectTarget () {//Edit after adding turret
-        if (m_isDeath)
+    public void BossAttack (Collider other) {
+        if (m_isDeath) {
             return;
-        if(m_target == null)
-            m_target = HQ;
-        Collider[] result = new Collider[1];
+        }
+        GetComponent<Animator>().SetBool("Attack", true);
+
+        if (m_cooltime < m_time) {
+            m_isAttacked = false;
+            m_time = 0f;
+            GameObject BossA = Instantiate(AttackPref,AttactStart.position, transform.rotation);
+            BossA.GetComponent<BossAttack>().attack = m_attack;
+            Destroy(BossA, 2f);
+        }
+        m_time += Time.deltaTime;
+    }
+    
+    void SelectTarget () {//Edit after adding turret
+        if (m_isDeath) return;
+        if(m_target == null) m_target = HQ;
+        Collider[] result = new Collider[100];
         Physics.OverlapSphereNonAlloc(transform.position, m_SightDistance, result, Alliance);
-        if (result[0] && result[0].transform.CompareTag("Player")) {
-            if (Vector3.Distance(transform.position, HQ.transform.position) <=
-                Vector3.Distance(transform.position, m_Player.transform.position)) {
-                m_target = HQ;
-            } 
-            else 
-            {
-                m_target = m_Player;
+        for (int i = 0; i < 100; i++) {
+            if (result[i] && result[i].transform.CompareTag("Player")) {
+                if (Vector3.Distance(transform.position, HQ.transform.position) <=
+                    Vector3.Distance(transform.position, m_Player.transform.position)) {
+                    m_target = HQ;
+                } else {
+                    m_target = m_Player;
+                }
+            }
+            if (result[i] && result[i].transform.CompareTag("Turret")) {
+                if (Vector3.Distance(transform.position, HQ.transform.position) <=
+                    Vector3.Distance(transform.position, result[i].transform.position)) {
+                    m_target = HQ;
+                } else {
+                    m_target = result[i].transform.gameObject;
+                }
             }
         }
-        if (result[0] && result[0].transform.CompareTag("Turret")) {
-            if (Vector3.Distance(transform.position, HQ.transform.position) <=
-                Vector3.Distance(transform.position, result[0].transform.position)) {
-                m_target = HQ;
-            } else {
-                m_target = result[0].transform.gameObject;
-            }
-        }
+
     }
 
     void Move () {
+        m_agent.speed = 6f;
         if (m_isDeath) {
             m_agent.enabled = false;
             return;
@@ -111,6 +131,8 @@ private void OnDrawGizmosSelected () {
             GetComponent<Animator>().SetBool("Death", true);
             StartCoroutine(DestroyMonster());
             m_isDeath = true;
+
+            /// 코드 수정함 (변경자 : zin) 엔딩 호출 제거
         }
     }
 
@@ -118,6 +140,11 @@ private void OnDrawGizmosSelected () {
         if (other.gameObject.tag == "PlayerAttack") {
             Hit(other.gameObject.GetComponent<SkillAttack>().skillDamageValue);
         }
+        if (other.gameObject.tag == "Player" ||
+            other.gameObject.tag == "HQ" ||
+            other.gameObject.tag == "Turret") {
+        }
+        
     }
 
     private void OnTriggerStay (Collider other) {
@@ -125,6 +152,10 @@ private void OnDrawGizmosSelected () {
             other.gameObject.tag == "HQ" ||
             other.gameObject.tag == "Turret") {
             m_isInRange = true;
+            if (isBoss) {
+                BossAttack(other);
+                return;
+            }
             Attack(other);
         }
     }
@@ -137,10 +168,21 @@ private void OnDrawGizmosSelected () {
             GetComponent<Animator>().SetBool("Attack", false);
         }
     }
-
     IEnumerator DestroyMonster () {
-        yield return new WaitForSeconds(5f);
-        MController.GetComponent<MonsterController>().ItemGen(myIndex);
-        Destroy(gameObject);
+
+        /// 코드 수정함 (변경자 : zin) 마지막 보스 아이템 생성X , 사라짐 X, 엔딩 호출
+
+        if (Controller.GetComponent<MonsterController>().endPos == gameObject)
+            Controller.GetComponent<MonsterController>().GameClear();
+        yield return new WaitForSeconds(3.0f);
+        if (isBoss)
+        {
+            if (Controller.GetComponent<MonsterController>().endPos != gameObject)
+                Controller.GetComponent<MonsterController>().ItemGen(transform);
+        }
+        Controller.GetComponent<MonsterController>().Gold(isBoss);
+        Controller.GetComponent<MonsterController>().CurrentMonsters--;
+        if (Controller.GetComponent<MonsterController>().endPos != gameObject)
+            Destroy(gameObject);
     }
 }

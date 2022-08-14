@@ -38,6 +38,7 @@ public class StructureSpawn_Test : MonoBehaviour
     public GameObject[] prefabHUI;
 
     public int TurretNum = 0;
+    public int ItemAmount = 0;
 
     // Auto Setting
     Color color;
@@ -60,6 +61,7 @@ public class StructureSpawn_Test : MonoBehaviour
 
     void Update()
     {
+        bool changeNotWork = false;
         if (Time.timeScale != 0)
         {
             if (Input.GetKeyDown(KeyCode.B)) // On/Off structure mode.
@@ -74,6 +76,7 @@ public class StructureSpawn_Test : MonoBehaviour
                         {
                             if (area && areaLayer != 0) area.SetActive(true); // Visible area.
                             structureMode = true;
+                            ResetItemChange();
                         }
                         else
                         {
@@ -85,7 +88,7 @@ public class StructureSpawn_Test : MonoBehaviour
                 }
             }
             // Change Object////////////////////////
-            bool changeNotWork = false;
+
             for(int i= 0; i < 4; i++)
             {
                 if (PlayerSaveData.itemList[i] != "1")
@@ -151,15 +154,22 @@ public class StructureSpawn_Test : MonoBehaviour
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
-            if (PlayerSaveData.itemList[0] == "Turret Lv1") selectNumber = 0;
-            else if (PlayerSaveData.itemList[1] == "Turret Lv2") selectNumber = 1;
-            else if (PlayerSaveData.itemList[2] == "Turret Lv3") selectNumber = 2;
-            else if (PlayerSaveData.itemList[3] == "Turret Lv4") selectNumber = 3;
+            int earlyItemAmount = ItemAmount;
+            ItemAmount = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                if (PlayerSaveData.itemList[i] != "1")
+                {
+                    ItemAmount ++;
+                }
+            }
+            if (ItemAmount > earlyItemAmount)
+            {
+                ResetItemChange();
+            }
 
-            if (!(PlayerSaveData.itemList.Count > selectNumber && PlayerSaveData.itemList[selectNumber] != "1")) return;
-
-            if (selectNumber == 0 && (PlayerSaveData.turretAmount == PlayerSaveData.turretAmountMax)) return;
-            
+            if (PlayerSaveData.turretAmount == PlayerSaveData.turretAmountMax) return;
+            if (changeNotWork) return;
             // Check Install is possible.
 
             Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
@@ -182,10 +192,13 @@ public class StructureSpawn_Test : MonoBehaviour
 
                 else changePosValue = new(0, 0, 0);
 
-                if (target == null && selectedPrefab[selectNumber])
+                if (target == null)
                 {
-                    target = Instantiate(selectedPrefab[selectNumber], hit.point, Quaternion.identity); // View Sample Object.
-                    color = target.GetComponentInChildren<Renderer>().material.color;
+                    if (selectedPrefab[selectNumber])
+                    {
+                        target = Instantiate(selectedPrefab[selectNumber], hit.point, Quaternion.identity); // View Sample Object.
+                        color = target.GetComponentInChildren<Renderer>().material.color;
+                    }
                 }
                 else if (target != null && target.transform.position != hit.point)
                 {
@@ -272,40 +285,68 @@ public class StructureSpawn_Test : MonoBehaviour
     public void ChangeNext() //Change Next Object.
     {
         int selectNumberSave = selectNumber;
-        if (selectNumber+1 < (selectedPrefab.Length) && PlayerSaveData.itemList.Count > selectNumber+1)
+        if ((selectNumber + 1) < (selectedPrefab.Length) && PlayerSaveData.itemList.Count > (selectNumber + 1))
         {
             selectNumber++;
             while (PlayerSaveData.itemList[selectNumber] == "1")
             {
-                selectNumber++;
-                if (selectNumber == 4)
+                if ((selectNumber + 1) < (selectedPrefab.Length) && PlayerSaveData.itemList.Count > (selectNumber + 1))
                 {
-                    selectNumber = 0;
-                    break;
+                    selectNumber++;
+                }
+                else
+                {
+                    ResetItemChange();
                 }
             }
         }
-        if(selectNumberSave != selectNumber)
+        else
+        {
+            ResetItemChange();
+        }
+        if (selectNumberSave != selectNumber)
             Destroy(target);
     }
 
     public void ChangePrevious() //Change Previous Object.
     {
         int selectNumberSave = selectNumber;
-        if (selectNumber-1 < (selectedPrefab.Length) && PlayerSaveData.itemList.Count > selectNumber-1)
+        if ((selectNumber - 1) >= 0)
         {
             selectNumber--;
             while (PlayerSaveData.itemList[selectNumber] == "1")
             {
-                selectNumber--;
-                if (selectNumber < 0)
+                if ((selectNumber - 1) >= 0)
                 {
-                    selectNumber = 3;
+                    selectNumber--;
+                }
+                else
+                {
+                    ResetItemChangeReverse();
                     break;
                 }
             }
         }
+        else
+        {
+            ResetItemChangeReverse();
+        }
         if (selectNumberSave != selectNumber)
             Destroy(target);
+    }
+
+    public void ResetItemChange()
+    {
+        if (PlayerSaveData.itemList[0] == "Turret Lv1") selectNumber = 0;
+        else if (PlayerSaveData.itemList[1] == "Turret Lv2") selectNumber = 1;
+        else if (PlayerSaveData.itemList[2] == "Turret Lv3") selectNumber = 2;
+        else if (PlayerSaveData.itemList[3] == "Turret Lv4") selectNumber = 3;
+    }
+    public void ResetItemChangeReverse()
+    {
+        if (PlayerSaveData.itemList[3] == "Turret Lv4") selectNumber = 3;
+        else if (PlayerSaveData.itemList[2] == "Turret Lv3") selectNumber = 2;
+        else if (PlayerSaveData.itemList[1] == "Turret Lv2") selectNumber = 1;
+        else if (PlayerSaveData.itemList[0] == "Turret Lv1") selectNumber = 0;
     }
 }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 54118435474382250}
   - component: {fileID: 136065480267024780}
   - component: {fileID: 4205241307904646826}
-  m_Layer: 12
+  m_Layer: 13
   m_Name: Turret Attack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
