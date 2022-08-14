@@ -17,6 +17,8 @@ public class SoundSetting : MonoBehaviour
     public static float backgroundVolume = 0.5f;
     public static float effectVolume = 0.5f;
 
+    public AudioClip[] clips;
+
     private void Awake()
     {
         if(allMusicSetting)
@@ -56,5 +58,10 @@ public class SoundSetting : MonoBehaviour
     public void EffectMusicSetting(float value)
     {
         effectVolume = value;
+    }
+
+    public void PlaySoundEffect(int clipnum)
+    {
+        audioS.PlayOneShot(clips[clipnum]);
     }
 }
