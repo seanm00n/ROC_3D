@@ -7,7 +7,6 @@ TagManager:
   - Turret
   - PlayerAttack
   - HQ
-  - Shop
   layers:
   - Default
   - TransparentFX
@@ -15,13 +14,13 @@ TagManager:
   - Alliance
   - Water
   - UI
-  - Boss
+  - Enemy
   - Neutral
   - Structure
   - Item
   - StructureArea
-  - Monster
-  - NonCollision
+  - 
+  - 
   - 
   - 
   - 
