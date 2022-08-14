@@ -25,7 +25,6 @@ private void OnDrawGizmosSelected () {
     GameObject m_Player;
     GameObject Controller;
     
-
     [SerializeField] bool isBoss;
     [SerializeField] int m_health;
     [SerializeField] int m_attack;
@@ -175,6 +174,7 @@ private void OnDrawGizmosSelected () {
         if (isBoss) {
             Controller.GetComponent<MonsterController>().ItemGen(transform);
         }
+        Controller.GetComponent<MonsterController>().Gold(isBoss);
         Controller.GetComponent<MonsterController>().CurrentMonsters--;
         Destroy(gameObject);
     }

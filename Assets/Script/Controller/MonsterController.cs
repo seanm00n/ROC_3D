@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ROC;
 
 public class MonsterController : MonoBehaviour {
     [SerializeField] GameObject[] MonsterPref;
@@ -13,6 +14,7 @@ public class MonsterController : MonoBehaviour {
     GameObject[] BossMonster;
     Transform StartPos;
     public int CurrentMonsters = 0;//MonsterAI control this value
+    PlayerSaveData data;//설정해주어야함
     float gTimer = 0f;//20m
     float aTimer = 0f;//1m
     float bTimer = 0f;//5m
@@ -26,7 +28,6 @@ public class MonsterController : MonoBehaviour {
         Init(); 
     }
     void Update () {
-        GameTimer();
         AddsMonsterGen();
         BossMonsterGen();
     }
@@ -74,17 +75,27 @@ public class MonsterController : MonoBehaviour {
             Bindex++;
         }
     }
-    void GameTimer () {
-        gTimer += Time.deltaTime;
-        if(1200f < gTimer) {
-
-        }
-    }
     public void GameClear () {
         //게임 클리어
         Debug.Log("GameClear");
     }
+    public void Gold (bool isBoss) {
+        if (isBoss) {
+            PlayerSaveData.gold += 1000;
+        } else {
+            PlayerSaveData.gold += 5;
+        }
+        
+    }
     public void ItemGen (Transform other) {
         Instantiate(ItemPref, other.position, other.rotation);
+        try {
+            data = SaveManager.Load<PlayerSaveData>("PlayerData");
+        }
+        catch {
+            data = new PlayerSaveData();
+        }
+        data.bone += 50;
+        SaveManager.Save("PlayerData", data);
     }
 }
