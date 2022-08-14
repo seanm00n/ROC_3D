@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class HQ : MonoBehaviour, IBattle
 {
-    int m_health = 100;
+    int m_health = 100000;
     private void Update () {
-        if(m_health < 0) {
+        GameOver();
+    }
+    public void GameOver () {
+        if (m_health < 0) {
+            //게임오버
             Debug.Log("HQ Down");
             Destroy(gameObject);
         }

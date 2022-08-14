@@ -19113,13 +19113,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cd3ccc2ad8902a4484a0b910120b573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myIndex: 0
   isBoss: 0
   m_health: 450
   m_attack: 40
+  m_cooltime: 0
   Alliance:
     serializedVersion: 2
     m_Bits: 8
+  AttactStart: {fileID: 0}
+  AttackPref: {fileID: 0}
 --- !u!195 &2514762967222477978
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -19130,7 +19132,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 1
-  m_Speed: 3.5
+  m_Speed: 2.5
   m_Acceleration: 20
   avoidancePriority: 1
   m_AngularSpeed: 480

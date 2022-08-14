@@ -14,12 +14,10 @@ private void OnDrawGizmosSelected () {
         Handles.DrawSolidDisc(transform.position, transform.up, m_SightDistance);
     }
 #endif
-    public int myIndex;
     bool m_isInRange = false;
     bool m_isDeath = false;
     bool m_isAttacked = false;
     float m_time = 0f;
-    float m_deadTime = 0f;
     float m_SightDistance = 10f;
     GameObject m_target;
     NavMeshAgent m_agent;
@@ -94,26 +92,27 @@ private void OnDrawGizmosSelected () {
     void SelectTarget () {//Edit after adding turret
         if (m_isDeath) return;
         if(m_target == null) m_target = HQ;
-        Collider[] result = new Collider[1];
+        Collider[] result = new Collider[100];
         Physics.OverlapSphereNonAlloc(transform.position, m_SightDistance, result, Alliance);
-        if (result[0] && result[0].transform.CompareTag("Player")) {
-            if (Vector3.Distance(transform.position, HQ.transform.position) <=
-                Vector3.Distance(transform.position, m_Player.transform.position)) {
-                m_target = HQ;
-            } 
-            else 
-            {
-                m_target = m_Player;
+        for (int i = 0; i < 100; i++) {
+            if (result[i] && result[i].transform.CompareTag("Player")) {
+                if (Vector3.Distance(transform.position, HQ.transform.position) <=
+                    Vector3.Distance(transform.position, m_Player.transform.position)) {
+                    m_target = HQ;
+                } else {
+                    m_target = m_Player;
+                }
+            }
+            if (result[i] && result[i].transform.CompareTag("Turret")) {
+                if (Vector3.Distance(transform.position, HQ.transform.position) <=
+                    Vector3.Distance(transform.position, result[i].transform.position)) {
+                    m_target = HQ;
+                } else {
+                    m_target = result[i].transform.gameObject;
+                }
             }
         }
-        if (result[0] && result[0].transform.CompareTag("Turret")) {
-            if (Vector3.Distance(transform.position, HQ.transform.position) <=
-                Vector3.Distance(transform.position, result[0].transform.position)) {
-                m_target = HQ;
-            } else {
-                m_target = result[0].transform.gameObject;
-            }
-        }
+
     }
 
     void Move () {
@@ -133,6 +132,9 @@ private void OnDrawGizmosSelected () {
             GetComponent<Animator>().SetBool("Death", true);
             StartCoroutine(DestroyMonster());
             m_isDeath = true;
+            if (Controller.GetComponent<MonsterController>().Bindex == 3) {
+                Controller.GetComponent<MonsterController>().GameClear();
+            }
         }
     }
 
@@ -171,8 +173,9 @@ private void OnDrawGizmosSelected () {
     IEnumerator DestroyMonster () {
         yield return new WaitForSeconds(3.0f);
         if (isBoss) {
-            Controller.GetComponent<MonsterController>().ItemGen(myIndex);
+            Controller.GetComponent<MonsterController>().ItemGen(transform);
         }
+        Controller.GetComponent<MonsterController>().CurrentMonsters--;
         Destroy(gameObject);
     }
 }
