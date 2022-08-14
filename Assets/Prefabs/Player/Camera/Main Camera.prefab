@@ -168,12 +168,16 @@ MonoBehaviour:
   selectNumber: 0
   selectedPrefab:
   - {fileID: 5151253315898664023, guid: 7e202205634b0d34e8ce286f164c93ba, type: 3}
+  - {fileID: 5151253315898664023, guid: 7e202205634b0d34e8ce286f164c93ba, type: 3}
+  - {fileID: 5151253315898664023, guid: 7e202205634b0d34e8ce286f164c93ba, type: 3}
+  - {fileID: 5151253315898664023, guid: ad42396d90d054844b72351cc81f7eac, type: 3}
   prefab:
   - {fileID: 5151253315898664023, guid: e00a81a3abd46eb41876c24bb30b048c, type: 3}
+  - {fileID: 5151253315898664023, guid: ab306f544651e5a48a023b56d7694fd7, type: 3}
+  - {fileID: 5151253315898664023, guid: 9c9733f0e5bc41f49ae9e8c2115d1a27, type: 3}
+  - {fileID: 5151253315898664023, guid: 29fb7c4a0931f41419dd524e2d02da27, type: 3}
   prefabHUI:
   - {fileID: 5182943263930901904, guid: 4fdd2930e9d614a48af65eb08b4444cd, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
   TurretNum: 0
 --- !u!114 &6595030890674630516
 MonoBehaviour:

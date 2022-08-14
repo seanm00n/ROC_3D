@@ -4913,10 +4913,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: 9
-  skillDamageValue: 10
+  skillDamageValue: 20
   sustainmentTime: 0
   declinedDamageValue: 0
+  waitTime: 0
   turretAttack: 1
+  petAttack: 0
   explosion: {fileID: 0}
 --- !u!135 &5172238793380255281
 SphereCollider:
@@ -4963,6 +4965,7 @@ MonoBehaviour:
   backgroundMusicSetting: {fileID: 0}
   soundEffectSetting: {fileID: 0}
   backgroundMusic: 0
+  clips: []
 --- !u!1 &1202874937387896
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,12 +24,14 @@ public class Shop : MonoBehaviour
         for (int i = 0; i < shop.childCount; i++)
         { 
             shopitem.Add(shop.GetChild(i)); 
+            if(PlayerSaveData.itemList.Count != 4)
+                PlayerSaveData.itemList.Add("1");
         }
     }
 
     private void Update()
     {
-        for(int i = 0; i < shopitem.Count; i++)
+        for(int i = 0; (i < shopitem.Count) && (i < price.Length); i++)
         {
             shopitem[i].GetComponentInChildren<TextMeshProUGUI>().text = " : " + price[i];
         }
@@ -41,14 +43,11 @@ public class Shop : MonoBehaviour
         if (PlayerSaveData.gold >= price[nthItem]) 
         {
             PlayerSaveData.gold -= price[nthItem];
-            if(shopitem[nthItem].name == "Item-Turret.Lv1")
-            {
-                foreach(string item in PlayerSaveData.itemList)
-                {
-                    if (item == "Turret Lv1") return;
-                }
-                PlayerSaveData.itemList.Add("Turret Lv1");
-            }
+            CheckItem(nthItem, "Item-Turret.Lv1", "Turret Lv1");
+            CheckItem(nthItem, "Item-Turret.Lv2", "Turret Lv2");
+            CheckItem(nthItem, "Item-Turret.Lv3", "Turret Lv3");
+            CheckItem(nthItem, "Item-Turret.Lv4", "Turret Lv4");
+
         }
     }
 
@@ -97,5 +96,15 @@ public class Shop : MonoBehaviour
 
         Player.instance.unbeatable = value;
         startShop.SetActive(value);
+    }
+
+    private void CheckItem(int nthItem, string item, string itemName)
+    {
+        if (shopitem[nthItem].name == ("Item-Turret.Lv" + (nthItem+1).ToString()))
+        {
+            PlayerSaveData.itemList[nthItem] = itemName;
+            Debug.Log(PlayerSaveData.itemList[nthItem]);
+            Debug.Log(nthItem);
+        }
     }
 }

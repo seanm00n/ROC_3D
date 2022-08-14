@@ -11,12 +11,13 @@ public class HQ : MonoBehaviour, IBattle
     private bool die = false;
 
     public void Hit (int damage) {
+        if(Player.instance.ui.gameObject.activeSelf)
         m_health -= damage;
     }
 
     private void Update()
     {
-        if(m_health <= 0 && !die)
+        if(m_health <= 0 && !die && Player.instance.ui.gameObject.activeSelf)
         {
             die = true;
             dieCamera.SetActive(true);

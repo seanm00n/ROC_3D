@@ -13,6 +13,11 @@ public class ProjectileMover : MonoBehaviour
     private Rigidbody rb;
     public GameObject[] Detached;
 
+    public GameObject monsterPos;
+
+    public int[] turretdamage;
+    public int turretLevel = -1;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -45,7 +50,15 @@ public class ProjectileMover : MonoBehaviour
             //transform.position += transform.forward * (speed * Time.deltaTime);         
         }
 	}
-
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == 6 || other.gameObject.layer == 11) // Monster Layer
+        {
+            GameObject mob = Instantiate(monsterPos, other.transform.position, Quaternion.identity);
+            mob.transform.parent = other.transform;
+            Destroy(mob, 1f);
+        }
+    }
     //https ://docs.unity3d.com/ScriptReference/Rigidbody.OnCollisionEnter.html
     void OnCollisionEnter(Collision collision)
     {
@@ -61,6 +74,12 @@ public class ProjectileMover : MonoBehaviour
         if (hit != null)
         {
             var hitInstance = Instantiate(hit, pos, rot);
+
+            if (turretdamage.Length != 0)
+            {
+                if (turretLevel >= 0) hitInstance.GetComponent<SkillAttack>().skillDamageValue = turretdamage[turretLevel];
+            
+            }
             if (UseFirePointRotation) { hitInstance.transform.rotation = gameObject.transform.rotation * Quaternion.Euler(0, 180f, 0); }
             else if (rotationOffset != Vector3.zero) { hitInstance.transform.rotation = Quaternion.Euler(rotationOffset); }
             else { hitInstance.transform.LookAt(contact.point + contact.normal); }

@@ -18,11 +18,11 @@ public class Turret : MonoBehaviour, IBattle
     public Transform scope;
 
     [Space]
-
     public GameObject[] emergency;
     public GameObject damageEffect;
     public GameObject parentObject;
     public Transform firePosition;
+    public Transform firePosition2;
     private Collider parentObjectCollider;
 
     [Space]
@@ -41,12 +41,14 @@ public class Turret : MonoBehaviour, IBattle
     private GameObject attack;
     public GameObject attackPrefab;
     public ParticleSystem fireEffect;
+    public ParticleSystem fireEffect2;
 
     // Auto Setting
     private float currTime;
 
     [Space]
     [Header("Turret Status")]
+    public int level = 0;
     public int hp = 100;
     public bool isAlive;    
     private float fullHp;
@@ -142,11 +144,18 @@ public class Turret : MonoBehaviour, IBattle
                 attack.transform.LookAt(target.transform.position + new Vector3(0,1,0));
             }
             
-            if (Time.time > currTime + attackCycleTime)
+            if (Time.time > currTime + attackCycleTime && target)
             {
                 currTime = Time.time;
                 attack = Instantiate(attackPrefab, firePosition.position, transform.rotation);
+                attack.GetComponent<ProjectileMover>().turretLevel = level;
                 fireEffect.Play();
+                if (firePosition2)
+                {
+                    attack = Instantiate(attackPrefab, firePosition2.position, transform.rotation);
+                    attack.GetComponent<ProjectileMover>().turretLevel = level;
+                    fireEffect2.Play();
+                }
             }
             
             return; // Block Repetitive Statement below.

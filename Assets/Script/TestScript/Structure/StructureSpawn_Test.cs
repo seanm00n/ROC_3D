@@ -74,7 +74,6 @@ public class StructureSpawn_Test : MonoBehaviour
                         {
                             if (area && areaLayer != 0) area.SetActive(true); // Visible area.
                             structureMode = true;
-                            Player.instance.playerAttackSkill.enabled = false;
                         }
                         else
                         {
@@ -86,24 +85,36 @@ public class StructureSpawn_Test : MonoBehaviour
                 }
             }
             // Change Object////////////////////////
-
-            if (Input.GetAxisRaw("Mouse ScrollWheel") > 0)
+            bool changeNotWork = false;
+            for(int i= 0; i < 4; i++)
             {
-                if (skillWindow)
+                if (PlayerSaveData.itemList[i] != "1")
                 {
-                    if (skillWindow.activeSelf == false)
+                    changeNotWork = false;
+                    break; 
+                }
+                    changeNotWork = true;
+            }
+            if (!changeNotWork)
+            {
+                if (Input.GetAxisRaw("Mouse ScrollWheel") > 0)
+                {
+                    if (skillWindow)
                     {
-                        ChangeNext();
+                        if (skillWindow.activeSelf == false)
+                        {
+                            ChangeNext();
+                        }
                     }
                 }
-            }
-            else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0)
-            {
-                if (skillWindow)
+                else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0)
                 {
-                    if (skillWindow.activeSelf == false)
+                    if (skillWindow)
                     {
-                        ChangePrevious();
+                        if (skillWindow.activeSelf == false)
+                        {
+                            ChangePrevious();
+                        }
                     }
                 }
             }
@@ -125,6 +136,7 @@ public class StructureSpawn_Test : MonoBehaviour
         
         if (structureMode == true)
         {
+            Player.instance.playerAttackSkill.enabled = false;
             try
             {
                 playerSaveData = SaveManager.Load<PlayerSaveData>("PlayerData");
@@ -139,9 +151,12 @@ public class StructureSpawn_Test : MonoBehaviour
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
-            if (!(PlayerSaveData.itemList.Count > selectNumber && PlayerSaveData.itemList[selectNumber] != null)) return;
-
             if (PlayerSaveData.itemList[0] == "Turret Lv1") selectNumber = 0;
+            else if (PlayerSaveData.itemList[1] == "Turret Lv2") selectNumber = 1;
+            else if (PlayerSaveData.itemList[2] == "Turret Lv3") selectNumber = 2;
+            else if (PlayerSaveData.itemList[3] == "Turret Lv4") selectNumber = 3;
+
+            if (!(PlayerSaveData.itemList.Count > selectNumber && PlayerSaveData.itemList[selectNumber] != "1")) return;
 
             if (selectNumber == 0 && (PlayerSaveData.turretAmount == PlayerSaveData.turretAmountMax)) return;
             
@@ -256,19 +271,41 @@ public class StructureSpawn_Test : MonoBehaviour
 
     public void ChangeNext() //Change Next Object.
     {
-        Destroy(target);
-        if (selectNumber < (selectedPrefab.Length - 1))
+        int selectNumberSave = selectNumber;
+        if (selectNumber+1 < (selectedPrefab.Length) && PlayerSaveData.itemList.Count > selectNumber+1)
+        {
             selectNumber++;
-
-        else selectNumber = 0;
+            while (PlayerSaveData.itemList[selectNumber] == "1")
+            {
+                selectNumber++;
+                if (selectNumber == 4)
+                {
+                    selectNumber = 0;
+                    break;
+                }
+            }
+        }
+        if(selectNumberSave != selectNumber)
+            Destroy(target);
     }
 
     public void ChangePrevious() //Change Previous Object.
     {
-        Destroy(target);
-        if (selectNumber > 0)
+        int selectNumberSave = selectNumber;
+        if (selectNumber-1 < (selectedPrefab.Length) && PlayerSaveData.itemList.Count > selectNumber-1)
+        {
             selectNumber--;
-
-        else selectNumber = selectedPrefab.Length - 1;
+            while (PlayerSaveData.itemList[selectNumber] == "1")
+            {
+                selectNumber--;
+                if (selectNumber < 0)
+                {
+                    selectNumber = 3;
+                    break;
+                }
+            }
+        }
+        if (selectNumberSave != selectNumber)
+            Destroy(target);
     }
 }
