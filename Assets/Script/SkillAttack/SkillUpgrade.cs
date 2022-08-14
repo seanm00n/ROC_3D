@@ -285,7 +285,6 @@ public class SkillUpgrade : MonoBehaviour
                         else
                         {
                             InformationOfSkill.Information(10);
-                            Debug.Log(InformationOfSkill.skill.attack[2] +" : " + PlayerAttackSkill.normalDamage);
                             if (PlayerAttackSkill.normalDamage == InformationOfSkill.skill.attack[2])
                             {
                                 if (completedSkillAmount == 0)
