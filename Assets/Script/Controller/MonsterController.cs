@@ -6,6 +6,8 @@ using ROC;
 public class MonsterController : MonoBehaviour {
     [SerializeField] GameObject[] MonsterPref;
     [SerializeField] GameObject[] BossMonsterPref;
+    [SerializeField] GameObject BoxMonsterPref;
+    [SerializeField] GameObject BoxPref;
     [SerializeField] GameObject ItemPref;
     [SerializeField] Transform StartPos01;
     [SerializeField] Transform StartPos02;
@@ -15,9 +17,9 @@ public class MonsterController : MonoBehaviour {
     Transform StartPos;
     public int CurrentMonsters = 0;//MonsterAI control this value
     PlayerSaveData data;//설정해주어야함
-    float gTimer = 0f;//20m
     float aTimer = 0f;//1m
     float bTimer = 0f;//5m
+    float xTimer = 0f;//50s
     float monGenCool = 0f;
     int MaxMonsters = 60;
     int Aindex = 0;
@@ -34,6 +36,7 @@ public class MonsterController : MonoBehaviour {
     void Update () {
         AddsMonsterGen();
         BossMonsterGen();
+        BoxMonsterGen();
     }
 
     void Init () {
@@ -46,6 +49,7 @@ public class MonsterController : MonoBehaviour {
             BossMonster[index02] = BossMonsterPref[index02];
         }
         flag = false;
+        xTimer = 50;
         CurrentMonsters = 0;
     }
     void AddsMonsterGen () {
@@ -53,7 +57,7 @@ public class MonsterController : MonoBehaviour {
         if (21 <= Aindex) return;
         aTimer += Time.deltaTime;
         monGenCool += Time.deltaTime;
-        if (60f < aTimer) { // 1 => 60
+        if (60f < aTimer) {
             aTimer = 0f;
             Aindex++;
         }
@@ -66,13 +70,21 @@ public class MonsterController : MonoBehaviour {
             CurrentMonsters++;
             flag = flag ? false : true ;
         }
-        
+    }
+    void BoxMonsterGen() {
+        xTimer += Time.deltaTime;
+        if (50f < xTimer) {
+            xTimer = 0f;
+            StartPos = flag ? StartPos01 : StartPos02;
+            Instantiate(BoxMonsterPref, StartPos.position, StartPos.rotation);
+            flag = flag ? false : true;
+        }
     }
     void BossMonsterGen () {
         //1분마다 보스몹 젠, 20분 부터 함수 실행 안됨
         if (4 <= Bindex) return;
         bTimer += Time.deltaTime;
-        if (300f < bTimer) { // 1 => 300
+        if (300f < bTimer) {
             StartPos = flag ? StartPos01 : StartPos02;
 
             /// 코드 수정함 (변경자 : zin) 드래곤 위치 받기
@@ -140,5 +152,8 @@ public class MonsterController : MonoBehaviour {
         /// 코드 수정함 (변경자 : zin) 뼈 수급 관련 능력 보유시 더 많이 획득
         data.bone += data.getMoreBone;
         SaveManager.Save("PlayerData", data);
+    }
+    public void BoxGen (Transform other) {
+        Instantiate(BoxPref, other.position, other.rotation);
     }
 }

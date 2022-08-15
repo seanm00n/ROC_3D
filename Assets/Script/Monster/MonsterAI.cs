@@ -26,6 +26,7 @@ private void OnDrawGizmosSelected () {
     GameObject Controller;
     
     [SerializeField] bool isBoss;
+    [SerializeField] bool isBox;
     [SerializeField] int m_health;
     [SerializeField] int m_attack;
     [SerializeField] float m_cooltime;
@@ -129,6 +130,12 @@ private void OnDrawGizmosSelected () {
     void CheckDeath () {
         if (m_health <= 0) {
             GetComponent<Animator>().SetBool("Death", true);
+            if (isBox) {
+                GetComponent<Rigidbody>().AddForce(new Vector3(0,0,1),ForceMode.Force);
+                StartCoroutine(DestroyBoxMonster());
+                m_isDeath = true;
+                return;
+            }
             StartCoroutine(DestroyMonster());
             m_isDeath = true;
 
@@ -184,5 +191,10 @@ private void OnDrawGizmosSelected () {
         Controller.GetComponent<MonsterController>().CurrentMonsters--;
         if (Controller.GetComponent<MonsterController>().endPos != gameObject)
             Destroy(gameObject);
+    }
+    IEnumerator DestroyBoxMonster () {
+        yield return new WaitForSeconds(3.0f);
+        Controller.GetComponent<MonsterController>().BoxGen(transform);
+        Destroy(gameObject);
     }
 }

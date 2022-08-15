@@ -5104,6 +5104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c082aeac51bfb449a776c03926a97a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillType: 0
   OpenBox:
     m_PersistentCalls:
       m_Calls:
