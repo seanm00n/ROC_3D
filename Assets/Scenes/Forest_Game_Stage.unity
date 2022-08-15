@@ -8692,6 +8692,10 @@ PrefabInstance:
       value: Shop
       objectReference: {fileID: 0}
     - target: {fileID: 7998779059359742286, guid: 67f95184ca4308043819947d6d7757f2, type: 3}
+      propertyPath: npcCamera
+      value: 
+      objectReference: {fileID: 262836608}
+    - target: {fileID: 7998779059359742286, guid: 67f95184ca4308043819947d6d7757f2, type: 3}
       propertyPath: shopitem.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -21007,6 +21011,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5103403569741247726, guid: 22bc4bf44a0c4f4439ab23d2a7b8afb8, type: 3}
   m_PrefabInstance: {fileID: 260615552}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &262836608 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7998779058276271768, guid: 67f95184ca4308043819947d6d7757f2, type: 3}
+  m_PrefabInstance: {fileID: 149168696}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &265324366
 GameObject:
   m_ObjectHideFlags: 0
@@ -22255,7 +22264,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particle: {fileID: 4156801419930268666, guid: 7be6efb5c9f1aeb468516597d5441e4a, type: 3}
   dieCamera: {fileID: 681830066}
-  m_health: 99999999
+  m_health: 100
 --- !u!1001 &331148493
 PrefabInstance:
   m_ObjectHideFlags: 0

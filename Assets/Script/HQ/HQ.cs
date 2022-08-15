@@ -23,8 +23,15 @@ public class HQ : MonoBehaviour, IBattle
             dieCamera.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            Camera.main.gameObject.SetActive(false);
-            Player.instance.ui.gameObject.SetActive(false);
+            if (!Player.instance.shopCamera)
+            {
+                Player.instance.ui.gameObject.SetActive(false);
+            }
+            else
+            {
+                Player.instance.shopCamera.SetActive(false);
+            }
+                Camera.main.gameObject.SetActive(false);
             Player.instance.gameObject.SetActive(false);
             GameObject hqParticle = Instantiate(particle, transform.position, transform.rotation);
             while (0 < hqParticle.transform.childCount)

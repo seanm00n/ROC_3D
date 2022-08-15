@@ -63,6 +63,7 @@ public class Player : MonoBehaviour, IBattle
     //Single Tone Stuff//
     public static Player instance;
     public CameraManager playerCamera;
+    public GameObject shopCamera;
 
     // Absolute Value
     public static int maxHp = 0;

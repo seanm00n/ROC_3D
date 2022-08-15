@@ -82,7 +82,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageSpeed: 30
   attackCycleTime: 0.4
-  radius: 8
+  radius: 50
   scope: {fileID: 5151253315898664019}
   emergency:
   - {fileID: 3955156088194784119}

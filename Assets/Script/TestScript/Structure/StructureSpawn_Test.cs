@@ -37,8 +37,10 @@ public class StructureSpawn_Test : MonoBehaviour
     public GameObject[] prefab;
     public GameObject[] prefabHUI;
 
-    public int TurretNum = 0;
+    public int turretNum = 0;
     public int ItemAmount = 0;
+
+    public int[] turretInstallPrice;
 
     // Auto Setting
     Color color;
@@ -61,6 +63,15 @@ public class StructureSpawn_Test : MonoBehaviour
 
     void Update()
     {
+        if (target)
+        {
+            Player.instance.ui.monsterUI.SetActive(true);
+        }
+        else
+        {
+            Player.instance.ui.monsterUI.SetActive(false);
+        }
+
         bool changeNotWork = false;
         if (Time.timeScale != 0)
         {
@@ -236,29 +247,32 @@ public class StructureSpawn_Test : MonoBehaviour
 
                     if (Input.GetMouseButtonDown(0))
                     {
-
-                        //////// Install Object ///////////////
-                        GameObject install;
-                        if (changePosValue != new Vector3(0, 0, 0))
+                        if (PlayerSaveData.gold >= turretInstallPrice[selectNumber])
                         {
-                            install = Instantiate(prefab[selectNumber], changePosValue, target.transform.rotation); // Set rotation according to preview.
-                        }
-                        else
-                        {
-                            install = Instantiate(prefab[selectNumber], hit.point, Quaternion.identity);
+                            //////// Install Object ///////////////
+                            PlayerSaveData.gold -= turretInstallPrice[selectNumber];
+                            GameObject install;
+                            if (changePosValue != new Vector3(0, 0, 0))
+                            {
+                                install = Instantiate(prefab[selectNumber], changePosValue, target.transform.rotation); // Set rotation according to preview.
+                            }
+                            else
+                            {
+                                install = Instantiate(prefab[selectNumber], hit.point, Quaternion.identity);
 
-                            if (install)
-                                install.transform.up = hit.normal; // Set rotation according to ground slope.
-                        }
+                                if (install)
+                                    install.transform.up = hit.normal; // Set rotation according to ground slope.
+                            }
 
-                        Turret t = install.GetComponentInChildren<Turret>();
-                        if (t != null) // If player spawn turret.
-                        {
-                            GameObject installHUI = Instantiate(prefabHUI[TurretNum], liveParent.transform);
-                            t.hui = installHUI; // Need it to delete hp ui when turret is gone.
-                            Slider turrets = install.GetComponentInChildren<Turret>().hpBar = installHUI.GetComponentInChildren<Slider>(); // Set hp view.
-                            turrets.maxValue = t.hp;
-                            turrets.value = t.hp;
+                            Turret t = install.GetComponentInChildren<Turret>();
+                            if (t != null) // If player spawn turret.
+                            {
+                                GameObject installHUI = Instantiate(prefabHUI[turretNum], liveParent.transform);
+                                t.hui = installHUI; // Need it to delete hp ui when turret is gone.
+                                Slider turrets = install.GetComponentInChildren<Turret>().hpBar = installHUI.GetComponentInChildren<Slider>(); // Set hp view.
+                                turrets.maxValue = t.hp;
+                                turrets.value = t.hp;
+                            }
                         }
                     }
                 }
