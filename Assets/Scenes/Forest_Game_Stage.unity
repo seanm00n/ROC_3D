@@ -23700,7 +23700,7 @@ MonoBehaviour:
   particle: {fileID: 4156801419930268666, guid: 7be6efb5c9f1aeb468516597d5441e4a,
     type: 3}
   dieCamera: {fileID: 681830066}
-  m_health: 100
+  m_health: 1000
 --- !u!1001 &331148493
 PrefabInstance:
   m_ObjectHideFlags: 0

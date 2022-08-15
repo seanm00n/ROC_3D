@@ -86,6 +86,7 @@ public class StructureSpawn_Test : MonoBehaviour
                         if (structureMode == false)
                         {
                             if (area && areaLayer != 0) area.SetActive(true); // Visible area.
+                            Player.instance.playerAttackSkill.isAttack = false;
                             structureMode = true;
                             ResetItemChange();
                         }

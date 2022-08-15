@@ -58,9 +58,8 @@ public class PlayerAttackSkill : MonoBehaviour
 
     // Check whether player using mp or not.
     private bool isUseMp;
-    private bool isRecoverMp; 
     // Check whether player attack or not.
-    private bool isAttack;
+    public bool isAttack;
 
     [Header("Damage")]
     public static int normalDamage = 10; // player normal attack damage.
@@ -150,11 +149,6 @@ public class PlayerAttackSkill : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!isRecoverMp && !isAttack)
-        {
-            isRecoverMp = true;
-            StartCoroutine(RevertMp());
-        } // Mp Recover
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -607,19 +601,6 @@ public class PlayerAttackSkill : MonoBehaviour
         isUseMp = false;
     }
 
-    private IEnumerator RevertMp()
-    {
-        yield return new WaitForSeconds(1f);
-
-        if (!Player.instance.unbeatable)
-        {
-            Player.instance.mp += 2;
-            if (Player.instance.mp > Player.maxMp)
-                Player.instance.mp = Player.maxMp;
-        }
-        
-        isRecoverMp = false;
-    }
 
     public IEnumerator FrontAttack(int EffectNumber)
     {

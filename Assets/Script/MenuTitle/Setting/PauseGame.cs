@@ -56,7 +56,8 @@ public class PauseGame : MonoBehaviour
                 Player.instance.unbeatable = false;
                 if (Player.instance.hp != 0 && Player.instance.playerCamera && CameraManager.fpsMode)
                     Player.instance.playerCamera.bookVisibleFps.SetActive(true);
-            
+
+            Player.instance.playerCamera.GetComponent<StructureSpawn_Test>().enabled = true;
             // Can control again.
             if (playerMovement)
                 playerMovement.enabled = true;
@@ -76,13 +77,15 @@ public class PauseGame : MonoBehaviour
             Player.instance.unbeatable = true;
             if (Player.instance.playerCamera && CameraManager.fpsMode)
                 Player.instance.playerCamera.bookVisibleFps.SetActive(false);
+            Player.instance.playerCamera.GetComponent<StructureSpawn_Test>().enabled = false;
         }
         Time.timeScale = 0f; // Freeze time
 
         if (Player.instance && Player.instance.hp != 0)
         {
-            if (Player.instance)
-            {
+            // Stop cursor lock
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
                 if (!cameraManager) // Stop Control
                 {
                     playerMovement = Player.instance.movement;
@@ -92,10 +95,7 @@ public class PauseGame : MonoBehaviour
                 playerMovement.enabled = false;
                 playerAttackSkill.enabled = false;
                 cameraManager.enabled = false;
-            }
-            // Stop cursor lock
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            
         }
     }
 }

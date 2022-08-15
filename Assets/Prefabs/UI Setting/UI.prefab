@@ -2288,9 +2288,9 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4445934741087135744}
   - {fileID: 2136154240262077443}
   - {fileID: 823726117504419871}
+  - {fileID: 4445934741087135744}
   - {fileID: 5736581825206814092}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -3835,7 +3835,7 @@ RectTransform:
   - {fileID: 6353799353112409606}
   - {fileID: 8318130800520815343}
   m_Father: {fileID: 2288643526138110759}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5157,10 +5157,12 @@ MonoBehaviour:
   getMoreBone: 0
   priceView: {fileID: 0}
   myValue: {fileID: 0}
+  myValueLegacy: {fileID: 0}
   AlreadyBuy: {fileID: 0}
   Buybutton: {fileID: 0}
   structure: {fileID: 0}
   refundBoneValue: 0
+  petDamage: 
 --- !u!1 &4613377842209772339
 GameObject:
   m_ObjectHideFlags: 0
@@ -6366,7 +6368,7 @@ RectTransform:
   - {fileID: 9113763881199871129}
   - {fileID: 5888487115237373846}
   m_Father: {fileID: 2288643526138110759}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -11767,7 +11769,7 @@ RectTransform:
   - {fileID: 907601886926790332}
   - {fileID: 6246921984364371009}
   m_Father: {fileID: 2288643526138110759}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -12011,10 +12013,12 @@ MonoBehaviour:
   getMoreBone: 0
   priceView: {fileID: 0}
   myValue: {fileID: 0}
+  myValueLegacy: {fileID: 0}
   AlreadyBuy: {fileID: 0}
   Buybutton: {fileID: 0}
   structure: {fileID: 0}
   refundBoneValue: 0
+  petDamage: 
 --- !u!1 &8348212328311070491
 GameObject:
   m_ObjectHideFlags: 0
@@ -13561,7 +13565,9 @@ MonoBehaviour:
   getMoreBone: 0
   priceView: {fileID: 0}
   myValue: {fileID: 0}
+  myValueLegacy: {fileID: 0}
   AlreadyBuy: {fileID: 0}
   Buybutton: {fileID: 0}
   structure: {fileID: 0}
   refundBoneValue: 0
+  petDamage: 

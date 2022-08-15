@@ -70,7 +70,8 @@ public class Player : MonoBehaviour, IBattle
     public static int maxMp = 0;
 
     private PlayerSaveData playerSaveData;
-
+    
+    private bool isRecoverMp; 
     private void Awake()
     {
         try
@@ -103,6 +104,12 @@ public class Player : MonoBehaviour, IBattle
 
     private void Update()
     {
+        if (!isRecoverMp && !Player.instance.playerAttackSkill.isAttack)
+        {
+            isRecoverMp = true;
+            StartCoroutine(RevertMp());
+        } // Mp Recover
+
         HpRefresh(); // Always hp value is changing.
         MpRefresh(); // Always mp value is changing.
 
@@ -224,5 +231,18 @@ public class Player : MonoBehaviour, IBattle
     {
         yield return new WaitForSeconds(damageCoolTime); // Wait as much as "damageCoolTime".
         hit = false;
+    }
+    private IEnumerator RevertMp()
+    {
+        yield return new WaitForSeconds(1f);
+
+        if (!Player.instance.unbeatable)
+        {
+            Player.instance.mp += 2;
+            if (Player.instance.mp > Player.maxMp)
+                Player.instance.mp = Player.maxMp;
+        }
+
+        isRecoverMp = false;
     }
 }

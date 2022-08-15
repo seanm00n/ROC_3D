@@ -1542,6 +1542,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isBoss: 0
+  isBox: 0
   m_health: 40
   m_attack: 10
   m_cooltime: 0
