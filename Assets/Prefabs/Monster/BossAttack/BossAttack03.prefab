@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4778554132450660}
   - component: {fileID: 198430744222593168}
   - component: {fileID: 199705480155003442}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Embers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4805,7 +4805,7 @@ GameObject:
   - component: {fileID: 199756426985724656}
   - component: {fileID: 8902758770162895705}
   - component: {fileID: 1734922232923999983}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: BossAttack03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9748,7 +9748,7 @@ GameObject:
   - component: {fileID: 4194869439727390}
   - component: {fileID: 198683768918104910}
   - component: {fileID: 199517807662331752}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Lightning
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14630,7 +14630,7 @@ GameObject:
   - component: {fileID: 4496030710472106}
   - component: {fileID: 198290536301647374}
   - component: {fileID: 199692936812960994}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Shockwave
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19513,7 +19513,7 @@ GameObject:
   - component: {fileID: 3876306380493746002}
   - component: {fileID: 6187827884180756627}
   - component: {fileID: 8736088230333002751}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}

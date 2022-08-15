@@ -4,10 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Shootable
-  - HQ
-  - PlayerAttack
   - Turret
+  - PlayerAttack
+  - HQ
+  - Shop
   layers:
   - Default
   - TransparentFX
@@ -22,7 +22,7 @@ TagManager:
   - StructureArea
   - Monster
   - Opaque
-  - 
+  - NonCollision
   - 
   - 
   - 
@@ -42,9 +42,6 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Fire
-    uniqueID: 3804908061
-    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

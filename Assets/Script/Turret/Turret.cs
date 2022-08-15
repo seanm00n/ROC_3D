@@ -18,17 +18,20 @@ public class Turret : MonoBehaviour, IBattle
     public Transform scope;
 
     [Space]
-
     public GameObject[] emergency;
     public GameObject damageEffect;
     public GameObject parentObject;
     public Transform firePosition;
+    public Transform firePosition2;
     private Collider parentObjectCollider;
 
     [Space]
     [Header("UI")]
     public GameObject hui; // Need it to delete hp ui when turret is gone.
     public Slider hpBar;
+
+    [Space]
+    [Header("Target")]
     public GameObject target;
     public LayerMask targetName;
 
@@ -37,12 +40,15 @@ public class Turret : MonoBehaviour, IBattle
 
     private GameObject attack;
     public GameObject attackPrefab;
+    public ParticleSystem fireEffect;
+    public ParticleSystem fireEffect2;
 
     // Auto Setting
     private float currTime;
 
     [Space]
     [Header("Turret Status")]
+    public int level = 0;
     public int hp = 100;
     public bool isAlive;    
     private float fullHp;
@@ -60,11 +66,12 @@ public class Turret : MonoBehaviour, IBattle
     private void Awake()
     {
         fullHp = hp;
+        PlayerSaveData.turretAmount += 1;
     }
 
     private void Start()
     {
-        parentObjectCollider = parentObject.GetComponent<Collider>();
+        parentObjectCollider = GetComponent<Collider>();
     }
     
     private void Update()
@@ -91,6 +98,7 @@ public class Turret : MonoBehaviour, IBattle
 
         if (hp == 0 && die == false) // Turret is die.
         {
+            PlayerSaveData.turretAmount -= 1;
             die = true;
             parentObjectCollider.enabled = false;
             
@@ -117,28 +125,37 @@ public class Turret : MonoBehaviour, IBattle
             }
 
             // Check Target is live.
-            if (target.GetComponent<MonsterAI>())
+            if (target && target.GetComponent<MonsterAI>())
             {
-                //if (target.GetComponent<Animator>().GetBool("Death"))
-                //{
-                //    target = null;
-                //    return;
-                //}
+                if (target.GetComponent<Animator>().GetBool("Death"))
+                {
+                    target = null;
+                    return;
+                }
             }
-            
-            transform.LookAt(target.transform);
+            if(target)
+            transform.LookAt(target.transform.position + new Vector3(0, 1, 0));
             Debug.DrawLine(transformPos, targetTransformPos, Color.blue);
             Physics.Linecast(transformPos, targetTransformPos);
             
             if (attack != null)
             {
-                attack.transform.LookAt(target.transform.position);
+                if(target)
+                attack.transform.LookAt(target.transform.position + new Vector3(0,1,0));
             }
             
-            if (Time.time > currTime + attackCycleTime)
+            if (Time.time > currTime + attackCycleTime && target)
             {
                 currTime = Time.time;
                 attack = Instantiate(attackPrefab, firePosition.position, transform.rotation);
+                attack.GetComponent<ProjectileMover>().turretLevel = level;
+                fireEffect.Play();
+                if (firePosition2)
+                {
+                    attack = Instantiate(attackPrefab, firePosition2.position, transform.rotation);
+                    attack.GetComponent<ProjectileMover>().turretLevel = level;
+                    fireEffect2.Play();
+                }
             }
             
             return; // Block Repetitive Statement below.

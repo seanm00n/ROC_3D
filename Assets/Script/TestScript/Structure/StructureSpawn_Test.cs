@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using ROC;
 public class StructureSpawn_Test : MonoBehaviour
 {
     [Header("Area Setting")]
@@ -38,11 +38,13 @@ public class StructureSpawn_Test : MonoBehaviour
     public GameObject[] prefabHUI;
 
     public int TurretNum = 0;
+    public int ItemAmount = 0;
 
     // Auto Setting
     Color color;
     GameObject target;
     GameObject skillWindow;
+    PlayerSaveData playerSaveData;
 
     private void Awake()
     {
@@ -59,6 +61,7 @@ public class StructureSpawn_Test : MonoBehaviour
 
     void Update()
     {
+        bool changeNotWork = false;
         if (Time.timeScale != 0)
         {
             if (Input.GetKeyDown(KeyCode.B)) // On/Off structure mode.
@@ -73,7 +76,7 @@ public class StructureSpawn_Test : MonoBehaviour
                         {
                             if (area && areaLayer != 0) area.SetActive(true); // Visible area.
                             structureMode = true;
-                            Player.instance.playerAttackSkill.enabled = false;
+                            ResetItemChange();
                         }
                         else
                         {
@@ -86,23 +89,35 @@ public class StructureSpawn_Test : MonoBehaviour
             }
             // Change Object////////////////////////
 
-            if (Input.GetAxisRaw("Mouse ScrollWheel") > 0)
+            for(int i= 0; i < 4; i++)
             {
-                if (skillWindow)
+                if (PlayerSaveData.itemList[i] != "1")
                 {
-                    if (skillWindow.activeSelf == false)
+                    changeNotWork = false;
+                    break; 
+                }
+                    changeNotWork = true;
+            }
+            if (!changeNotWork)
+            {
+                if (Input.GetAxisRaw("Mouse ScrollWheel") > 0)
+                {
+                    if (skillWindow)
                     {
-                        ChangeNext();
+                        if (skillWindow.activeSelf == false)
+                        {
+                            ChangeNext();
+                        }
                     }
                 }
-            }
-            else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0)
-            {
-                if (skillWindow)
+                else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0)
                 {
-                    if (skillWindow.activeSelf == false)
+                    if (skillWindow)
                     {
-                        ChangePrevious();
+                        if (skillWindow.activeSelf == false)
+                        {
+                            ChangePrevious();
+                        }
                     }
                 }
             }
@@ -124,10 +139,37 @@ public class StructureSpawn_Test : MonoBehaviour
         
         if (structureMode == true)
         {
+            Player.instance.playerAttackSkill.enabled = false;
+            try
+            {
+                playerSaveData = SaveManager.Load<PlayerSaveData>("PlayerData");
+            }
+            catch
+            {
+                playerSaveData = new PlayerSaveData();
+            }
+
+
             //Mouse fixed
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
+            int earlyItemAmount = ItemAmount;
+            ItemAmount = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                if (PlayerSaveData.itemList[i] != "1")
+                {
+                    ItemAmount ++;
+                }
+            }
+            if (ItemAmount > earlyItemAmount)
+            {
+                ResetItemChange();
+            }
+
+            if (PlayerSaveData.turretAmount == PlayerSaveData.turretAmountMax) return;
+            if (changeNotWork) return;
             // Check Install is possible.
 
             Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
@@ -150,10 +192,13 @@ public class StructureSpawn_Test : MonoBehaviour
 
                 else changePosValue = new(0, 0, 0);
 
-                if (target == null && selectedPrefab[selectNumber])
+                if (target == null)
                 {
-                    target = Instantiate(selectedPrefab[selectNumber], hit.point, Quaternion.identity); // View Sample Object.
-                    color = target.GetComponentInChildren<Renderer>().material.color;
+                    if (selectedPrefab[selectNumber])
+                    {
+                        target = Instantiate(selectedPrefab[selectNumber], hit.point, Quaternion.identity); // View Sample Object.
+                        color = target.GetComponentInChildren<Renderer>().material.color;
+                    }
                 }
                 else if (target != null && target.transform.position != hit.point)
                 {
@@ -189,7 +234,7 @@ public class StructureSpawn_Test : MonoBehaviour
                         Install.renderers[i].material.color = color;
                     }
 
-                    if (Input.GetKeyDown(KeyCode.Mouse2))
+                    if (Input.GetMouseButtonDown(0))
                     {
 
                         //////// Install Object ///////////////
@@ -239,19 +284,69 @@ public class StructureSpawn_Test : MonoBehaviour
 
     public void ChangeNext() //Change Next Object.
     {
-        Destroy(target);
-        if (selectNumber < (selectedPrefab.Length - 1))
+        int selectNumberSave = selectNumber;
+        if ((selectNumber + 1) < (selectedPrefab.Length) && PlayerSaveData.itemList.Count > (selectNumber + 1))
+        {
             selectNumber++;
-
-        else selectNumber = 0;
+            while (PlayerSaveData.itemList[selectNumber] == "1")
+            {
+                if ((selectNumber + 1) < (selectedPrefab.Length) && PlayerSaveData.itemList.Count > (selectNumber + 1))
+                {
+                    selectNumber++;
+                }
+                else
+                {
+                    ResetItemChange();
+                }
+            }
+        }
+        else
+        {
+            ResetItemChange();
+        }
+        if (selectNumberSave != selectNumber)
+            Destroy(target);
     }
 
     public void ChangePrevious() //Change Previous Object.
     {
-        Destroy(target);
-        if (selectNumber > 0)
+        int selectNumberSave = selectNumber;
+        if ((selectNumber - 1) >= 0)
+        {
             selectNumber--;
+            while (PlayerSaveData.itemList[selectNumber] == "1")
+            {
+                if ((selectNumber - 1) >= 0)
+                {
+                    selectNumber--;
+                }
+                else
+                {
+                    ResetItemChangeReverse();
+                    break;
+                }
+            }
+        }
+        else
+        {
+            ResetItemChangeReverse();
+        }
+        if (selectNumberSave != selectNumber)
+            Destroy(target);
+    }
 
-        else selectNumber = selectedPrefab.Length - 1;
+    public void ResetItemChange()
+    {
+        if (PlayerSaveData.itemList[0] == "Turret Lv1") selectNumber = 0;
+        else if (PlayerSaveData.itemList[1] == "Turret Lv2") selectNumber = 1;
+        else if (PlayerSaveData.itemList[2] == "Turret Lv3") selectNumber = 2;
+        else if (PlayerSaveData.itemList[3] == "Turret Lv4") selectNumber = 3;
+    }
+    public void ResetItemChangeReverse()
+    {
+        if (PlayerSaveData.itemList[3] == "Turret Lv4") selectNumber = 3;
+        else if (PlayerSaveData.itemList[2] == "Turret Lv3") selectNumber = 2;
+        else if (PlayerSaveData.itemList[1] == "Turret Lv2") selectNumber = 1;
+        else if (PlayerSaveData.itemList[0] == "Turret Lv1") selectNumber = 0;
     }
 }

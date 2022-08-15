@@ -234,12 +234,12 @@ public class CameraManager : MonoBehaviour
             {
                 // Limit looking up
                 case > 200 and < 303:
-                    return;
-                
+                    pointX = 303;
+                    break;
                 // Limit looking down
                 case < 200 and > 73:
-                    // pointX = 73;
-                    return;
+                    pointX = 73;
+                    break;
             }
 
             rotateVelocity = new Vector3(pointX, targetPosition.eulerAngles.y, 0);

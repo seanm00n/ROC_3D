@@ -4894,6 +4894,7 @@ GameObject:
   - component: {fileID: 4042544295511280}
   - component: {fileID: 198493741878810020}
   - component: {fileID: 199422610571998792}
+  - component: {fileID: -7839752889363384312}
   m_Layer: 0
   m_Name: Hit Test
   m_TagString: Untagged
@@ -9768,6 +9769,22 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &-7839752889363384312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1296333435415890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 838a7ef678ec26e4a8c2ed9b7ad29a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allMusicSetting: {fileID: 0}
+  backgroundMusicSetting: {fileID: 0}
+  soundEffectSetting: {fileID: 0}
+  backgroundMusic: 0
 --- !u!1 &1712657531561854
 GameObject:
   m_ObjectHideFlags: 0

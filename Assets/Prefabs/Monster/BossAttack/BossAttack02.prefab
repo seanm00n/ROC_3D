@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4479936134163594}
   - component: {fileID: 198551421081878522}
   - component: {fileID: 199283546609579320}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: RockDebris
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4625,7 +4625,7 @@ GameObject:
   - component: {fileID: 199528594520767084}
   - component: {fileID: -7608592424466075327}
   - component: {fileID: 3638710587133426871}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: BossAttack02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9554,7 +9554,7 @@ GameObject:
   - component: {fileID: 4277361717706434}
   - component: {fileID: 198720281749553436}
   - component: {fileID: 199711331265997596}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: FireEmbers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14288,7 +14288,7 @@ GameObject:
   - component: {fileID: 4007017832456096}
   - component: {fileID: 198679079994174432}
   - component: {fileID: 199587359134751070}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: FireBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19112,7 +19112,7 @@ GameObject:
   - component: {fileID: 4034021376321096}
   - component: {fileID: 198976993373917254}
   - component: {fileID: 199035530390851182}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: RockSpikeSmall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23828,7 +23828,7 @@ GameObject:
   - component: {fileID: 4847842177874722}
   - component: {fileID: 198770071860600260}
   - component: {fileID: 199200675544817314}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: RockSpike
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28614,7 +28614,7 @@ GameObject:
   - component: {fileID: 4800444674417516}
   - component: {fileID: 198282002140394200}
   - component: {fileID: 199048299353486630}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Dust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33388,7 +33388,7 @@ GameObject:
   - component: {fileID: 4541327672843328}
   - component: {fileID: 198189877130538994}
   - component: {fileID: 199227356420720418}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: EarthCrack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38177,7 +38177,7 @@ GameObject:
   - component: {fileID: 3284931902806355464}
   - component: {fileID: 5723585717874536889}
   - component: {fileID: 3242860946981597663}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}

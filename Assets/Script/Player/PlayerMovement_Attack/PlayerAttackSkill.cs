@@ -21,6 +21,8 @@ public class SkillData
     public float limitTime = 0;
     public int usedMp;
     public PlayerAttackSkill.skill thisSkill;
+
+    public float AttackCycle = 0;
 }
 
 public class PlayerAttackSkill : MonoBehaviour
@@ -37,16 +39,18 @@ public class PlayerAttackSkill : MonoBehaviour
     
     public skill passiveSkill = skill.None;
 
+    public skill[] noAimSkill;
+
     public bool[] SkillAvailable = new bool[4];
 
-    public static int normalAttackMp = 4; // Mp for player normal attack.
+    public static int normalAttackMp = 3; // Mp for player normal attack.
     public static SkillData qSkillData;
     public static SkillData eSkillData;
     public static SkillData rSkillData;
 
     public static SkillData passiveSkillData;
 
-    bool skillBreak; // Stop skill
+    private KeyCode skillBreakButton; // Stop skill
 
     [Space]
     [Header("Camera Shaker script")]
@@ -113,7 +117,7 @@ public class PlayerAttackSkill : MonoBehaviour
     private bool targetIsActive;
     private float fireCountdown;
     
-    [Range(0,1)]public float fireRate = 1;
+    public static float fireRate = 0.14f;
     public float fieldOfView = 60;
     public float viewDistance = 20f;
 
@@ -176,7 +180,7 @@ public class PlayerAttackSkill : MonoBehaviour
         for (int i = 0; i < col.Length; i++)
         {
             Vector3 targetAngle = col[i].transform.position - transform.position;
-            if (Vector3.Angle(transform.forward, targetAngle) < fieldOfView)
+            if (Vector3.Angle(transform.forward, targetAngle) < fieldOfView && col[i].GetComponent<Animator>() != null && !col[i].GetComponent<Animator>().GetBool("Death"))
                 screenTargets.Add(col[i].transform);
         }
         #endregion
@@ -185,7 +189,9 @@ public class PlayerAttackSkill : MonoBehaviour
         {
             var targetIndex = TargetIndex();
             if (screenTargets.Count > targetIndex)
+            { 
                 target = screenTargets[targetIndex];
+            }
         }
 
         ///// Skill Setting/////////////////////////////////////////////////////////////////
@@ -196,6 +202,7 @@ public class PlayerAttackSkill : MonoBehaviour
 
         ///// Skill /////////////////////////////////////////////////////////////////
         int usedSkillNumber = 9;
+        
         if (qSkillData != null && Input.GetKeyDown(KeyCode.Q) && Player.instance && Player.instance.mp > 0 && Player.instance.mp >= qSkillData.usedMp) // Use Q Skill
         {
             usedSkillNumber = 0;
@@ -208,7 +215,7 @@ public class PlayerAttackSkill : MonoBehaviour
         {
             usedSkillNumber = 2;
         }
-
+        
         if (usedSkillNumber != 9) // 9 is break.
         {
             
@@ -225,17 +232,56 @@ public class PlayerAttackSkill : MonoBehaviour
                 return; 
             }
 
-            if(usedSkillNumber == 0)
-                UsedSkill(qSkill,usedSkillNumber, qSkillData);
-
+            if (usedSkillNumber == 0)
+            {
+                UsedSkill(qSkill, usedSkillNumber, qSkillData);
+                if (skillBreakButton == KeyCode.None && canMove)
+                {
+                    skillBreakButton = KeyCode.Q;
+                    for (int i = 0; i< noAimSkill.Length; i++)
+                    {
+                        if (qSkillData.thisSkill == noAimSkill[i])
+                        {
+                            skillBreakButton = KeyCode.None;
+                            break;
+                        }
+                    } 
+                }
+            }
 
             if (usedSkillNumber == 1)
+            {
                 UsedSkill(eSkill, usedSkillNumber, eSkillData);
-
+                if (skillBreakButton == KeyCode.None && canMove)
+                {
+                    skillBreakButton = KeyCode.E;
+                    for (int i = 0; i < noAimSkill.Length; i++)
+                    {
+                        if (qSkillData.thisSkill == noAimSkill[i])
+                        {
+                            skillBreakButton = KeyCode.None;
+                            break;
+                        }
+                    }
+                }
+            }
 
             if (usedSkillNumber == 2)
+            {
                 UsedSkill(rSkill, usedSkillNumber, rSkillData);
-
+                if (skillBreakButton == KeyCode.None && canMove)
+                {
+                    skillBreakButton = KeyCode.R;
+                    for (int i = 0; i < noAimSkill.Length; i++)
+                    {
+                        if (qSkillData.thisSkill == noAimSkill[i])
+                        {
+                            skillBreakButton = KeyCode.None;
+                            break;
+                        }
+                    }
+                }
+            }
             usedSkillNumber = 9;
         }
         /////////////////////////////////////////////////////////////////////////////
@@ -270,12 +316,14 @@ public class PlayerAttackSkill : MonoBehaviour
                     
                     // several amounts of target
                     actualTarget = new GameObject().transform;
+
+                    Destroy(actualTarget.gameObject, 1f);
                     actualTarget.position = rayIntersectsCollider ? hit.point : (ray.origin + 100 * ray.direction);
                 }
 
                 GameObject projectile = Instantiate(prefabsCast[8], firePoint.position, firePoint.rotation);
                 projectile.GetComponent<TargetProjectile>().UpdateTarget(actualTarget, uiOffset);
-
+                
                 // Play that particle
                 effect = prefabs[8].GetComponent<ParticleSystem>();
                 effect.Play();
@@ -291,7 +339,6 @@ public class PlayerAttackSkill : MonoBehaviour
                 
                 fireCountdown = fireRate;
                 
-                Destroy(actualTarget.gameObject, 2f);
             }
         }
         else isAttack = false;
@@ -300,15 +347,8 @@ public class PlayerAttackSkill : MonoBehaviour
 
     private void UsedSkill(PlayerAttackSkill.skill usedSkill, int usedSkillNumber, SkillData skillData)
     {
-        if (canMove)
-        {
-            Skill(usedSkill,skillData,usedSkillNumber);
-        }
-        else
-        {
-            skillBreak = true;
-        }
-
+        if(canMove)
+        Skill(usedSkill,skillData,usedSkillNumber);
     }
 
     private void Skill(skill usedSkill, SkillData data, int usedSkillNumber)
@@ -392,9 +432,9 @@ public class PlayerAttackSkill : MonoBehaviour
                 break;
 
             case skill.Nature_1: // Skill 7 
-                
+
                 // Heal
-                if((Player.instance.hp + data.heal) <= Player.maxHp)
+                if ((Player.instance.hp + data.heal) <= Player.maxHp)
                 {
                     Player.instance.hp += data.heal;
                 }
@@ -426,10 +466,6 @@ public class PlayerAttackSkill : MonoBehaviour
                     StartCoroutine(FastPlay(5, 1.5f, 2.5f));
                     SkillAvailable[usedSkillNumber] = false;
                 break;
-        }
-        if (skillBreak)
-        {
-            skillBreak = false;
         }
     }
 
@@ -578,8 +614,8 @@ public class PlayerAttackSkill : MonoBehaviour
         if (!Player.instance.unbeatable)
         {
             Player.instance.mp += 2;
-            if (Player.instance.mp > 20)
-                Player.instance.mp = 20;
+            if (Player.instance.mp > Player.maxMp)
+                Player.instance.mp = Player.maxMp;
         }
         
         isRecoverMp = false;
@@ -593,39 +629,37 @@ public class PlayerAttackSkill : MonoBehaviour
             //Waiting for confirm or deny
             while (true)
             {
+                Player.instance.animationController.FrontSkill();
+
+                casting = true;
+                canMove = false;
+
+
+                StartCoroutine(cameraManager.Shake(0.4f, 7, 0.45f, 1f));
+
+                //Play sound FX if exist
+                if (prefabs[EffectNumber].GetComponent<AudioSource>())
+                {
+                    soundComponent = prefabs[EffectNumber].GetComponent<AudioSource>();
+                    MainSoundPlay();
+                }
+
+                yield return new WaitForSeconds(1);
                 var forwardCamera = Camera.main.transform.forward;
                 forwardCamera.y = 0.0f;
                 var vecPos = transform.position + forwardCamera * 4;
 
-                    Player.instance.movement.enabled = false;
-                    cameraManager.stop = true;
-                    casting = true;
-                    canMove = false;
+                foreach (var component in prefabs[EffectNumber].GetComponentsInChildren<FrontAttack>())
+                {
+                    component.PrepeareAttack(vecPos);
+                }
 
-                    Player.instance.animationController.FrontSkill();
+                yield return new WaitForSeconds(castingTime[EffectNumber]);
+                StopCasting(EffectNumber);
+                aim.enabled = true;
+                Player.instance.movement.enabled = true;
+                yield break;
 
-                    StartCoroutine(cameraManager.Shake(0.4f, 7, 0.45f, 1f));
-
-                    //Play sound FX if exist
-                    if (prefabs[EffectNumber].GetComponent<AudioSource>())
-                    {
-                        soundComponent = prefabs[EffectNumber].GetComponent<AudioSource>();
-                        MainSoundPlay();
-                    }
-
-                    yield return new WaitForSeconds(1);
-                    foreach (var component in prefabs[EffectNumber].GetComponentsInChildren<FrontAttack>())
-                    {
-                        component.PrepeareAttack(vecPos);
-                    }
-                    
-                    yield return new WaitForSeconds(castingTime[EffectNumber]);
-                    StopCasting(EffectNumber);
-                    aim.enabled = true;
-                    Player.instance.movement.enabled = true;
-                    cameraManager.stop = false;
-                    yield break;
-                
             }
         }
     }
@@ -691,12 +725,13 @@ public class PlayerAttackSkill : MonoBehaviour
                     }
                     StartCoroutine(OnCast(EffectNumber));
                     StartCoroutine(Attack(EffectNumber));
+                    skillBreakButton = KeyCode.None;
                     yield break;
                 }
-                else if (Input.GetMouseButtonDown(1) || skillBreak)
+                else if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(skillBreakButton))
                 {
                     canMove = true;
-                    skillBreak = false;
+                    skillBreakButton = KeyCode.None;
                     aim.enabled = true;
                     targetMarker.SetActive(false);
                     yield break;
@@ -932,6 +967,10 @@ public class PlayerAttackSkill : MonoBehaviour
                     {
                         prefabsCast[EffectNumber].transform.up = hit.normal;
                     }
+                }
+                if(EffectNumber == 5)
+                {
+                    Instantiate(prefabsCast[10], transform.position, Quaternion.identity);
                 }
 
                 casting = false;

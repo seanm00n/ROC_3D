@@ -9778,6 +9778,7 @@ GameObject:
   - component: {fileID: 82712604240128802}
   - component: {fileID: 5196145642640936128}
   - component: {fileID: 1484185417431163849}
+  - component: {fileID: 3615151487761492398}
   m_Layer: 1
   m_Name: Light hit Player
   m_TagString: PlayerAttack
@@ -14667,8 +14668,8 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: f282ab803318fe345946d96b0c66a8d1, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0.3
+  m_PlayOnAwake: 0
+  m_Volume: 0
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -14795,10 +14796,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76a6346bf6fbe4247ab6baf5b5a81f9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skill_Damage_Value: 0
-  playerIsParent: 1
-  layerNumber: 0
-  Explosion: {fileID: 0}
+  skillName: 9
+  skillDamageValue: 0
+  sustainmentTime: 0
+  declinedDamageValue: 0
+  turretAttack: 0
+  petAttack: 0
+  explosion: {fileID: 0}
+--- !u!114 &3615151487761492398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1408840603016568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 838a7ef678ec26e4a8c2ed9b7ad29a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allMusicSetting: {fileID: 0}
+  backgroundMusicSetting: {fileID: 0}
+  soundEffectSetting: {fileID: 0}
+  backgroundMusic: 0
 --- !u!1 &1497509281935802
 GameObject:
   m_ObjectHideFlags: 0

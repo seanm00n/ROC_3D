@@ -16,10 +16,16 @@ public class MenuControl : MonoBehaviour
     {
         animator = GetComponent<Animator>();
     }
-    public void StartButton()
+    public void StartButton(int scene)
     {
-        // Data Reset
-        StartCoroutine(FadeOut());
+        if(blockImage)
+        StartCoroutine(FadeOut(scene));
+        else
+        {
+            if (sceneNum == 0) SceneManager.LoadScene(scene, LoadSceneMode.Single);
+            else
+                SceneManager.LoadScene(sceneNum, LoadSceneMode.Single);
+        }
     }
     public void LoadButton()
     {
@@ -32,51 +38,16 @@ public class MenuControl : MonoBehaviour
         animator.SetTrigger("exit");
     }
 
-    public void SaveLoad(int saveFileNumber = 0)
-    {
-        switch (saveFileNumber) 
-        {
-            case 1:
-                // Load save
-                break;
 
-            case 2:
-                // Load save
-                break;
-
-            case 3:
-                // Load save
-                break;
-        }
-
-        StartCoroutine(FadeOut());
-    }
-
-    public void ResetData(int saveFileNumber = 0)
-    {
-        switch (saveFileNumber)
-        {
-            case 1:
-                // Delete save
-                break;
-
-            case 2:
-                // Delete save
-                break;
-
-            case 3:
-                // Delete save
-                break;
-        }
-    }
 
     public void ExitButton()
     {
         Application.Quit();
     }
 
-    IEnumerator FadeOut() // Screen FadeOut
+    IEnumerator FadeOut(int scene) // Screen FadeOut
     {
+        Time.timeScale = 1;
         blockImage.gameObject.SetActive(true);
         Color c = new Color();
         
@@ -88,6 +59,8 @@ public class MenuControl : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.1f);
+        if(sceneNum == 0) SceneManager.LoadScene(scene, LoadSceneMode.Single);
+        else
         SceneManager.LoadScene(sceneNum, LoadSceneMode.Single);
     }
 }

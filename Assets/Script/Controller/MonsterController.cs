@@ -23,6 +23,10 @@ public class MonsterController : MonoBehaviour {
     int Aindex = 0;
     public int Bindex = 0;
     bool flag;
+    
+    /// 코드 수정함 (변경자 : zin)
+    public GameObject endPos;
+    public GameObject endcamera;
 
     void Start () {
         Init(); 
@@ -49,7 +53,7 @@ public class MonsterController : MonoBehaviour {
         if (21 <= Aindex) return;
         aTimer += Time.deltaTime;
         monGenCool += Time.deltaTime;
-        if (60f < aTimer) {
+        if (60f < aTimer) { // 1 => 60
             aTimer = 0f;
             Aindex++;
         }
@@ -68,22 +72,59 @@ public class MonsterController : MonoBehaviour {
         //1분마다 보스몹 젠, 20분 부터 함수 실행 안됨
         if (4 <= Bindex) return;
         bTimer += Time.deltaTime;
-        if (300f < bTimer) {
+        if (300f < bTimer) { // 1 => 300
             StartPos = flag ? StartPos01 : StartPos02;
+
+            /// 코드 수정함 (변경자 : zin) 드래곤 위치 받기
+            if (Bindex == 3)
+            {
+                endPos = Instantiate(BossMonster[Bindex], StartPos.position, StartPos.rotation);
+            }
+            else
             Instantiate(BossMonster[Bindex], StartPos.position, StartPos.rotation);
             bTimer = 0f;
             Bindex++;
         }
     }
-    public void GameClear () {
+    public void GameClear() 
+    {
         //게임 클리어
-        Debug.Log("GameClear");
+
+        /// 코드 수정함 (변경자 : zin)
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        if(Camera.main)
+        Camera.main.gameObject.SetActive(false);
+        Player.instance.ui.gameObject.SetActive(false);
+        Player.instance.gameObject.SetActive(false);
+
+        endcamera.SetActive(true);
+        endcamera.transform.position = endPos.transform.position + new Vector3(0,20,0) - endPos.transform.forward;
+        endcamera.transform.LookAt(endPos.transform.position);
+
     }
-    public void Gold (bool isBoss) {
+    public void Gold (bool isBoss)
+    {
+        /// 코드 수정함 (변경자 : zin) 골드 수급 관련 능력 보유시 더 많이 획득
+        try
+        {
+            data = SaveManager.Load<PlayerSaveData>("PlayerData");
+        }
+        catch
+        {
+            data = new PlayerSaveData();
+        }
         if (isBoss) {
             PlayerSaveData.gold += 1000;
-        } else {
+       
+            float value = 1000 * (data.getMoreGold / 100f);
+            PlayerSaveData.gold += (int)value;
+        }
+        else {
             PlayerSaveData.gold += 5;
+            
+            float value = 5 * (data.getMoreGold / 100f);
+            PlayerSaveData.gold += (int)value;
         }
         
     }
@@ -96,6 +137,8 @@ public class MonsterController : MonoBehaviour {
             data = new PlayerSaveData();
         }
         data.bone += 50;
+        /// 코드 수정함 (변경자 : zin) 뼈 수급 관련 능력 보유시 더 많이 획득
+        data.bone += data.getMoreBone;
         SaveManager.Save("PlayerData", data);
     }
 }

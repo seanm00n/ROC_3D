@@ -1298,8 +1298,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   AttactStart: {fileID: 6452523897660703732}
-  AttackPref: {fileID: 3976297580120133674, guid: bfc7eed3170e9cb41a46186af2022213,
-    type: 3}
+  AttackPref: {fileID: 3976297580120133674, guid: bfc7eed3170e9cb41a46186af2022213, type: 3}
+  isEndingBoss: 1
 --- !u!195 &536554213556658574
 NavMeshAgent:
   m_ObjectHideFlags: 0

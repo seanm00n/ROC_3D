@@ -2,7 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using ROC;
 
+public class PlayerSaveData
+{
+    public static int turretAmount = 0;
+    public static int turretAmountMax = 8;
+    public static int gold = 200;
+    public int bone = 0;
+    public int maxHP = 200;
+    public int maxMP = 30;
+
+    public bool pet = false;
+    public bool petSpecial = false;
+
+    public int getMoreGold = 0;
+    public int getMoreBone = 0;
+
+    public int petDamage = 0;
+
+    public static List<string> itemList = new List<string>();
+}
 public class Player : MonoBehaviour, IBattle
 {
     [Space]
@@ -40,18 +60,28 @@ public class Player : MonoBehaviour, IBattle
     public PlayerMovement movement;
     public UIController ui;
 
-    public bool cameraStop = false;
-
     //Single Tone Stuff//
     public static Player instance;
     public CameraManager playerCamera;
 
     // Absolute Value
-    public static int maxHp = 100;
-    public static int maxMp = 20;
+    public static int maxHp = 0;
+    public static int maxMp = 0;
+
+    private PlayerSaveData playerSaveData;
 
     private void Awake()
     {
+        try
+        {
+            playerSaveData = SaveManager.Load<PlayerSaveData>("PlayerData");
+        }
+        catch
+        {
+            playerSaveData = new PlayerSaveData();
+        }
+        hp = playerSaveData.maxHP;
+        mp = playerSaveData.maxMP;
         if (!instance)
             instance = this;
 
@@ -75,21 +105,16 @@ public class Player : MonoBehaviour, IBattle
         HpRefresh(); // Always hp value is changing.
         MpRefresh(); // Always mp value is changing.
 
-        if(cameraStop && playerCamera.stop != true)
-            playerCamera.stop = true;
-        if(!cameraStop && playerCamera.stop == true)
-            playerCamera.stop = false;
-
-
         if (Input.GetKeyDown(KeyCode.K))
         {
             Hit(100);
         }
+        if (mp < 0) mp = 0;
 
     }
     private void StopPlaying(bool stopPlaying)
     {
-        cameraStop = stopPlaying;
+        playerCamera.stop = stopPlaying;
         unbeatable = stopPlaying;
         movement.enabled = !stopPlaying;
         playerAttackSkill.enabled = !stopPlaying;
@@ -107,7 +132,7 @@ public class Player : MonoBehaviour, IBattle
             else if (ui.hpBar.value > hp)
                 ui.hpBar.value -= 40 * Time.deltaTime; // 40 = Contractible Speed
         }
-        ui.hpText.text = hp.ToString() + "/" + 100.ToString(); // Hp value is marked by hpText.text.
+        ui.hpText.text = hp.ToString() + "/" + maxHp.ToString(); // Hp value is marked by hpText.text.
     }
 
     public void MpRefresh() // Same
@@ -119,7 +144,7 @@ public class Player : MonoBehaviour, IBattle
             else if (ui.mpBar.value > mp)
                 ui.mpBar.value -= 10 * Time.deltaTime; // 10 = Contractible Speed
         }
-        ui.mpText.text = mp.ToString() + "/" + 20.ToString(); // Mp value is marked by mpText.text.
+        ui.mpText.text = mp.ToString() + "/" + maxMp.ToString(); // Mp value is marked by mpText.text.
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -152,9 +177,8 @@ public class Player : MonoBehaviour, IBattle
 
                 if (theNumberOfDeaths == 0 && playerAttackSkill.passiveSkill == PlayerAttackSkill.skill.Angel_2)
                 {
-                    playerCamera.stop = true;
-                    playerCamera.gameObject.transform.position = playerCamera.dieCameraTransform.position;
                     StopPlaying(true);
+                    playerCamera.gameObject.transform.position = playerCamera.dieCameraTransform.position;
                     animationController.OnRebirth();
                     theNumberOfDeaths++;
 

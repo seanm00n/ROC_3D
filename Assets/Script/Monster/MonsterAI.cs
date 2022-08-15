@@ -32,7 +32,7 @@ private void OnDrawGizmosSelected () {
     [SerializeField] LayerMask Alliance;
     [SerializeField] Transform AttactStart;
     [SerializeField] GameObject AttackPref;
-    
+
 
     void Start(){
         Init();
@@ -131,9 +131,8 @@ private void OnDrawGizmosSelected () {
             GetComponent<Animator>().SetBool("Death", true);
             StartCoroutine(DestroyMonster());
             m_isDeath = true;
-            if (Controller.GetComponent<MonsterController>().Bindex == 3) {
-                Controller.GetComponent<MonsterController>().GameClear();
-            }
+
+            /// 코드 수정함 (변경자 : zin) 엔딩 호출 제거
         }
     }
 
@@ -170,12 +169,20 @@ private void OnDrawGizmosSelected () {
         }
     }
     IEnumerator DestroyMonster () {
+
+        /// 코드 수정함 (변경자 : zin) 마지막 보스 아이템 생성X , 사라짐 X, 엔딩 호출
+
+        if (Controller.GetComponent<MonsterController>().endPos == gameObject)
+            Controller.GetComponent<MonsterController>().GameClear();
         yield return new WaitForSeconds(3.0f);
-        if (isBoss) {
-            Controller.GetComponent<MonsterController>().ItemGen(transform);
+        if (isBoss)
+        {
+            if (Controller.GetComponent<MonsterController>().endPos != gameObject)
+                Controller.GetComponent<MonsterController>().ItemGen(transform);
         }
         Controller.GetComponent<MonsterController>().Gold(isBoss);
         Controller.GetComponent<MonsterController>().CurrentMonsters--;
-        Destroy(gameObject);
+        if (Controller.GetComponent<MonsterController>().endPos != gameObject)
+            Destroy(gameObject);
     }
 }
