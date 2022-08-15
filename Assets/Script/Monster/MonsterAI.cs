@@ -89,7 +89,7 @@ private void OnDrawGizmosSelected () {
         m_time += Time.deltaTime;
     }
     
-    void SelectTarget () {//Edit after adding turret
+    void SelectTarget () {
         if (m_isDeath) return;
         if(m_target == null) m_target = HQ;
         Collider[] result = new Collider[100];
