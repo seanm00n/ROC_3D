@@ -42,8 +42,10 @@ public class DataCheck : MonoBehaviour
 
     private int maxPetDamage = 300;
 
-    [SerializeField]private int refundBoneValue;
+    private static int petPrice = 0;
 
+    [SerializeField]public int refundBoneValue;
+    public int[] petDamage;
     private void Start()
     {
         if(!myValue)
@@ -121,7 +123,7 @@ public class DataCheck : MonoBehaviour
         int mpLv = ((playerSaveData.maxMP - new PlayerSaveData().maxMP) / 3);
         int goldLv = ((playerSaveData.getMoreGold - new PlayerSaveData().getMoreGold) / 20);
         int boneLv = ((playerSaveData.getMoreBone - new PlayerSaveData().getMoreBone) / 4);
-        int petLv = 0;
+        int petLv = (int)(playerSaveData.petDamage / 60f);
 
         if (hp != 0) myValue.text = "   LV. " + hpLv;
         if (mp != 0) myValue.text = "   LV. " + mpLv;
@@ -134,16 +136,17 @@ public class DataCheck : MonoBehaviour
                 petLv = 3;
                 myValue.text = "   LV. " + petLv;
 
-                price = 200;
+                price = 150;
                 priceView.text = price.ToString();
             }
             else
             {
-                petLv = (playerSaveData.petDamage / 60);
+                price = 50 * (petLv + 1);
+                petLv = (int)(playerSaveData.petDamage / 60f);
                 myValue.text = "   LV. " + petLv;
-
-                int changedPrice = (petLv + 1) * price;
-                priceView.text = changedPrice.ToString();
+                
+                priceView.text = price.ToString();
+                
             }
         }
 
@@ -152,7 +155,6 @@ public class DataCheck : MonoBehaviour
         int mpPrice = 0;
         int goldPrice = 0;
         int bonePrice = 0;
-        int petPrice = 0;
 
         foreach (DataCheck item in allPrice)
         {
@@ -172,9 +174,11 @@ public class DataCheck : MonoBehaviour
             {
                 bonePrice = boneLv * item.price;
             }
-            else if (item.pet)
+            else if (item.pet == true && petDamage.Length > 0)
             {
-                petPrice = petLv * item.price;
+                if(playerSaveData.petDamage == petDamage[0]) petPrice = 50;
+                else if(playerSaveData.petDamage == petDamage[1]) petPrice = 50 + 100;
+                else if (playerSaveData.petDamage == petDamage[2]) petPrice = 50 + 100 + 150;
             }
         }
         refundBoneValue = hpPrice + mpPrice + goldPrice + bonePrice + petPrice;
@@ -212,9 +216,9 @@ public class DataCheck : MonoBehaviour
                 if(!playerSaveData.pet)
                     playerSaveData.pet = true;
 
-                if (playerSaveData.petDamage == 0) { playerSaveData.petDamage = 60;}
-                else if (playerSaveData.petDamage == 60) { playerSaveData.petDamage = 150;}
-                else if (playerSaveData.petDamage == 150) { playerSaveData.petDamage = 300;}
+                if (playerSaveData.petDamage == 0) { playerSaveData.petDamage = petDamage[0];}
+                else if (playerSaveData.petDamage == petDamage[0]) { playerSaveData.petDamage = petDamage[1]; }
+                else if (playerSaveData.petDamage == petDamage[1]) { playerSaveData.petDamage = petDamage[2]; }
             }
 
             SaveManager.Save("PlayerData", playerSaveData);

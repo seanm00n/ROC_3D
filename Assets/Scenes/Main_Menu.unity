@@ -14435,7 +14435,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 988855655}
   m_HandleRect: {fileID: 988855654}
   m_Direction: 2
-  m_Value: 1.0000006
+  m_Value: 1
   m_Size: 0.83717227
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -15761,6 +15761,7 @@ MonoBehaviour:
   Buybutton: {fileID: 1459850416}
   structure: {fileID: 0}
   refundBoneValue: 0
+  petDamage: 
 --- !u!1 &589364149
 GameObject:
   m_ObjectHideFlags: 0
@@ -31734,6 +31735,7 @@ MonoBehaviour:
   Buybutton: {fileID: 0}
   structure: {fileID: 0}
   refundBoneValue: 0
+  petDamage: 
 --- !u!1001 &1218833599
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33898,6 +33900,7 @@ MonoBehaviour:
   Buybutton: {fileID: 1488008845}
   structure: {fileID: 0}
   refundBoneValue: 0
+  petDamage: 
 --- !u!1001 &1278812327
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38056,6 +38059,7 @@ MonoBehaviour:
   Buybutton: {fileID: 788223195}
   structure: {fileID: 0}
   refundBoneValue: 0
+  petDamage: 
 --- !u!1001 &1436422537
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -50122,6 +50126,7 @@ MonoBehaviour:
   Buybutton: {fileID: 1793803751}
   structure: {fileID: 0}
   refundBoneValue: 0
+  petDamage: 3c000000960000002c010000
 --- !u!1001 &1820073677
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -56147,6 +56152,7 @@ MonoBehaviour:
   Buybutton: {fileID: 1112991896}
   structure: {fileID: 0}
   refundBoneValue: 0
+  petDamage: 
 --- !u!4 &2031039145 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6372004229413120080, guid: 941dfb6170fa38444b15f1166cef0216,
