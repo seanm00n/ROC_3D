@@ -13729,6 +13729,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneNum: 1
+  isMainMenuOrGameOver: 1
   blockImage: {fileID: 1504266631}
 --- !u!114 &499260067
 MonoBehaviour:

@@ -8,7 +8,8 @@ public class MenuControl : MonoBehaviour
 {
     [SerializeField] private int sceneNum = 0;
     private Animator animator;
-    
+
+    public bool isMainMenuOrGameOver = false;
     [Header("BlockScreen")]
     public Image blockImage;
 
@@ -18,7 +19,14 @@ public class MenuControl : MonoBehaviour
     }
     public void StartButton(int scene)
     {
-        if(blockImage)
+        if (isMainMenuOrGameOver == true)
+        {
+            PlayerSaveData.turretAmount = 0;
+            PlayerSaveData.gold = 200;
+            PlayerSaveData.itemList = new List<string>();
+            PlayerSaveData.goldLock = true;
+        }
+        if (blockImage)
         StartCoroutine(FadeOut(scene));
         else
         {

@@ -9,6 +9,7 @@ public class PlayerSaveData
     public static int turretAmount = 0;
     public static int turretAmountMax = 8;
     public static int gold = 200;
+    public static bool goldLock = false;
     public int bone = 500;
     public int maxHP = 200;
     public int maxMP = 30;
@@ -74,7 +75,15 @@ public class Player : MonoBehaviour, IBattle
     private bool isRecoverMp; 
     private void Awake()
     {
-        try
+        if (PlayerSaveData.goldLock)
+        {
+            PlayerSaveData.goldLock = false;
+            PlayerSaveData.turretAmount = 0;
+            PlayerSaveData.gold = 200;
+            PlayerSaveData.itemList = new List<string>();
+        }
+
+            try
         {
             playerSaveData = SaveManager.Load<PlayerSaveData>("PlayerData");
         }

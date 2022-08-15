@@ -84,7 +84,7 @@ public class MonsterController : MonoBehaviour {
         //1분마다 보스몹 젠, 20분 부터 함수 실행 안됨
         if (4 <= Bindex) return;
         bTimer += Time.deltaTime;
-        if (300f < bTimer) {
+        if (1f < bTimer) {
             StartPos = flag ? StartPos01 : StartPos02;
 
             /// 코드 수정함 (변경자 : zin) 드래곤 위치 받기

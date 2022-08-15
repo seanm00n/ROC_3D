@@ -64,14 +64,17 @@ public class Shop : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         if (!other.CompareTag("Player")) return;
-        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f,0.5f,0));
-        RaycastHit hit;
-        npc.layer = 9; // 9 : itemLayer
-        if(Physics.Raycast(ray, out hit,10f,~layerExcept) && hit.collider.CompareTag("Shop"))
+        if (Player.instance.hp > 0)
         {
-            if (Input.GetKeyDown(KeyCode.F) && startShop.activeSelf == false)
+            Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+            RaycastHit hit;
+            npc.layer = 9; // 9 : itemLayer
+            if (Physics.Raycast(ray, out hit, 10f, ~layerExcept) && hit.collider.CompareTag("Shop"))
             {
-                ShopMove(true);
+                if (Input.GetKeyDown(KeyCode.F) && startShop.activeSelf == false)
+                {
+                    ShopMove(true);
+                }
             }
         }
     }
