@@ -12538,8 +12538,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 988855655}
   m_HandleRect: {fileID: 988855654}
   m_Direction: 2
-  m_Value: 0.9999997
-  m_Size: 0.83717227
+  m_Value: 0.9999994
+  m_Size: 0.8371721
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -13710,6 +13710,7 @@ MonoBehaviour:
   gold: 0
   bone: 0
   petPlayer: 0
+  priceTurret: 0
   price: 20
   hp: 0
   mp: 3
@@ -13718,8 +13719,10 @@ MonoBehaviour:
   getMoreBone: 0
   priceView: {fileID: 558921335}
   myValue: {fileID: 228363249}
+  myValueLegacy: {fileID: 0}
   AlreadyBuy: {fileID: 76876622}
   Buybutton: {fileID: 1459850416}
+  structure: {fileID: 0}
   refundBoneValue: 0
 --- !u!1 &589364149
 GameObject:
@@ -27651,6 +27654,7 @@ MonoBehaviour:
   gold: 0
   bone: 1
   petPlayer: 0
+  priceTurret: 0
   price: 0
   hp: 0
   mp: 0
@@ -27659,8 +27663,10 @@ MonoBehaviour:
   getMoreBone: 0
   priceView: {fileID: 0}
   myValue: {fileID: 0}
+  myValueLegacy: {fileID: 0}
   AlreadyBuy: {fileID: 0}
   Buybutton: {fileID: 0}
+  structure: {fileID: 0}
   refundBoneValue: 0
 --- !u!1001 &1218833599
 PrefabInstance:
@@ -29561,6 +29567,7 @@ MonoBehaviour:
   gold: 0
   bone: 0
   petPlayer: 0
+  priceTurret: 0
   price: 20
   hp: 0
   mp: 0
@@ -29569,8 +29576,10 @@ MonoBehaviour:
   getMoreBone: 4
   priceView: {fileID: 859451101}
   myValue: {fileID: 1576687473}
+  myValueLegacy: {fileID: 0}
   AlreadyBuy: {fileID: 1460868156}
   Buybutton: {fileID: 1488008845}
+  structure: {fileID: 0}
   refundBoneValue: 0
 --- !u!1001 &1278812327
 PrefabInstance:
@@ -33215,6 +33224,7 @@ MonoBehaviour:
   gold: 0
   bone: 0
   petPlayer: 0
+  priceTurret: 0
   price: 15
   hp: 20
   mp: 0
@@ -33223,8 +33233,10 @@ MonoBehaviour:
   getMoreBone: 0
   priceView: {fileID: 2118930089}
   myValue: {fileID: 1401378959}
+  myValueLegacy: {fileID: 0}
   AlreadyBuy: {fileID: 1527696540}
   Buybutton: {fileID: 788223195}
+  structure: {fileID: 0}
   refundBoneValue: 0
 --- !u!1001 &1436422537
 PrefabInstance:
@@ -43792,6 +43804,7 @@ MonoBehaviour:
   gold: 0
   bone: 0
   petPlayer: 0
+  priceTurret: 0
   price: 50
   hp: 0
   mp: 0
@@ -43800,8 +43813,10 @@ MonoBehaviour:
   getMoreBone: 0
   priceView: {fileID: 1105808056}
   myValue: {fileID: 595568456}
+  myValueLegacy: {fileID: 0}
   AlreadyBuy: {fileID: 1545131499}
   Buybutton: {fileID: 1793803751}
+  structure: {fileID: 0}
   refundBoneValue: 0
 --- !u!1001 &1820073677
 PrefabInstance:
@@ -49041,6 +49056,7 @@ MonoBehaviour:
   gold: 0
   bone: 0
   petPlayer: 0
+  priceTurret: 0
   price: 20
   hp: 0
   mp: 0
@@ -49049,8 +49065,10 @@ MonoBehaviour:
   getMoreBone: 0
   priceView: {fileID: 1078653694}
   myValue: {fileID: 338441387}
+  myValueLegacy: {fileID: 0}
   AlreadyBuy: {fileID: 823555957}
   Buybutton: {fileID: 1112991896}
+  structure: {fileID: 0}
   refundBoneValue: 0
 --- !u!4 &2031039145 stripped
 Transform:

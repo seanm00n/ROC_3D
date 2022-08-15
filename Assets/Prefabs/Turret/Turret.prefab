@@ -5160,7 +5160,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageSpeed: 30
   attackCycleTime: 0.5
-  radius: 8
+  radius: 50
   scope: {fileID: 5151253315898664019}
   emergency:
   - {fileID: 3955156088194784119}
@@ -5169,6 +5169,7 @@ MonoBehaviour:
   damageEffect: {fileID: 3955156087321414750, guid: abfaa00760f785d4288878fb5224f9dc, type: 3}
   parentObject: {fileID: 5151253315898664023}
   firePosition: {fileID: 2087681103524827271}
+  firePosition2: {fileID: 0}
   hui: {fileID: 0}
   hpBar: {fileID: 0}
   target: {fileID: 0}
@@ -5177,6 +5178,8 @@ MonoBehaviour:
     m_Bits: 2112
   attackPrefab: {fileID: 1976014488594992, guid: a4c9fb70e0b185b4f928571e78881e4e, type: 3}
   fireEffect: {fileID: 2173063723164991821}
+  fireEffect2: {fileID: 0}
+  level: 0
   hp: 150
   isAlive: 1
 --- !u!65 &637090773905360929

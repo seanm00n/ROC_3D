@@ -9,7 +9,8 @@ public class Shop : MonoBehaviour
 {
     public GameObject startShop;
     public GameObject npc;
-    
+    public GameObject npcCamera;
+
     public LayerMask layerExcept;
 
     [Header("Item Price")]
@@ -100,6 +101,12 @@ public class Shop : MonoBehaviour
 
         Player.instance.unbeatable = value;
         startShop.SetActive(value);
+        if(value)
+            Player.instance.shopCamera = npcCamera;
+
+        else
+            Player.instance.shopCamera = null;
+
     }
 
     private void CheckItem(int nthItem, string item, string itemName)

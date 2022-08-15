@@ -51,6 +51,7 @@ public class UIController : MonoBehaviour
     [Space]
     [Header("Shop")]
     public GameObject shopUI;
+    public GameObject monsterUI;
 
     private void Awake()
     {

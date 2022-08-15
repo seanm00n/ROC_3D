@@ -8,7 +8,8 @@ public class DataCheck : MonoBehaviour
 {
     public bool gold = false;
     public bool bone = false;
-    public bool petPlayer = false; 
+    public bool petPlayer = false;
+    public bool priceTurret = false;
 
     public int price = 0;
 
@@ -25,11 +26,13 @@ public class DataCheck : MonoBehaviour
     [Header("UI")]
     public TextMeshProUGUI priceView;
     public TextMeshProUGUI myValue; // using text.
+    public Text myValueLegacy; // using text.
 
     public GameObject AlreadyBuy;
     public GameObject Buybutton;
 
     private PlayerSaveData playerSaveData;
+    public StructureSpawn_Test structure;
 
     private int maxHpValue = 400;
     private int maxMpValue = 60;
@@ -45,6 +48,8 @@ public class DataCheck : MonoBehaviour
     {
         if(!myValue)
             myValue = GetComponent<TextMeshProUGUI>();
+        if (!myValueLegacy)
+            myValueLegacy = GetComponent<Text>();
         if (priceView) priceView.text = price.ToString();
 
         if (price != 0)
@@ -67,6 +72,7 @@ public class DataCheck : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (!structure && Player.instance && Player.instance.playerCamera) structure = Player.instance.playerCamera.GetComponent<StructureSpawn_Test>();
         try
         {
             playerSaveData = SaveManager.Load<PlayerSaveData>("PlayerData");
@@ -77,10 +83,14 @@ public class DataCheck : MonoBehaviour
         }
         if (gold)
             myValue.text = ": " + PlayerSaveData.gold;
-
         if (bone)
             myValue.text = ": " + playerSaveData.bone;
-
+        if (priceTurret && structure && 0 <= structure.selectNumber && 4 > structure.selectNumber && structure.turretInstallPrice.Length > 0)
+        {
+            int value = structure.turretInstallPrice[structure.selectNumber];
+            myValueLegacy.text = "설치 비용 : " + value; 
+        }
+        
         Player.maxHp = playerSaveData.maxHP;
         Player.maxMp = playerSaveData.maxMP;
         SkillAttack.petDamage = playerSaveData.petDamage;

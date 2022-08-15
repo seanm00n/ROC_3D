@@ -178,7 +178,9 @@ MonoBehaviour:
   - {fileID: 5151253315898664023, guid: 29fb7c4a0931f41419dd524e2d02da27, type: 3}
   prefabHUI:
   - {fileID: 5182943263930901904, guid: 4fdd2930e9d614a48af65eb08b4444cd, type: 3}
-  TurretNum: 0
+  turretNum: 0
+  ItemAmount: 0
+  turretInstallPrice: 14000000280000005000000096000000
 --- !u!114 &6595030890674630516
 MonoBehaviour:
   m_ObjectHideFlags: 0
