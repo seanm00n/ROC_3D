@@ -48,7 +48,23 @@ public class DataCheck : MonoBehaviour
     public int[] petDamage;
     private void Start()
     {
-        if(!myValue)
+        try
+        {
+            playerSaveData = SaveManager.Load<PlayerSaveData>("PlayerData");
+        }
+        catch
+        {
+            playerSaveData = new PlayerSaveData();
+        }
+        if (Player.instance && Player.instance.ui)
+        {
+            Player.instance.ui.hpBar.maxValue = playerSaveData.maxHP;
+            Player.instance.ui.mpBar.maxValue = playerSaveData.maxMP;
+
+            Player.instance.ui.hpBar.value = playerSaveData.maxHP;
+            Player.instance.ui.mpBar.value = playerSaveData.maxMP;
+        }
+        if (!myValue)
             myValue = GetComponent<TextMeshProUGUI>();
         if (!myValueLegacy)
             myValueLegacy = GetComponent<Text>();

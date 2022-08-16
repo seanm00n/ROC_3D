@@ -38,8 +38,8 @@ public class SkillUpgrade : MonoBehaviour
 
 
     // Skill information
-    private static int[] skillGrade = new int[4]; // Player skill grade [ 0 : Q skill, 1: E skill, 2 : R skill] + 3 is passive skill
-    private static bool[] skillComplete = new bool[4]; // Player skill grade [ 0 : Q skill, 1: E skill, 2 : R skill] + 3 is passive skill
+    public static int[] skillGrade = new int[4]; // Player skill grade [ 0 : Q skill, 1: E skill, 2 : R skill] + 3 is passive skill
+    public static bool[] skillComplete = new bool[4]; // Player skill grade [ 0 : Q skill, 1: E skill, 2 : R skill] + 3 is passive skill
 
     private string[] skillDescriptions = new string[3];
     private string[] skillValues = new string[3];

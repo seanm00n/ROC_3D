@@ -103,7 +103,7 @@ public class StructureSpawn_Test : MonoBehaviour
 
             for(int i= 0; i < 4; i++)
             {
-                if (PlayerSaveData.itemList[i] != "1")
+                if (PlayerSaveData.itemList.Count > 0 && PlayerSaveData.itemList[i] != "1")
                 {
                     changeNotWork = false;
                     break; 
@@ -352,16 +352,22 @@ public class StructureSpawn_Test : MonoBehaviour
 
     public void ResetItemChange()
     {
-        if (PlayerSaveData.itemList[0] == "Turret Lv1") selectNumber = 0;
-        else if (PlayerSaveData.itemList[1] == "Turret Lv2") selectNumber = 1;
-        else if (PlayerSaveData.itemList[2] == "Turret Lv3") selectNumber = 2;
-        else if (PlayerSaveData.itemList[3] == "Turret Lv4") selectNumber = 3;
+        if (PlayerSaveData.itemList.Count > 0)
+        {
+            if (PlayerSaveData.itemList[0] == "Turret Lv1") selectNumber = 0;
+            else if (PlayerSaveData.itemList[1] == "Turret Lv2") selectNumber = 1;
+            else if (PlayerSaveData.itemList[2] == "Turret Lv3") selectNumber = 2;
+            else if (PlayerSaveData.itemList[3] == "Turret Lv4") selectNumber = 3;
+        }
     }
     public void ResetItemChangeReverse()
     {
-        if (PlayerSaveData.itemList[3] == "Turret Lv4") selectNumber = 3;
-        else if (PlayerSaveData.itemList[2] == "Turret Lv3") selectNumber = 2;
-        else if (PlayerSaveData.itemList[1] == "Turret Lv2") selectNumber = 1;
-        else if (PlayerSaveData.itemList[0] == "Turret Lv1") selectNumber = 0;
+        if (PlayerSaveData.itemList.Count > 0)
+        {
+            if (PlayerSaveData.itemList[3] == "Turret Lv4") selectNumber = 3;
+            else if (PlayerSaveData.itemList[2] == "Turret Lv3") selectNumber = 2;
+            else if (PlayerSaveData.itemList[1] == "Turret Lv2") selectNumber = 1;
+            else if (PlayerSaveData.itemList[0] == "Turret Lv1") selectNumber = 0;
+        }
     }
 }

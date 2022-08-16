@@ -149,7 +149,7 @@ public class PlayerAttackSkill : MonoBehaviour
 
     private void FixedUpdate()
     {
-
+        Debug.Log(PlayerAttackSkill.fireRate);
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         // Mouse Fix.

@@ -23,8 +23,40 @@ public class MenuControl : MonoBehaviour
         {
             PlayerSaveData.turretAmount = 0;
             PlayerSaveData.gold = 200;
-            PlayerSaveData.itemList = new List<string>();
+            if (PlayerSaveData.itemList.Count == 4)
+            {
+                PlayerSaveData.itemList[0] = "1";
+                PlayerSaveData.itemList[1] = "1";
+                PlayerSaveData.itemList[2] = "1";
+                PlayerSaveData.itemList[3] = "1";
+            }
             PlayerSaveData.goldLock = true;
+
+            PlayerAttackSkill.normalAttackMp = 0;
+            PlayerAttackSkill.qSkillData = new SkillData();
+            PlayerAttackSkill.qSkillData.thisSkill = PlayerAttackSkill.skill.None;
+            
+            PlayerAttackSkill.eSkillData = new SkillData();
+            PlayerAttackSkill.eSkillData.thisSkill = PlayerAttackSkill.skill.None;
+           
+            PlayerAttackSkill.rSkillData = new SkillData();
+            PlayerAttackSkill.rSkillData.thisSkill = PlayerAttackSkill.skill.None;
+           
+            PlayerAttackSkill.passiveSkillData = new SkillData();
+            PlayerAttackSkill.passiveSkillData.thisSkill = PlayerAttackSkill.skill.None;
+          
+            PlayerAttackSkill.normalAttackMp = 3;
+            PlayerAttackSkill.normalDamage = 0;
+            PlayerAttackSkill.fireRate = 0.14f;
+
+            Player.theNumberOfDeaths = 0;
+
+            for (int i = 0; i < 4; i++)
+            {
+                SkillUpgrade.skillGrade[i] = 0;
+                SkillUpgrade.skillComplete[i] = false;
+            }
+
         }
         if (blockImage)
         StartCoroutine(FadeOut(scene));

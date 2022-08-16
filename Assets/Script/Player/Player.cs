@@ -10,7 +10,7 @@ public class PlayerSaveData
     public static int turretAmountMax = 8;
     public static int gold = 200;
     public static bool goldLock = false;
-    public int bone = 500;
+    public int bone = 0;
     public int maxHP = 200;
     public int maxMP = 30;
 

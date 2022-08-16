@@ -22,17 +22,17 @@ public class Shop : MonoBehaviour
 
     private void Awake()
     {
-        for (int i = 0; i < shop.childCount; i++)
-        { 
-            shopitem.Add(shop.GetChild(i)); 
-            if(PlayerSaveData.itemList.Count != 4)
-                PlayerSaveData.itemList.Add("1");
-        }
     }
 
     private void Update()
     {
-        for(int i = 0; (i < shopitem.Count) && (i < price.Length); i++)
+        for (int i = 0; i < shop.childCount && PlayerSaveData.itemList.Count != 4; i++)
+        {
+            shopitem.Add(shop.GetChild(i));
+            if (PlayerSaveData.itemList.Count != 4)
+                PlayerSaveData.itemList.Add("1");
+        }
+        for (int i = 0; (i < shopitem.Count) && (i < price.Length); i++)
         {
             shopitem[i].GetComponentInChildren<TextMeshProUGUI>().text = " : " + price[i];
         }

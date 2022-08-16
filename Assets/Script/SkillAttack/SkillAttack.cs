@@ -127,7 +127,6 @@ public class SkillAttack : MonoBehaviour
                     if (waitTime == 0)
                     {
                         hitbox.enabled = false;
-                        this.enabled = false;
                     }
                     else
                     {
