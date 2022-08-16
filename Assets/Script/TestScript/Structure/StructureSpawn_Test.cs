@@ -170,7 +170,7 @@ public class StructureSpawn_Test : MonoBehaviour
             ItemAmount = 0;
             for (int i = 0; i < 4; i++)
             {
-                if (PlayerSaveData.itemList[i] != "1")
+                if (PlayerSaveData.itemList.Count > 0 && PlayerSaveData.itemList[i] != "1")
                 {
                     ItemAmount ++;
                 }
