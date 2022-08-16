@@ -122,10 +122,6 @@ public class Player : MonoBehaviour, IBattle
         HpRefresh(); // Always hp value is changing.
         MpRefresh(); // Always mp value is changing.
 
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            Hit(100);
-        }
         if (mp < 0) mp = 0;
 
     }
