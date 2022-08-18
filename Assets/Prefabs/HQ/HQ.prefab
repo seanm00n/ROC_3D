@@ -114,7 +114,7 @@ MonoBehaviour:
   particle: {fileID: 4156801419930268666, guid: 7be6efb5c9f1aeb468516597d5441e4a,
     type: 3}
   dieCamera: {fileID: 6266188557938673439}
-  m_health: 1000
+  m_health: 5000
 --- !u!1 &6266188557083211605
 GameObject:
   m_ObjectHideFlags: 0

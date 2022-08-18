@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 4355427931146515513}
   - component: {fileID: 7696047383993564520}
   - component: {fileID: 2734519402091523020}
-  - component: {fileID: 7569258430348650715}
-  - component: {fileID: 8393592887280344661}
+  - component: {fileID: 2200087676774126476}
+  - component: {fileID: 8989446463815571677}
   m_Layer: 0
   m_Name: HQParticle (Mini)
   m_TagString: Untagged
@@ -85,7 +85,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!54 &7569258430348650715
+--- !u!54 &2200087676774126476
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,7 +101,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &8393592887280344661
+--- !u!65 &8989446463815571677
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -112,5 +112,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.9999999, y: 1.0000001, z: 1.000001}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
