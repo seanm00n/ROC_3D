@@ -44,7 +44,7 @@ public class MenuControl : MonoBehaviour
             PlayerAttackSkill.passiveSkillData = new SkillData();
             PlayerAttackSkill.passiveSkillData.thisSkill = PlayerAttackSkill.skill.None;
           
-            PlayerAttackSkill.normalAttackMp = 3;
+            PlayerAttackSkill.normalAttackMp = 0;
             PlayerAttackSkill.normalDamage = 20;
             PlayerAttackSkill.fireRate = 0.14f;
 

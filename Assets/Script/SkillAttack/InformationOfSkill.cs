@@ -68,22 +68,22 @@ namespace ROC
                     break;
 
                 case 2:
-                    SetSkillValue(20,80,100,4,3,2,4,3,2);
+                    SetSkillValue(50,80,100,4,3,2,4,3,2);
                     skill.skillDescription = "[스파크 붐 / 공격 스킬 / 강화 가능] 적에게 타겟팅 후 공격한다.";
                     break;
 
                 case 3:
-                    SetSkillValue(30, 100, 200, 8, 8, 8, 5, 4, 3);
+                    SetSkillValue(60, 100, 200, 8, 8, 8, 5, 4, 3);
                     skill.skillDescription = "[뇌륜 / 공격 스킬 / 강화 가능] 범위 내부 적에게 데미지를 준다.";
                     break;
 
                 case 4:
-                    SetSkillValue(30, 70, 120, 10, 8, 6, 6, 5, 4);
+                    SetSkillValue(40, 70, 120, 10, 8, 6, 6, 5, 4);
                     skill.skillDescription = "[연폭 전격 / 공격 스킬 / 강화 가능] 전방 일정 거리 내 존재하는 적들에게 데미지를 준다.";
                     break;
 
                 case 5:
-                    SetSkillValue(20, 50, 100, 15, 12, 9, 5, 5, 5);
+                    SetSkillValue(70, 100, 300, 15, 12, 9, 5, 5, 5);
                     skill.skillDescription = "[신의 눈물 / 공격 스킬 / 광역기 / 강화 가능] 범위안의 몬스터들이 일정 간격으로 데미지를 입는다.";
                     break;
 
@@ -110,7 +110,7 @@ namespace ROC
 
 
                 case 10:
-                    SetSkillValue(20, 30, 50, 14, 12, 10, 3, 2, 1);
+                    SetSkillValue(20, 30, 50, 14, 12, 10, 0, 0, 0);
                     skill.skillDescription = "[기본 공격 / 강화 가능] 적을 자동 조준하여 공격할 수 있다. 대상을 직접 조준하는 공격 또한 가능하다.";
                     break;
 

@@ -43,7 +43,7 @@ public class PlayerAttackSkill : MonoBehaviour
 
     public bool[] SkillAvailable = new bool[4];
 
-    public static int normalAttackMp = 3; // Mp for player normal attack.
+    public static int normalAttackMp = 0; // Mp for player normal attack.
     public static SkillData qSkillData;
     public static SkillData eSkillData;
     public static SkillData rSkillData;
@@ -62,7 +62,7 @@ public class PlayerAttackSkill : MonoBehaviour
     public bool isAttack;
 
     [Header("Damage")]
-    public static int normalDamage = 10; // player normal attack damage.
+    public static int normalDamage = 20; // player normal attack damage.
 
     [Header("Effects")]
     public GameObject targetMarker;

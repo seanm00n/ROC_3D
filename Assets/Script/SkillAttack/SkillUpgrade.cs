@@ -589,7 +589,7 @@ public class SkillUpgrade : MonoBehaviour
                     SetNormalAttack(choosedSkill, ref attack, ref mp, ref cycle, ref attackEarly, ref mpEarly, ref cycleEarly, 2, 2, skillNth);
                 }
                 if (cycleEarly != cycle)
-                    skillValues[skillNth] = "공격력 : " + (attack - attackEarly) + "증가" + "       공격 속도 증가 " + "       소비 마나 : " + (mpEarly - mp) + "감소";
+                    skillValues[skillNth] = "공격력 : " + (attack - attackEarly) + "증가" + "       공격 속도 증가 ";
                 else
                     skillValues[skillNth] = "강화 완료";
                 skillValuesEarly[skillNth] = "[현재] 공격력 : " + attackEarly + "       소비 마나 : " + mpEarly; ;

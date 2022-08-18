@@ -48,6 +48,8 @@ public class Turret : MonoBehaviour, IBattle
 
     [Space]
     [Header("Turret Status")]
+    public GameObject shooter;
+    public GameObject shooter2;
     public int level = 0;
     public int hp = 100;
     public bool isAlive;    
@@ -76,7 +78,7 @@ public class Turret : MonoBehaviour, IBattle
     
     private void Update()
     {
-        var transformPos = transform.position;
+        var transformPos = shooter.transform.position;
       
         if (isAlive) // Change HpBar value and show emergency effect when Hp is low. 
         {
@@ -107,7 +109,7 @@ public class Turret : MonoBehaviour, IBattle
             
             if (emergency.Length >=3 && emergency[2])
             {
-                GameObject explosion = Instantiate(emergency[2],transform.position,Quaternion.identity);
+                GameObject explosion = Instantiate(emergency[2], shooter.transform.position,Quaternion.identity);
                 Destroy(explosion, explosion.GetComponent<ParticleSystem>().main.duration + 5f);
             }
         }
@@ -133,26 +135,35 @@ public class Turret : MonoBehaviour, IBattle
                     return;
                 }
             }
-            if(target)
-            transform.LookAt(target.transform.position + new Vector3(0, 1, 0));
+            if (target)
+            {
+                shooter.transform.LookAt(target.transform.position + new Vector3(0, 0.5f, 0));
+                if (shooter2)
+                {
+                    float Xrot = shooter2.transform.localEulerAngles.x;
+                    float Zrot = shooter2.transform.localEulerAngles.z;
+                    shooter2.transform.LookAt(target.transform.position + new Vector3(0, 0.5f, 0));
+                    shooter2.transform.localEulerAngles = new Vector3(Xrot, shooter2.transform.localEulerAngles.y, Zrot);    
+                }
+            }
             Debug.DrawLine(transformPos, targetTransformPos, Color.blue);
             Physics.Linecast(transformPos, targetTransformPos);
             
             if (attack != null)
             {
                 if(target)
-                attack.transform.LookAt(target.transform.position + new Vector3(0,1,0));
+                attack.transform.LookAt(target.transform.position + new Vector3(0,0.5f,0));
             }
             
             if (Time.time > currTime + attackCycleTime && target)
             {
                 currTime = Time.time;
-                attack = Instantiate(attackPrefab, firePosition.position, transform.rotation);
+                attack = Instantiate(attackPrefab, firePosition.position, shooter.transform.rotation);
                 attack.GetComponent<ProjectileMover>().turretLevel = level;
                 fireEffect.Play();
                 if (firePosition2)
                 {
-                    attack = Instantiate(attackPrefab, firePosition2.position, transform.rotation);
+                    attack = Instantiate(attackPrefab, firePosition2.position, shooter.transform.rotation);
                     attack.GetComponent<ProjectileMover>().turretLevel = level;
                     fireEffect2.Play();
                 }
@@ -172,7 +183,7 @@ public class Turret : MonoBehaviour, IBattle
     }
     public void Hit(int damage) // If Turret is damaged.
     {
-        GameObject hit = Instantiate(damageEffect, transform.position, Quaternion.identity);
+        GameObject hit = Instantiate(damageEffect, shooter.transform.position, Quaternion.identity);
         Destroy(hit, hit.GetComponent<ParticleSystem>().main.duration);
         hp -= damage;
     }

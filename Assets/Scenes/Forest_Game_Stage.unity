@@ -625,6 +625,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dust_Particle_Wind (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7096177191515348563, guid: 7ec83192b9af4e640a741599fdd84c0e,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ec83192b9af4e640a741599fdd84c0e, type: 3}
 --- !u!4 &15030334 stripped
@@ -714,6 +719,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Dust_Particle_Red
+      objectReference: {fileID: 0}
+    - target: {fileID: 7096177191515348563, guid: fbda289622c18cd42911d1a601d5bc87,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbda289622c18cd42911d1a601d5bc87, type: 3}
@@ -8519,6 +8529,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stylized_Fog
       objectReference: {fileID: 0}
+    - target: {fileID: 9185907458619771010, guid: 6d745d943e5ddb34bb11b6b2f4a69cf8,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9185907458619771011, guid: 6d745d943e5ddb34bb11b6b2f4a69cf8,
         type: 3}
       propertyPath: m_RootOrder
@@ -8587,6 +8602,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Leaf_Particle (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2684646825983981945, guid: 44e6dd02cd89182468e0be88fa68e766,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2684646825983981947, guid: 44e6dd02cd89182468e0be88fa68e766,
         type: 3}
@@ -14576,6 +14596,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2059550605}
     m_Modifications:
+    - target: {fileID: 1390535710733781654, guid: 107776f1ba7eac34e919e34cfdaf8083,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3332198111309508980, guid: 107776f1ba7eac34e919e34cfdaf8083,
         type: 3}
       propertyPath: m_Name
@@ -21080,6 +21105,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dust_Particle
       objectReference: {fileID: 0}
+    - target: {fileID: 7096177191515348563, guid: b8f403b4517ddd844988838750e9a72a,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8f403b4517ddd844988838750e9a72a, type: 3}
 --- !u!1 &228282288
@@ -23113,6 +23143,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Dust_Particle_Wind
+      objectReference: {fileID: 0}
+    - target: {fileID: 7096177191515348563, guid: 7ec83192b9af4e640a741599fdd84c0e,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ec83192b9af4e640a741599fdd84c0e, type: 3}
@@ -29164,6 +29199,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Dust_Particle
+      objectReference: {fileID: 0}
+    - target: {fileID: 7096177191515348563, guid: b8f403b4517ddd844988838750e9a72a,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8f403b4517ddd844988838750e9a72a, type: 3}
@@ -43471,6 +43511,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dust_Particle_Wind (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7096177191515348563, guid: 7ec83192b9af4e640a741599fdd84c0e,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ec83192b9af4e640a741599fdd84c0e, type: 3}
 --- !u!4 &703213169 stripped
@@ -49300,7 +49345,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!95 &741525324
 Animator:
   serializedVersion: 4
@@ -51649,6 +51694,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Leaf_Particle (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2684646825983981945, guid: 44e6dd02cd89182468e0be88fa68e766,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2684646825983981947, guid: 44e6dd02cd89182468e0be88fa68e766,
         type: 3}
@@ -66231,6 +66281,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dust_Particle (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 7096177191515348563, guid: b8f403b4517ddd844988838750e9a72a,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8f403b4517ddd844988838750e9a72a, type: 3}
 --- !u!1001 &1225194841
@@ -71606,6 +71661,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dust_Particle_Wind (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 7096177191515348563, guid: 7ec83192b9af4e640a741599fdd84c0e,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ec83192b9af4e640a741599fdd84c0e, type: 3}
 --- !u!1001 &1244263598
@@ -73719,6 +73779,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Leaf_Particle
       objectReference: {fileID: 0}
+    - target: {fileID: 2684646825983981945, guid: 44e6dd02cd89182468e0be88fa68e766,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2684646825983981947, guid: 44e6dd02cd89182468e0be88fa68e766,
         type: 3}
       propertyPath: m_RootOrder
@@ -74201,6 +74266,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Dust_Particle_Wind (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7096177191515348563, guid: 7ec83192b9af4e640a741599fdd84c0e,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ec83192b9af4e640a741599fdd84c0e, type: 3}
@@ -87019,7 +87089,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!136 &1459060697
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -91200,6 +91270,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stylized_Fog (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 9185907458619771010, guid: 6d745d943e5ddb34bb11b6b2f4a69cf8,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9185907458619771011, guid: 6d745d943e5ddb34bb11b6b2f4a69cf8,
         type: 3}
       propertyPath: m_RootOrder
@@ -92025,6 +92100,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Dust_Particle (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7096177191515348563, guid: b8f403b4517ddd844988838750e9a72a,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8f403b4517ddd844988838750e9a72a, type: 3}
@@ -101754,6 +101834,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Leaf_Particle_Wind
       objectReference: {fileID: 0}
+    - target: {fileID: 7577724172177542203, guid: 29bbd1fbe87d69741932f701bef897d5,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 29bbd1fbe87d69741932f701bef897d5, type: 3}
 --- !u!1001 &1778152764
@@ -101877,6 +101962,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Leaf_Particle (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2684646825983981945, guid: 44e6dd02cd89182468e0be88fa68e766,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2684646825983981947, guid: 44e6dd02cd89182468e0be88fa68e766,
         type: 3}
@@ -104747,6 +104837,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dust_Particle_Wind
       objectReference: {fileID: 0}
+    - target: {fileID: 7096177191515348563, guid: 7ec83192b9af4e640a741599fdd84c0e,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ec83192b9af4e640a741599fdd84c0e, type: 3}
 --- !u!1001 &1883359821
@@ -104839,6 +104934,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Leaf_Particle (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2684646825983981945, guid: 44e6dd02cd89182468e0be88fa68e766,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2684646825983981947, guid: 44e6dd02cd89182468e0be88fa68e766,
         type: 3}
@@ -121021,6 +121121,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Leaf_Particle_Wind
+      objectReference: {fileID: 0}
+    - target: {fileID: 7577724172177542203, guid: 29bbd1fbe87d69741932f701bef897d5,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 29bbd1fbe87d69741932f701bef897d5, type: 3}
