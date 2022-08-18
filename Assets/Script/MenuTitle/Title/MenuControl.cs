@@ -32,7 +32,6 @@ public class MenuControl : MonoBehaviour
             }
             PlayerSaveData.goldLock = true;
 
-            PlayerAttackSkill.normalAttackMp = 0;
             PlayerAttackSkill.qSkillData = new SkillData();
             PlayerAttackSkill.qSkillData.thisSkill = PlayerAttackSkill.skill.None;
             
@@ -46,7 +45,7 @@ public class MenuControl : MonoBehaviour
             PlayerAttackSkill.passiveSkillData.thisSkill = PlayerAttackSkill.skill.None;
           
             PlayerAttackSkill.normalAttackMp = 3;
-            PlayerAttackSkill.normalDamage = 0;
+            PlayerAttackSkill.normalDamage = 20;
             PlayerAttackSkill.fireRate = 0.14f;
 
             Player.theNumberOfDeaths = 0;
