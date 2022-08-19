@@ -83,7 +83,7 @@ public class Player : MonoBehaviour, IBattle
             PlayerSaveData.itemList = new List<string>();
         }
 
-            try
+        try
         {
             playerSaveData = SaveManager.Load<PlayerSaveData>("PlayerData");
         }

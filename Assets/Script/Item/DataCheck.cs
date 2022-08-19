@@ -6,6 +6,7 @@ using TMPro;
 using ROC;
 public class DataCheck : MonoBehaviour
 {
+    public bool inGame = false;
     public bool gold = false;
     public bool bone = false;
     public bool petPlayer = false;
@@ -43,6 +44,9 @@ public class DataCheck : MonoBehaviour
     private int maxPetDamage = 300;
 
     private static int petPrice = 0;
+
+    private int lastGold = 0;
+    private int lastBone = 0;
 
     [SerializeField]public int refundBoneValue;
     public int[] petDamage;
@@ -99,10 +103,17 @@ public class DataCheck : MonoBehaviour
         {
             playerSaveData = new PlayerSaveData();
         }
-        if (gold)
+
+        if (gold && lastGold != PlayerSaveData.gold)
+        { 
             myValue.text = ": " + PlayerSaveData.gold;
-        if (bone)
+            lastGold = PlayerSaveData.gold;
+        }
+        if (bone && lastBone != playerSaveData.bone)
+        {
             myValue.text = ": " + playerSaveData.bone;
+            lastBone = playerSaveData.bone;
+        }
         if (priceTurret && structure && 0 <= structure.selectNumber && 4 > structure.selectNumber && structure.turretInstallPrice.Length > 0)
         {
             int value = structure.turretInstallPrice[structure.selectNumber];
@@ -133,7 +144,7 @@ public class DataCheck : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
+        if (inGame) return;
         // Level Calculation /////////////
         int hpLv = ((playerSaveData.maxHP - new PlayerSaveData().maxHP) / 20);
         int mpLv = ((playerSaveData.maxMP - new PlayerSaveData().maxMP) / 3);
