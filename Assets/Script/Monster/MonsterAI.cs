@@ -92,10 +92,11 @@ private void OnDrawGizmosSelected () {
     void SelectTarget () {
         if (m_isDeath) return;
         if(m_target == null) m_target = HQ;
-        Collider[] result = new Collider[100];
+        Collider[] result = Physics.OverlapSphere(transform.position, m_SightDistance, Alliance);
         Physics.OverlapSphereNonAlloc(transform.position, m_SightDistance, result, Alliance);
-        for (int i = 0; i < 100; i++) {
-            if (result[i] && result[i].transform.CompareTag("Player")) {
+        for (int i = 0; i < result.Length; i++) {
+            if (!result[i]) continue;
+            if (result[i].transform.CompareTag("Player")) {
                 if (Vector3.Distance(transform.position, HQ.transform.position) <=
                     Vector3.Distance(transform.position, m_Player.transform.position)) {
                     m_target = HQ;
@@ -103,7 +104,7 @@ private void OnDrawGizmosSelected () {
                     m_target = m_Player;
                 }
             }
-            if (result[i] && result[i].transform.CompareTag("Turret")) {
+            if (result[i].transform.CompareTag("Turret")) {
                 if (Vector3.Distance(transform.position, HQ.transform.position) <=
                     Vector3.Distance(transform.position, result[i].transform.position)) {
                     m_target = HQ;
@@ -124,6 +125,10 @@ private void OnDrawGizmosSelected () {
         if (!m_isInRange) {
             GetComponent<Animator>().SetBool("Run", true);
             m_agent.SetDestination(m_target.transform.position);
+            if (m_target.tag == "Player")
+            {
+                Debug.Log(m_target.transform.position);
+            }
         }
     }
 
