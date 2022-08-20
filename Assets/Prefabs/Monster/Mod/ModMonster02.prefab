@@ -1605,7 +1605,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 2
---- !u!114 &-3098066681444363598
+--- !u!114 &256463064300495019
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1614,7 +1614,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5734518295392883112}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cd3ccc2ad8902a4484a0b910120b573, type: 3}
+  m_Script: {fileID: 11500000, guid: df07e9cc63228d641967101b4571d5c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_HQ: {fileID: 0}
@@ -1623,12 +1623,12 @@ MonoBehaviour:
   m_animator: {fileID: 1676535435315990209}
   isBoss: 0
   isBox: 0
-  aiState: 1
+  aiState: 2
   m_health: 40
   m_attack: 30
-  m_cooltime: 1
+  m_cooltime: 0
   Alliance:
     serializedVersion: 2
     m_Bits: 8
   AttactStart: {fileID: 0}
-  AttackPref: {fileID: 1329845292236604, guid: de5ccf5dbe888f943a389658ad0a393e, type: 3}
+  AttackPref: {fileID: 0}
