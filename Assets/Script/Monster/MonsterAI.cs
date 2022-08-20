@@ -23,7 +23,7 @@ private void OnDrawGizmosSelected () {
     MonsterController m_SController;
     GameObject m_HQ;
     GameObject m_Player;
-    GameObject m_GController;
+    Vector3 lastTraversedPosition;
 
     [SerializeField] Animator m_animator;
     [SerializeField] bool isBoss;
@@ -53,8 +53,6 @@ private void OnDrawGizmosSelected () {
         m_HQ = GameObjectFind.CacheHQ;
         m_Player = Player.instance.gameObject;
         m_target = m_HQ;
-        if (!m_target) 
-            m_target = m_Player;
         m_agent.speed = 6f;
         m_SController = MonsterController.instance;
         m_animator.SetBool("Idle", true);
@@ -93,16 +91,17 @@ private void OnDrawGizmosSelected () {
     
     void SelectTarget () {
         if (m_isDeath) return;
-        if(m_target == null) m_target = m_HQ;
+        if (m_target == null) m_target = m_HQ;
         Collider[] result = Physics.OverlapSphere(transform.position, m_SightDistance, Alliance);
         for (int i = 0; i < result.Length; i++) {
-            if (0 < result.Length) continue;
+            // if (0 < result.Length) continue;
             if (result[i].transform.CompareTag("Player")) {
                 if (Vector3.Distance(transform.position, m_HQ.transform.position) <=
                     Vector3.Distance(transform.position, m_Player.transform.position)) {
                     m_target = m_HQ;
                 } else {
                     m_target = m_Player;
+                    
                 }
             }
             if (result[i].transform.CompareTag("Turret")) {
@@ -126,7 +125,12 @@ private void OnDrawGizmosSelected () {
 
         if (!m_isInRange) {
             m_animator.SetBool("Run", true);
-            m_agent.SetDestination(m_target.transform.position);
+            var destination = m_target.transform.position;
+            if (destination != lastTraversedPosition)
+            {
+                m_agent.SetDestination(destination);
+                lastTraversedPosition = destination;
+            }
         }
     }
 
