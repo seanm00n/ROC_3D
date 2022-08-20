@@ -729,7 +729,7 @@ MonoBehaviour:
   m_animator: {fileID: 0}
   isBoss: 1
   isBox: 0
-  aiState: 2
+  aiState: 3
   m_health: 2000
   m_attack: 30
   m_cooltime: 1
