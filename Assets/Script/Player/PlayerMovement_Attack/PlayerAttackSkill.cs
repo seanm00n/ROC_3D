@@ -43,7 +43,7 @@ public class PlayerAttackSkill : MonoBehaviour
 
     public bool[] SkillAvailable = new bool[4];
 
-    public static int normalAttackMp = 0; // Mp for player normal attack.
+    public static int normalAttackMp = 3; // Mp for player normal attack.
     public static SkillData qSkillData;
     public static SkillData eSkillData;
     public static SkillData rSkillData;
@@ -149,7 +149,6 @@ public class PlayerAttackSkill : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log(PlayerAttackSkill.fireRate);
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         // Mouse Fix.
