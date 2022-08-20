@@ -30,7 +30,7 @@ private void OnDrawGizmosSelected () {
 
     [SerializeField] bool isBoss;
     [SerializeField] bool isBox;
-    [SerializeField] bool isMoveable;
+    [SerializeField] bool isAIUse;
     [SerializeField] int m_health;
     [SerializeField] int m_attack;
     [SerializeField] float m_cooltime;
@@ -95,7 +95,7 @@ private void OnDrawGizmosSelected () {
     
     void SelectTarget () {
         if (m_isDeath) return;
-        if (!isMoveable) return;
+        if (!isAIUse) return;
         if(m_target == null) m_target = m_HQ;
         Collider[] result = Physics.OverlapSphere(transform.position, m_SightDistance, Alliance);
         for (int i = 0; i < result.Length; i++) {
@@ -121,7 +121,7 @@ private void OnDrawGizmosSelected () {
     }
 
     void Move () {
-        if (!isMoveable) return;
+        if (!isAIUse) return;
         m_agent.speed = 6f;
         if (m_isDeath) {
             m_agent.enabled = false;
@@ -153,12 +153,10 @@ private void OnDrawGizmosSelected () {
         if (other.gameObject.tag == "PlayerAttack") {
             Hit(other.gameObject.GetComponent<SkillAttack>().skillDamageValue);
         }
-        if (IsAttackable(other)) {
-        }
-        
     }
 
     private void OnTriggerStay (Collider other) {
+        if (!isAIUse) return;
         if (IsAttackable(other)) {
             m_isInRange = true;
             if (isBoss) {
@@ -170,6 +168,7 @@ private void OnDrawGizmosSelected () {
     }
 
     private void OnTriggerExit (Collider other) {
+        if (!isAIUse) return;
         if (IsAttackable(other)) {
             m_isInRange = false;
             m_animator.SetBool("Attack", false);
@@ -198,5 +197,5 @@ private void OnDrawGizmosSelected () {
         Destroy(gameObject);
     }
 
-    bool IsAttackable(Collider target) => target.gameObject.tag is "Player" or "HQ" or "Turret";
+    bool IsAttackable(Collider target) => target.gameObject.tag is "Player" or "HQ" or "Turret"; //공부해보기
 }
