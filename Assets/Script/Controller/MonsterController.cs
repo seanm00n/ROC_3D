@@ -19,6 +19,7 @@ public class MonsterController : MonoBehaviour {
     public int CurrentMonsters = 0;//MonsterAI control this value
     int WaveNum = 0;
     float m_Time;
+    float m_Time2;//addsmonstergendelay
     
     /// 코드 수정함 (변경자 : zin)
     public GameObject endPos;
@@ -54,17 +55,28 @@ public class MonsterController : MonoBehaviour {
     }
     void CountCurrentMonsters(){
         if(CurrentMonsters <= 0) AddsMonsterGen();
-        if (WaveNum is 4 or 9 or 14 or 19) BossMonsterGen(WaveNum);
+        if ((WaveNum + 1) % 5 == 0) BossMonsterGen(WaveNum);
     }
     void AddsMonsterGen () {
         //웨이브 몬스터를 전부 처치하면 CurrentMonsters변수로 확인 후 다음 웨이브 출격
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 6; j++) {
-                Instantiate(AddsMonster[WaveNum], StartPos[j].position, StartPos[j].rotation);
-            }
-        }
         CurrentMonsters = 30;
         WaveNum++;
+        StartCoroutine(WaveGen());      
+    }
+    private int count;
+    IEnumerator WaveGen()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            Instantiate(AddsMonster[WaveNum], StartPos[i].position, StartPos[i].rotation);
+        }
+        yield return new WaitForSeconds(10.0f);
+        count++;
+        if (count >= 5)
+        {
+            yield break;
+        }
+        StartCoroutine(WaveGen());
     }
     void BossMonsterGen(int WaveNum){
         //특정 웨이브를 따라 출격

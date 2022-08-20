@@ -123,6 +123,7 @@ private void OnDrawGizmosSelected () {
             m_agent.enabled = false;
             return;
         }
+
         if (!m_isInRange) {
             m_animator.SetBool("Run", true);
             m_agent.SetDestination(m_target.transform.position);

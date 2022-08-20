@@ -51182,6 +51182,7 @@ MonoBehaviour:
   - {fileID: 465803929}
   - {fileID: 639721767}
   - {fileID: 1427622348}
+  delay: 10
   CurrentMonsters: 100
   endPos: {fileID: 0}
   endcamera: {fileID: 1916914983}
