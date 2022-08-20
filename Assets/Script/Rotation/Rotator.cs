@@ -23,6 +23,14 @@ public class Rotator : MonoBehaviour
             case 3
             : transform.Rotate(transform.right * speed * Time.deltaTime);
                 break;
+            case 4
+            :
+                transform.Rotate(transform.forward * speed * Time.deltaTime);
+                break;
+            case 5
+            :
+                transform.Rotate(-transform.forward * speed * Time.deltaTime);
+                break;
         }
     }
 }

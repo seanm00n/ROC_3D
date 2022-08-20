@@ -119,10 +119,10 @@ public class Player : MonoBehaviour, IBattle
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            transform.position = startPosition + new Vector3(0,0.01f,0);
+            Player.instance.movement.enabled = false;
+            transform.position = startPosition;
 
-            movement.gravity = 0;
-            movement.currJumpSpeed = 0;
+            Player.instance.movement.enabled = true;
         }
         if (!isRecoverMp && !Player.instance.playerAttackSkill.isAttack)
         {
