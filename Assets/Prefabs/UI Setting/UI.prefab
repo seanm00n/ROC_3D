@@ -1106,6 +1106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneNum: 0
+  isMainMenuOrGameOver: 0
   blockImage: {fileID: 1828039360337654552}
 --- !u!1 &1395573564115403403
 GameObject:
@@ -5145,6 +5146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34f4b64de05c2204d8f189588b0db541, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inGame: 0
   gold: 0
   bone: 1
   petPlayer: 0
@@ -7698,7 +7700,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1.2
   m_Text: "\uC870\uC791\uD0A4      : wasd        \uC2DC\uC810\uBCC0\uACBD : V\n\uC2A4\uD0AC         
-    : q e r\n\uC124\uCE58 \uBAA8\uB4DC : B  +  "
+    : q e r          \uAD6C\uB8E8\uAE30 : Tab\n\uC124\uCE58 \uBAA8\uB4DC : B  +  "
 --- !u!1 &6182960502738767327
 GameObject:
   m_ObjectHideFlags: 0
@@ -12001,6 +12003,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34f4b64de05c2204d8f189588b0db541, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inGame: 0
   gold: 1
   bone: 0
   petPlayer: 0
@@ -13553,6 +13556,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34f4b64de05c2204d8f189588b0db541, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inGame: 0
   gold: 0
   bone: 0
   petPlayer: 0
