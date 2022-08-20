@@ -51165,7 +51165,6 @@ MonoBehaviour:
   - {fileID: 9089636692480965652, guid: a174fc8ae21f72a4babab5f8246d8fec, type: 3}
   - {fileID: 5952629372017405920, guid: e623b8b3388abb6438d975a314e54922, type: 3}
   - {fileID: 5952629372017405920, guid: 18520093da6109c4985991d2f462229f, type: 3}
-  - {fileID: 4701812188425539066, guid: 4f06e1de1888dc94482db241deea136d, type: 3}
   BossMonsterPref:
   - {fileID: 130964, guid: 98f741552c221d8418ea12939cd0e3d0, type: 3}
   - {fileID: 109776, guid: 168daa6ba665b884e8fac49088e983f5, type: 3}
@@ -51176,7 +51175,7 @@ MonoBehaviour:
   BoxPref: {fileID: 5107814733925504306, guid: 5f5e50691085cbe4589c8be2dd132c3a, type: 3}
   ItemPref: {fileID: 5107814733925504306, guid: e0fe55af2e6cecd469aa2a60ef0caf83,
     type: 3}
-  StartPos:
+  StartPosTrans:
   - {fileID: 1354442369}
   - {fileID: 1628035551}
   - {fileID: 417814239}

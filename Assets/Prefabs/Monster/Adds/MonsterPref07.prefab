@@ -1535,7 +1535,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cd3ccc2ad8902a4484a0b910120b573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_HQ: {fileID: 0}
+  m_Player: {fileID: 0}
+  m_GController: {fileID: 0}
+  m_animator: {fileID: 5692518785927374455}
   isBoss: 0
+  isBox: 0
   m_health: 160
   m_attack: 15
   m_cooltime: 0
@@ -1544,3 +1549,9 @@ MonoBehaviour:
     m_Bits: 8
   AttactStart: {fileID: 0}
   AttackPref: {fileID: 0}
+--- !u!95 &5692518785927374455 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 1676535435315990209, guid: 5b4b3a83d80c6b2458136d0ed7116186,
+    type: 3}
+  m_PrefabInstance: {fileID: 6465941685442259126}
+  m_PrefabAsset: {fileID: 0}

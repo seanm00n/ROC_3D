@@ -1483,6 +1483,12 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: c12f6b45f32afb14a8a1a0b28e614903, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84be2af87e89ae14699f1a05f311b72e, type: 3}
+--- !u!95 &3082995887689676810 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6899946255609541329, guid: 84be2af87e89ae14699f1a05f311b72e,
+    type: 3}
+  m_PrefabInstance: {fileID: 8433140811719183067}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8221420581144880995 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 509138302254116280, guid: 84be2af87e89ae14699f1a05f311b72e,
@@ -1517,7 +1523,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cd3ccc2ad8902a4484a0b910120b573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_HQ: {fileID: 0}
+  m_Player: {fileID: 0}
+  m_GController: {fileID: 0}
+  m_animator: {fileID: 3082995887689676810}
   isBoss: 0
+  isBox: 0
   m_health: 400
   m_attack: 25
   m_cooltime: 0

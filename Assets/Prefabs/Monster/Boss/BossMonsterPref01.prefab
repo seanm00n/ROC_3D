@@ -647,9 +647,9 @@ GameObject:
   - component: {fileID: 411342}
   - component: {fileID: 9550000}
   - component: {fileID: 8692270406688122799}
-  - component: {fileID: 3923206955945448657}
   - component: {fileID: 5514623324369507026}
   - component: {fileID: 4164452249749818997}
+  - component: {fileID: 1829168867875091031}
   m_Layer: 11
   m_Name: BossMonsterPref01
   m_TagString: Untagged
@@ -711,27 +711,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &3923206955945448657
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 130964}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cd3ccc2ad8902a4484a0b910120b573, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isBoss: 1
-  m_health: 2000
-  m_attack: 30
-  m_cooltime: 1
-  Alliance:
-    serializedVersion: 2
-    m_Bits: 8
-  AttactStart: {fileID: 2355899044646365380}
-  AttackPref: {fileID: 1329845292236604, guid: de5ccf5dbe888f943a389658ad0a393e, type: 3}
 --- !u!195 &5514623324369507026
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -768,6 +747,32 @@ CapsuleCollider:
   m_Height: 15
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1829168867875091031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cd3ccc2ad8902a4484a0b910120b573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HQ: {fileID: 0}
+  m_Player: {fileID: 0}
+  m_GController: {fileID: 0}
+  m_animator: {fileID: 9550000}
+  isBoss: 1
+  isBox: 0
+  m_health: 2000
+  m_attack: 30
+  m_cooltime: 1
+  Alliance:
+    serializedVersion: 2
+    m_Bits: 8
+  AttactStart: {fileID: 0}
+  AttackPref: {fileID: 0}
 --- !u!1 &132324
 GameObject:
   m_ObjectHideFlags: 0

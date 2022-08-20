@@ -1492,7 +1492,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cd3ccc2ad8902a4484a0b910120b573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_HQ: {fileID: 0}
+  m_Player: {fileID: 0}
+  m_GController: {fileID: 0}
+  m_animator: {fileID: 6186362934171990766}
   isBoss: 0
+  isBox: 0
   m_health: 200
   m_attack: 20
   m_cooltime: 0
@@ -1523,3 +1528,9 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 2
+--- !u!95 &6186362934171990766 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8259788545142085519, guid: a387b3ef0fc11c9468de3c028fdd2604,
+    type: 3}
+  m_PrefabInstance: {fileID: 2844807824070815073}
+  m_PrefabAsset: {fileID: 0}
