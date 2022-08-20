@@ -14,6 +14,11 @@ private void OnDrawGizmosSelected () {
         Handles.DrawSolidDisc(transform.position, transform.up, m_SightDistance);
     }
 #endif
+    private enum AIState
+    {
+        None, Attack, MoveAndAttack
+    }
+
     bool m_isInRange = false;
     bool m_isDeath = false;
     bool m_isAttacked = false;
@@ -30,7 +35,7 @@ private void OnDrawGizmosSelected () {
 
     [SerializeField] bool isBoss;
     [SerializeField] bool isBox;
-    [SerializeField] bool isAIUse;
+    [SerializeField] AIState aiState;
     [SerializeField] int m_health;
     [SerializeField] int m_attack;
     [SerializeField] float m_cooltime;
@@ -64,6 +69,8 @@ private void OnDrawGizmosSelected () {
         if (m_isDeath) {
             return;
         }
+        if (aiState == AIState.None) return;
+
         m_time += Time.deltaTime;
         m_animator.SetBool("Attack", true);
         if (1f < m_time) {
@@ -95,7 +102,7 @@ private void OnDrawGizmosSelected () {
     
     void SelectTarget () {
         if (m_isDeath) return;
-        if (!isAIUse) return;
+        if (aiState == AIState.None) return;
         if(m_target == null) m_target = m_HQ;
         Collider[] result = Physics.OverlapSphere(transform.position, m_SightDistance, Alliance);
         for (int i = 0; i < result.Length; i++) {
@@ -121,7 +128,7 @@ private void OnDrawGizmosSelected () {
     }
 
     void Move () {
-        if (!isAIUse) return;
+        if (aiState == AIState.None) return;
         m_agent.speed = 6f;
         if (m_isDeath) {
             m_agent.enabled = false;
@@ -156,7 +163,7 @@ private void OnDrawGizmosSelected () {
     }
 
     private void OnTriggerStay (Collider other) {
-        if (!isAIUse) return;
+        if (aiState == AIState.None) return;
         if (IsAttackable(other)) {
             m_isInRange = true;
             if (isBoss) {
@@ -168,7 +175,7 @@ private void OnDrawGizmosSelected () {
     }
 
     private void OnTriggerExit (Collider other) {
-        if (!isAIUse) return;
+        if (aiState == AIState.None) return;
         if (IsAttackable(other)) {
             m_isInRange = false;
             m_animator.SetBool("Attack", false);
@@ -176,7 +183,7 @@ private void OnDrawGizmosSelected () {
     }
     IEnumerator DestroyMonster () {
 
-        /// 코드 수정함 (변경자 : zin) 마지막 보스 아이템 생성X , 사라짐 X, 엔딩 호출
+ 
 
         if (m_SController.endPos == gameObject)
             m_SController.GameClear();
