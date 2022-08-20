@@ -20,14 +20,12 @@ private void OnDrawGizmosSelected () {
     float m_time = 0f;
     float m_SightDistance = 10f;
     GameObject m_target;
-    NavMeshAgent m_agent;
     MonsterController m_SController;
+    GameObject m_HQ;
+    GameObject m_Player;
+    GameObject m_GController;
 
-    [SerializeField] GameObject m_HQ;
-    [SerializeField] GameObject m_Player;
-    [SerializeField] GameObject m_GController;
     [SerializeField] Animator m_animator;
-
     [SerializeField] bool isBoss;
     [SerializeField] bool isBox;
     [SerializeField] int m_health;
@@ -36,6 +34,7 @@ private void OnDrawGizmosSelected () {
     [SerializeField] LayerMask Alliance;
     [SerializeField] Transform AttactStart;
     [SerializeField] GameObject AttackPref;
+    [SerializeField] NavMeshAgent m_agent;
 
     void Start(){
         Init();
@@ -48,12 +47,16 @@ private void OnDrawGizmosSelected () {
     }
 
     void Init () {
+        if (!GameObjectFind.CacheHQ)
+            GameObjectFind.CacheHQ = GameObject.Find("HQ");
+
+        m_HQ = GameObjectFind.CacheHQ;
+        m_Player = Player.instance.gameObject;
         m_target = m_HQ;
         if (!m_target) 
             m_target = m_Player;
-        m_agent = GetComponent<NavMeshAgent>();
         m_agent.speed = 6f;
-        m_SController = m_GController.GetComponent<MonsterController>();
+        m_SController = MonsterController.instance;
         m_animator.SetBool("Idle", true);
     }
     public void Hit (int damage) {

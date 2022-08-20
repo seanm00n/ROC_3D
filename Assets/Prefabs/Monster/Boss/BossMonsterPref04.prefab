@@ -1328,9 +1328,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cd3ccc2ad8902a4484a0b910120b573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HQ: {fileID: 0}
-  m_Player: {fileID: 0}
-  m_GController: {fileID: 0}
   m_animator: {fileID: 9586004}
   isBoss: 1
   isBox: 0
@@ -1340,8 +1337,10 @@ MonoBehaviour:
   Alliance:
     serializedVersion: 2
     m_Bits: 8
-  AttactStart: {fileID: 0}
-  AttackPref: {fileID: 0}
+  AttactStart: {fileID: 6452523897660703732}
+  AttackPref: {fileID: 3976297580120133674, guid: bfc7eed3170e9cb41a46186af2022213,
+    type: 3}
+  m_agent: {fileID: 536554213556658574}
 --- !u!1 &139704
 GameObject:
   m_ObjectHideFlags: 0

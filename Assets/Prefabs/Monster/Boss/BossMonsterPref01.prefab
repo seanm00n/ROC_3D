@@ -759,9 +759,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cd3ccc2ad8902a4484a0b910120b573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HQ: {fileID: 0}
-  m_Player: {fileID: 0}
-  m_GController: {fileID: 0}
   m_animator: {fileID: 9550000}
   isBoss: 1
   isBox: 0
@@ -771,8 +768,9 @@ MonoBehaviour:
   Alliance:
     serializedVersion: 2
     m_Bits: 8
-  AttactStart: {fileID: 0}
-  AttackPref: {fileID: 0}
+  AttactStart: {fileID: 2355899044646365380}
+  AttackPref: {fileID: 1329845292236604, guid: de5ccf5dbe888f943a389658ad0a393e, type: 3}
+  m_agent: {fileID: 5514623324369507026}
 --- !u!1 &132324
 GameObject:
   m_ObjectHideFlags: 0

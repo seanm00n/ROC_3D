@@ -19135,9 +19135,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cd3ccc2ad8902a4484a0b910120b573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HQ: {fileID: 0}
-  m_Player: {fileID: 0}
-  m_GController: {fileID: 0}
   m_animator: {fileID: 2807354936980759421}
   isBoss: 0
   isBox: 0
@@ -19149,6 +19146,7 @@ MonoBehaviour:
     m_Bits: 8
   AttactStart: {fileID: 0}
   AttackPref: {fileID: 0}
+  m_agent: {fileID: 2514762967222477978}
 --- !u!1 &9089636693061925242
 GameObject:
   m_ObjectHideFlags: 0

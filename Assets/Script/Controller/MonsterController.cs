@@ -24,7 +24,11 @@ public class MonsterController : MonoBehaviour {
     public GameObject endPos;
     public GameObject endcamera;
 
+    // 싱글톤
+    public static MonsterController instance;
+
     void Start () {
+        instance = this;
         Init(); 
     }
     void Update () {
