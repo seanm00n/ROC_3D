@@ -51305,7 +51305,13 @@ MonoBehaviour:
   BoxPref: {fileID: 5107814733925504306, guid: 5f5e50691085cbe4589c8be2dd132c3a, type: 3}
   ItemPref: {fileID: 5107814733925504306, guid: e0fe55af2e6cecd469aa2a60ef0caf83,
     type: 3}
-  StartPosTrans: []
+  StartPosTrans:
+  - {fileID: 1354442369}
+  - {fileID: 1628035551}
+  - {fileID: 417814239}
+  - {fileID: 465803929}
+  - {fileID: 639721767}
+  - {fileID: 1427622348}
   CurrentMonsters: 100
   endPos: {fileID: 0}
   endcamera: {fileID: 1916914983}
