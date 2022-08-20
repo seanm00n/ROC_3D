@@ -72,9 +72,12 @@ public class Player : MonoBehaviour, IBattle
 
     private PlayerSaveData playerSaveData;
     
-    private bool isRecoverMp; 
+    private bool isRecoverMp;
+    private Vector3 startPosition;
+
     private void Awake()
     {
+        startPosition = transform.position;
         if (PlayerSaveData.goldLock)
         {
             PlayerSaveData.goldLock = false;
@@ -113,6 +116,10 @@ public class Player : MonoBehaviour, IBattle
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            transform.position = startPosition + new Vector3(0,1,0);
+        }
         if (!isRecoverMp && !Player.instance.playerAttackSkill.isAttack)
         {
             isRecoverMp = true;

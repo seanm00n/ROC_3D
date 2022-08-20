@@ -77,9 +77,12 @@ public class MenuControl : MonoBehaviour
         animator.SetTrigger("exit");
     }
 
+    public void RetryButton()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+    }
 
-
-    public void ExitButton()
+        public void ExitButton()
     {
         Application.Quit();
     }

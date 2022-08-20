@@ -18,5 +18,6 @@ namespace ROC
         internal static readonly int DeathID = Animator.StringToHash("Death"); 
         internal static readonly int DamagedID = Animator.StringToHash("Damaged");
         internal static readonly int RebirthID = Animator.StringToHash("Rebirth");
+        internal static readonly int SpinID = Animator.StringToHash("Spin");
     }
 }

@@ -11,7 +11,7 @@ public class PlayerAnimationController : MonoBehaviour
 {
     public enum AnimationState
     {
-        Normal, Jump, Air
+        Normal, Jump, Air, Attack, Die, Spin
     }
 
     [Header("Player Animation State")]
@@ -43,6 +43,16 @@ public class PlayerAnimationController : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             AttackEnd();
+        }
+
+        if(state == AnimationState.Spin && !Player.instance.movement.isSpin)
+        {
+            Player.instance.movement.isSpin = true;
+        }
+
+        if (state != AnimationState.Spin && Player.instance.movement.isSpin)
+        {
+            Player.instance.movement.isSpin = false;
         }
     }
 
@@ -120,5 +130,13 @@ public class PlayerAnimationController : MonoBehaviour
     public void OnRebirth()
     {
         animator.SetTrigger(AnimatorHashID.RebirthID);
+    }
+
+    public void OnSpin()
+    {
+        if (state == AnimationState.Normal || state == AnimationState.Jump || state == AnimationState.Air)
+        {
+            animator.SetTrigger(AnimatorHashID.SpinID);
+        }
     }
 }

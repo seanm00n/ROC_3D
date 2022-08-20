@@ -50,6 +50,14 @@ public class PlayerMovement : MonoBehaviour
     public float gravity_Max = 0.04f;
     public float gravitySpeed = 0.02f;
 
+    [Space]
+    [Header("Spin Setting")]
+    public float spinSpeed = 0.02f;
+    public float dashSpinSpeed = 0;
+    private float originalSpinSpeed = 0;
+    public float spinTime = 0f;
+    public bool isSpin = false;
+
     private CharacterController playerBody;
     private static readonly int DashID = Animator.StringToHash("Dash");
     private static readonly int CrouchID = Animator.StringToHash("Crouch");
@@ -73,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
     {
         gravity_early = gravity;
         originalSpeed = speed;
-
+        originalSpinSpeed = spinSpeed;
     }
 
     private void Start()
@@ -121,7 +129,6 @@ public class PlayerMovement : MonoBehaviour
 
         float horizontalMove = Input.GetAxisRaw("Horizontal");
         float verticalMove = Input.GetAxisRaw("Vertical");
-
 
         // Default move value while player jumping.
 
@@ -173,6 +180,11 @@ public class PlayerMovement : MonoBehaviour
 
     public void MovePlayer(float horizontalMove, float verticalMove) // Character Move
     {
+        if (spinTime == 0 && spinSpeed != originalSpinSpeed && !isSpin)
+        {
+            if(isJumping)
+            spinSpeed = originalSpinSpeed;
+        }
         if (gravity_Max > gravity && !isJumping)
             gravity += gravitySpeed * Time.unscaledDeltaTime;
         
@@ -188,13 +200,23 @@ public class PlayerMovement : MonoBehaviour
             sitContinue = !sitContinue;
         }
 
+
+        if (Input.GetKeyDown(KeyCode.Tab)) // Start Jumping
+        {
+            Player.instance.animationController.OnSpin();
+        }
+
         // Player Dash.
         if (isJumping)
         {
             if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) || sitContinue)
                 speed = slowspeed;
             else if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            {
                 speed = dashspeed;
+                if(!isSpin)
+                spinSpeed = dashSpinSpeed;
+            }
             else
                 speed = originalSpeed;
         }
@@ -236,14 +258,26 @@ public class PlayerMovement : MonoBehaviour
         }
 
         var myVelocity = Vector3.Normalize(transform.right * moveX) * speed;
-        myVelocity += Vector3.Normalize(transform.forward * moveZ) * speed;
+
+        if (spinTime != 0)
+        {
+            myVelocity = new Vector3(0,0,0);
+        }
+
+        if (spinTime > 0)
+        {
+            myVelocity += Vector3.Normalize(transform.forward) * spinSpeed;
+        }
+        else
+            myVelocity += Vector3.Normalize(transform.forward * moveZ) * speed;
 
         playerBody.Move(new Vector3(myVelocity.x, (-gravity + currJumpSpeed), myVelocity.z) * (200 * Time.unscaledDeltaTime));
         #endregion
     }
 
     public void JumpPlayer(float horizontalMove, float verticalMove) // Player Jump
-    { 
+    {
+        if (spinTime != 0) return;
         // Check Ground Slope;
         var playerHeight = playerBody.height;
         Debug.DrawRay(transform.position, -transform.up * (playerHeight / (playerHeight * 2)), Color.green);
@@ -291,7 +325,6 @@ public class PlayerMovement : MonoBehaviour
                 airSpeedX = horizontalMove * speed / antiInertia;
                     
                 airSpeedZ = verticalMove * speed / antiInertia;
-
             }
             else
             {
