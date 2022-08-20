@@ -44,7 +44,6 @@ public class MenuControl : MonoBehaviour
             PlayerAttackSkill.passiveSkillData = new SkillData();
             PlayerAttackSkill.passiveSkillData.thisSkill = PlayerAttackSkill.skill.None;
           
-            PlayerAttackSkill.normalAttackMp = 0;
             PlayerAttackSkill.normalDamage = 20;
             PlayerAttackSkill.fireRate = 0.14f;
 
@@ -64,6 +63,15 @@ public class MenuControl : MonoBehaviour
             if (sceneNum == 0) SceneManager.LoadScene(scene, LoadSceneMode.Single);
             else
                 SceneManager.LoadScene(sceneNum, LoadSceneMode.Single);
+        }
+
+        if (scene == 4)
+        {
+            PlayerAttackSkill.normalAttackMp = 3;
+        }
+        else if (scene == 2)
+        {
+            PlayerAttackSkill.normalAttackMp = 0;
         }
     }
     public void LoadButton()

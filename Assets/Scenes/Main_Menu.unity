@@ -15690,10 +15690,10 @@ RectTransform:
   m_Father: {fileID: 1719777220}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 467.583}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -517.583}
+  m_SizeDelta: {x: 5994.1, y: 467.583}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &589218790
 MonoBehaviour:
@@ -15745,6 +15745,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34f4b64de05c2204d8f189588b0db541, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inGame: 0
   gold: 0
   bone: 0
   petPlayer: 0
@@ -16815,9 +16816,9 @@ RectTransform:
   m_Father: {fileID: 306156476}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 833.254, y: -846}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1666.508, y: 1692}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &620843164
@@ -18776,9 +18777,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -74.173, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &703334783
 MonoBehaviour:
@@ -25283,8 +25284,8 @@ RectTransform:
   m_Father: {fileID: 1927946353}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0.16282779}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -25792,9 +25793,9 @@ RectTransform:
   m_Father: {fileID: 306156476}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 4566.27, y: -846}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1666.508, y: 1692}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1005670276
@@ -29801,7 +29802,7 @@ GameObject:
   - component: {fileID: 1136097367}
   - component: {fileID: 1136097366}
   m_Layer: 5
-  m_Name: Infinity-2
+  m_Name: Platform-2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29824,9 +29825,9 @@ RectTransform:
   m_Father: {fileID: 306156476}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 2699.7622, y: -846}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1666.508, y: 1692}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1136097366
@@ -29880,7 +29881,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 4
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -31719,6 +31720,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34f4b64de05c2204d8f189588b0db541, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inGame: 0
   gold: 0
   bone: 1
   petPlayer: 0
@@ -33829,10 +33831,10 @@ RectTransform:
   m_Father: {fileID: 1719777220}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 467.583}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -1552.749}
+  m_SizeDelta: {x: 5994.1, y: 467.583}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1276924006
 MonoBehaviour:
@@ -33884,6 +33886,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34f4b64de05c2204d8f189588b0db541, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inGame: 0
   gold: 0
   bone: 0
   petPlayer: 0
@@ -37988,10 +37991,10 @@ RectTransform:
   m_Father: {fileID: 1719777220}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 467.583}
+  m_SizeDelta: {x: 5994.1, y: 467.583}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1432497193
 MonoBehaviour:
@@ -38043,6 +38046,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34f4b64de05c2204d8f189588b0db541, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inGame: 0
   gold: 0
   bone: 0
   petPlayer: 0
@@ -46311,7 +46315,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0.00024414062, y: 0}
-  m_SizeDelta: {x: 5994.1, y: 0}
+  m_SizeDelta: {x: 5994.1, y: 2537.915}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1719777221
 MonoBehaviour:
@@ -50055,10 +50059,10 @@ RectTransform:
   m_Father: {fileID: 1719777220}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 467.583}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -2070.332}
+  m_SizeDelta: {x: 5994.1, y: 467.583}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1818761461
 MonoBehaviour:
@@ -50110,6 +50114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34f4b64de05c2204d8f189588b0db541, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inGame: 0
   gold: 0
   bone: 0
   petPlayer: 0
@@ -50360,7 +50365,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1824121517
 RectTransform:
   m_ObjectHideFlags: 0
@@ -53479,7 +53484,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Infinity Wave
+  m_text: 'Platformer
+
+    Mode'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
@@ -55417,7 +55424,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1993853576
 RectTransform:
   m_ObjectHideFlags: 0
@@ -56081,10 +56088,10 @@ RectTransform:
   m_Father: {fileID: 1719777220}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 467.583}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -1035.166}
+  m_SizeDelta: {x: 5994.1, y: 467.583}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2025948187
 MonoBehaviour:
@@ -56136,6 +56143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34f4b64de05c2204d8f189588b0db541, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inGame: 0
   gold: 0
   bone: 0
   petPlayer: 0
