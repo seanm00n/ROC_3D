@@ -128,7 +128,7 @@ private void OnDrawGizmosSelected () {
     }
 
     void Move () {
-        if (aiState == AIState.None) return;
+        if (aiState == AIState.None || aiState == AIState.Attack) return;
         m_agent.speed = 6f;
         if (m_isDeath) {
             m_agent.enabled = false;
