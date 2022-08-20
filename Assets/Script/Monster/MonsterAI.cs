@@ -21,19 +21,22 @@ private void OnDrawGizmosSelected () {
     float m_SightDistance = 10f;
     GameObject m_target;
     NavMeshAgent m_agent;
-    GameObject HQ;
-    GameObject m_Player;
-    GameObject Controller;
-    
+    MonsterController m_SController;
+
+    [SerializeField] GameObject m_HQ;
+    [SerializeField] GameObject m_Player;
+    [SerializeField] GameObject m_GController;
+    [SerializeField] Animator m_animator;
+
     [SerializeField] bool isBoss;
     [SerializeField] bool isBox;
+    [SerializeField] bool isMoveable;
     [SerializeField] int m_health;
     [SerializeField] int m_attack;
     [SerializeField] float m_cooltime;
     [SerializeField] LayerMask Alliance;
     [SerializeField] Transform AttactStart;
     [SerializeField] GameObject AttackPref;
-
 
     void Start(){
         Init();
@@ -46,12 +49,13 @@ private void OnDrawGizmosSelected () {
     }
 
     void Init () {
-        Controller = GameObject.Find("MonsterController");
-        m_Player = GameObject.Find("Player");
-        HQ = GameObject.Find("HQ");//change in case : 'name value changes'
-        m_target = HQ;
+        m_target = m_HQ;
+        if (!m_target) 
+            m_target = m_Player;
         m_agent = GetComponent<NavMeshAgent>();
         m_agent.speed = 6f;
+        m_SController = m_GController.GetComponent<MonsterController>();
+        m_animator.SetBool("Idle", true);
     }
     public void Hit (int damage) {
         m_health -= damage;
@@ -61,7 +65,7 @@ private void OnDrawGizmosSelected () {
             return;
         }
         m_time += Time.deltaTime;
-        GetComponent<Animator>().SetBool("Attack", true);
+        m_animator.SetBool("Attack", true);
         if (1f < m_time) {
             m_isAttacked = false;
             m_time = 0f;
@@ -77,7 +81,7 @@ private void OnDrawGizmosSelected () {
         if (m_isDeath) {
             return;
         }
-        GetComponent<Animator>().SetBool("Attack", true);
+        m_animator.SetBool("Attack", true);
 
         if (m_cooltime < m_time) {
             m_isAttacked = false;
@@ -91,22 +95,23 @@ private void OnDrawGizmosSelected () {
     
     void SelectTarget () {
         if (m_isDeath) return;
-        if(m_target == null) m_target = HQ;
-        Collider[] result = new Collider[100];
-        Physics.OverlapSphereNonAlloc(transform.position, m_SightDistance, result, Alliance);
-        for (int i = 0; i < 100; i++) {
-            if (result[i] && result[i].transform.CompareTag("Player")) {
-                if (Vector3.Distance(transform.position, HQ.transform.position) <=
+        if (!isMoveable) return;
+        if(m_target == null) m_target = m_HQ;
+        Collider[] result = Physics.OverlapSphere(transform.position, m_SightDistance, Alliance);
+        for (int i = 0; i < result.Length; i++) {
+            if (0 < result.Length) continue;
+            if (result[i].transform.CompareTag("Player")) {
+                if (Vector3.Distance(transform.position, m_HQ.transform.position) <=
                     Vector3.Distance(transform.position, m_Player.transform.position)) {
-                    m_target = HQ;
+                    m_target = m_HQ;
                 } else {
                     m_target = m_Player;
                 }
             }
-            if (result[i] && result[i].transform.CompareTag("Turret")) {
-                if (Vector3.Distance(transform.position, HQ.transform.position) <=
+            if (result[i].transform.CompareTag("Turret")) {
+                if (Vector3.Distance(transform.position, m_HQ.transform.position) <=
                     Vector3.Distance(transform.position, result[i].transform.position)) {
-                    m_target = HQ;
+                    m_target = m_HQ;
                 } else {
                     m_target = result[i].transform.gameObject;
                 }
@@ -116,20 +121,21 @@ private void OnDrawGizmosSelected () {
     }
 
     void Move () {
+        if (!isMoveable) return;
         m_agent.speed = 6f;
         if (m_isDeath) {
             m_agent.enabled = false;
             return;
         }  
         if (!m_isInRange) {
-            GetComponent<Animator>().SetBool("Run", true);
+            m_animator.SetBool("Run", true);
             m_agent.SetDestination(m_target.transform.position);
         }
     }
 
     void CheckDeath () {
         if (m_health <= 0) {
-            GetComponent<Animator>().SetBool("Death", true);
+            m_animator.SetBool("Death", true);
             if (isBox) {
                 GetComponent<Rigidbody>().AddForce(new Vector3(0,0,1),ForceMode.Force);
                 StartCoroutine(DestroyBoxMonster());
@@ -147,17 +153,13 @@ private void OnDrawGizmosSelected () {
         if (other.gameObject.tag == "PlayerAttack") {
             Hit(other.gameObject.GetComponent<SkillAttack>().skillDamageValue);
         }
-        if (other.gameObject.tag == "Player" ||
-            other.gameObject.tag == "HQ" ||
-            other.gameObject.tag == "Turret") {
+        if (IsAttackable(other)) {
         }
         
     }
 
     private void OnTriggerStay (Collider other) {
-        if (other.gameObject.tag == "Player" ||
-            other.gameObject.tag == "HQ" ||
-            other.gameObject.tag == "Turret") {
+        if (IsAttackable(other)) {
             m_isInRange = true;
             if (isBoss) {
                 BossAttack(other);
@@ -168,33 +170,33 @@ private void OnDrawGizmosSelected () {
     }
 
     private void OnTriggerExit (Collider other) {
-        if (other.gameObject.tag == "Player" ||
-            other.gameObject.tag == "HQ" ||
-            other.gameObject.tag == "Turret") {
+        if (IsAttackable(other)) {
             m_isInRange = false;
-            GetComponent<Animator>().SetBool("Attack", false);
+            m_animator.SetBool("Attack", false);
         }
     }
     IEnumerator DestroyMonster () {
 
         /// 코드 수정함 (변경자 : zin) 마지막 보스 아이템 생성X , 사라짐 X, 엔딩 호출
 
-        if (Controller.GetComponent<MonsterController>().endPos == gameObject)
-            Controller.GetComponent<MonsterController>().GameClear();
+        if (m_SController.endPos == gameObject)
+            m_SController.GameClear();
         yield return new WaitForSeconds(3.0f);
         if (isBoss)
         {
-            if (Controller.GetComponent<MonsterController>().endPos != gameObject)
-                Controller.GetComponent<MonsterController>().ItemGen(transform);
+            if (m_SController.endPos != gameObject)
+                m_SController.ItemGen(transform);
         }
-        Controller.GetComponent<MonsterController>().Gold(isBoss);
-        Controller.GetComponent<MonsterController>().CurrentMonsters--;
-        if (Controller.GetComponent<MonsterController>().endPos != gameObject)
+        m_SController.Gold(isBoss);
+        m_SController.CurrentMonsters--;
+        if (m_SController.endPos != gameObject)
             Destroy(gameObject);
     }
     IEnumerator DestroyBoxMonster () {
         yield return new WaitForSeconds(3.0f);
-        Controller.GetComponent<MonsterController>().BoxGen(transform);
+        m_SController.BoxGen(transform);
         Destroy(gameObject);
     }
+
+    bool IsAttackable(Collider target) => target.gameObject.tag is "Player" or "HQ" or "Turret";
 }
