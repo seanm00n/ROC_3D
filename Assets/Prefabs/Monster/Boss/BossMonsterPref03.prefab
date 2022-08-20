@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 9545436}
   - component: {fileID: 713130180}
   - component: {fileID: 713130179}
-  - component: {fileID: 713130178}
   - component: {fileID: 6663885246749437236}
+  - component: {fileID: 1219449174832479039}
   m_Layer: 11
   m_Name: BossMonsterPref03
   m_TagString: Untagged
@@ -97,27 +97,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 2
---- !u!114 &713130178
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100720}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cd3ccc2ad8902a4484a0b910120b573, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isBoss: 1
-  m_health: 15000
-  m_attack: 40
-  m_cooltime: 1
-  Alliance:
-    serializedVersion: 2
-    m_Bits: 8
-  AttactStart: {fileID: 3154361439104214718}
-  AttackPref: {fileID: 1314945738539566, guid: 0d818a76860bad6458003a6d02b03da0, type: 3}
 --- !u!136 &6663885246749437236
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -132,6 +111,32 @@ CapsuleCollider:
   m_Height: 14
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0.20718384}
+--- !u!114 &1219449174832479039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cd3ccc2ad8902a4484a0b910120b573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HQ: {fileID: 0}
+  m_Player: {fileID: 0}
+  m_GController: {fileID: 0}
+  m_animator: {fileID: 9545436}
+  isBoss: 1
+  isBox: 0
+  m_health: 15000
+  m_attack: 40
+  m_cooltime: 1
+  Alliance:
+    serializedVersion: 2
+    m_Bits: 8
+  AttactStart: {fileID: 0}
+  AttackPref: {fileID: 0}
 --- !u!1 &102148
 GameObject:
   m_ObjectHideFlags: 0

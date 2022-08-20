@@ -1471,6 +1471,12 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 5448006822458658857, guid: 6ce345bfd3a0c4c4696ec8f46b95a588, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 6ce345bfd3a0c4c4696ec8f46b95a588, type: 3}
+--- !u!95 &1676535435315990209 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6186362934171990766, guid: 6ce345bfd3a0c4c4696ec8f46b95a588,
+    type: 3}
+  m_PrefabInstance: {fileID: 4800309812295087151}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5734518295392883112 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 939909090819483015, guid: 6ce345bfd3a0c4c4696ec8f46b95a588,
@@ -1541,6 +1547,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cd3ccc2ad8902a4484a0b910120b573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_HQ: {fileID: 0}
+  m_Player: {fileID: 0}
+  m_GController: {fileID: 0}
+  m_animator: {fileID: 1676535435315990209}
   isBoss: 0
   isBox: 0
   m_health: 40

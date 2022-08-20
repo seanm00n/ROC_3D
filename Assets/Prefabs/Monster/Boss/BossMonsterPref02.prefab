@@ -333,8 +333,8 @@ GameObject:
   - component: {fileID: 9584802}
   - component: {fileID: 938122310040386458}
   - component: {fileID: -6314116179473406360}
-  - component: {fileID: 8626130587871540162}
   - component: {fileID: -6536630189994991835}
+  - component: {fileID: 8929523765707825997}
   m_Layer: 11
   m_Name: BossMonsterPref02
   m_TagString: Untagged
@@ -410,28 +410,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &8626130587871540162
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 109776}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cd3ccc2ad8902a4484a0b910120b573, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isBoss: 1
-  m_health: 5000
-  m_attack: 40
-  m_cooltime: 1
-  Alliance:
-    serializedVersion: 2
-    m_Bits: 8
-  AttactStart: {fileID: 4823129681453342597}
-  AttackPref: {fileID: 3976297580120133674, guid: bfc7eed3170e9cb41a46186af2022213,
-    type: 3}
 --- !u!195 &-6536630189994991835
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -454,6 +432,32 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 2
+--- !u!114 &8929523765707825997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 109776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cd3ccc2ad8902a4484a0b910120b573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HQ: {fileID: 0}
+  m_Player: {fileID: 0}
+  m_GController: {fileID: 0}
+  m_animator: {fileID: 9584802}
+  isBoss: 1
+  isBox: 0
+  m_health: 5000
+  m_attack: 40
+  m_cooltime: 1
+  Alliance:
+    serializedVersion: 2
+    m_Bits: 8
+  AttactStart: {fileID: 0}
+  AttackPref: {fileID: 0}
 --- !u!1 &110244
 GameObject:
   m_ObjectHideFlags: 0
