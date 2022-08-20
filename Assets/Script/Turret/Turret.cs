@@ -98,7 +98,7 @@ public class Turret : MonoBehaviour, IBattle
             }
         }
 
-        if (hp == 0 && die == false) // Turret is die.
+        if (hp <= 0 && !die) // Turret is die.
         {
             PlayerSaveData.turretAmount -= 1;
             die = true;
