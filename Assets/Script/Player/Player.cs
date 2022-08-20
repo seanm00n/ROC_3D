@@ -28,6 +28,7 @@ public class Player : MonoBehaviour, IBattle
 {
     [Space]
     [Header("Player Status")]
+    public bool noMpRevert = false;
     public float hp = 100;
     public int mp = 20;
     public bool unbeatable = false;
@@ -118,7 +119,7 @@ public class Player : MonoBehaviour, IBattle
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            transform.position = startPosition + new Vector3(0,1,0);
+            transform.position = startPosition + new Vector3(0,10,0);
         }
         if (!isRecoverMp && !Player.instance.playerAttackSkill.isAttack)
         {
@@ -248,7 +249,7 @@ public class Player : MonoBehaviour, IBattle
     {
         yield return new WaitForSeconds(1f);
 
-        if (!Player.instance.unbeatable)
+        if (!Player.instance.unbeatable && !noMpRevert)
         {
             Player.instance.mp += 2;
             if (Player.instance.mp > Player.maxMp)
