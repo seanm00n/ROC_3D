@@ -17,7 +17,7 @@ public class MonsterController : MonoBehaviour {
     Transform[] StartPos;
     PlayerSaveData data;//설정해주어야함
     public int CurrentMonsters = 0;//MonsterAI control this value
-    int WaveNum = 0;
+    int WaveNum = -1;
     float m_Time;
     float m_Time2;//addsmonstergendelay
     

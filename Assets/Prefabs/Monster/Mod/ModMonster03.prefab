@@ -772,7 +772,7 @@ MonoBehaviour:
   Alliance:
     serializedVersion: 2
     m_Bits: 8
-  AttactStart: {fileID: 0}
+  AttactStart: {fileID: 2355899044646365380}
   AttackPref: {fileID: 1329845292236604, guid: de5ccf5dbe888f943a389658ad0a393e, type: 3}
 --- !u!1 &132324
 GameObject:

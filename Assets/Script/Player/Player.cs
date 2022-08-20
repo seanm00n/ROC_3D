@@ -117,13 +117,6 @@ public class Player : MonoBehaviour, IBattle
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            Player.instance.movement.enabled = false;
-            transform.position = startPosition;
-
-            Player.instance.movement.enabled = true;
-        }
         if (!isRecoverMp && !Player.instance.playerAttackSkill.isAttack)
         {
             isRecoverMp = true;
