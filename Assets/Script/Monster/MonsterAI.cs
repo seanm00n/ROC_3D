@@ -16,7 +16,7 @@ private void OnDrawGizmosSelected () {
 #endif
     private enum AIState
     {
-        None, Attack, MoveAndAttack
+        None, Attack, MoveAndAttack, FlyingAttack
     }
 
     bool m_isInRange = false;
@@ -66,11 +66,8 @@ private void OnDrawGizmosSelected () {
         m_health -= damage;
     }
     public void Attack (Collider other) {//Move to Battle.cs
-        if (m_isDeath) {
-            return;
-        }
-        if (aiState == AIState.None) return;
-
+        if (m_isDeath) return;
+        if (aiState is not (AIState.Attack or AIState.MoveAndAttack)) return;
         m_time += Time.deltaTime;
         m_animator.SetBool("Attack", true);
         if (1f < m_time) {
@@ -84,10 +81,25 @@ private void OnDrawGizmosSelected () {
             }
         }
     }
-    public void BossAttack (Collider other) {
-        if (m_isDeath) {
-            return;
+    public void FlyingAttack()
+    {
+        if (m_isDeath) return;
+        if (aiState != AIState.FlyingAttack) return;
+        m_animator.SetBool("FlyingAttack", true);//
+
+        if (m_cooltime < m_time)
+        {
+            m_isAttacked = false;
+            m_time = 0f;
+            GameObject BossA = Instantiate(AttackPref, AttactStart.position, transform.rotation);
+            BossA.GetComponent<BossAttack>().attack = m_attack;
+            Destroy(BossA, 2f);
         }
+        m_time += Time.deltaTime;
+    }
+    public void BossAttack (Collider other) {
+        if (aiState is not (AIState.Attack or AIState.MoveAndAttack)) return;
+        if (m_isDeath) return;
         m_animator.SetBool("Attack", true);
 
         if (m_cooltime < m_time) {
@@ -128,12 +140,12 @@ private void OnDrawGizmosSelected () {
     }
 
     void Move () {
-        if (aiState == AIState.None || aiState == AIState.Attack) return;
+        if (aiState != AIState.MoveAndAttack) return;
         m_agent.speed = 6f;
         if (m_isDeath) {
             m_agent.enabled = false;
             return;
-        }  
+        }
         if (!m_isInRange) {
             m_animator.SetBool("Run", true);
             m_agent.SetDestination(m_target.transform.position);
@@ -182,9 +194,6 @@ private void OnDrawGizmosSelected () {
         }
     }
     IEnumerator DestroyMonster () {
-
- 
-
         if (m_SController.endPos == gameObject)
             m_SController.GameClear();
         yield return new WaitForSeconds(3.0f);
