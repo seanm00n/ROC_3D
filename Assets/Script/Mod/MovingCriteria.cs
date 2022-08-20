@@ -1,7 +1,6 @@
-﻿namespace Script.Mod
+﻿using UnityEngine;
+
+public abstract class MovingCriteria : MonoBehaviour
 {
-    public class MovingCriteria
-    {
-        
-    }
+    public abstract bool Check();
 }

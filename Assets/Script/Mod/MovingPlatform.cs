@@ -1,7 +1,16 @@
-﻿namespace Script.Mod
+﻿using UnityEngine;
+
+public class MovingPlatform : MonoBehaviour
 {
-    public class MovingPlatform
+    public MovingCriteria criteria;
+    public Vector3 targetPosition;
+
+    private void Update()
     {
-        
+        if (criteria.Check())
+        {
+            // TODO: Animate me!
+            transform.position = targetPosition;
+        }
     }
 }
