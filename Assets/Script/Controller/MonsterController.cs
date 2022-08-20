@@ -59,24 +59,12 @@ public class MonsterController : MonoBehaviour {
     }
     void AddsMonsterGen () {
         //웨이브 몬스터를 전부 처치하면 CurrentMonsters변수로 확인 후 다음 웨이브 출격
-        CurrentMonsters = 30;
-        WaveNum++;
-        StartCoroutine(WaveGen());      
-    }
-    private int count;
-    IEnumerator WaveGen()
-    {
         for (int i = 0; i < 6; i++)
         {
             Instantiate(AddsMonster[WaveNum], StartPos[i].position, StartPos[i].rotation);
         }
-        yield return new WaitForSeconds(10.0f);
-        count++;
-        if (count >= 5)
-        {
-            yield break;
-        }
-        StartCoroutine(WaveGen());
+        CurrentMonsters = 6;
+        WaveNum++;    
     }
     void BossMonsterGen(int WaveNum){
         //특정 웨이브를 따라 출격
