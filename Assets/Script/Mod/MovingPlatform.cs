@@ -8,12 +8,20 @@ public class MovingPlatform : MonoBehaviour
     public float moveDuration;
     public Ease moveEase;
 
+    private Tweener transformTween;
+
     private void Update()
     {
-        if (criteria.Check())
+        if (criteria.Check() && transformTween == null)
         {
-            transform.DOMove(targetPosition, moveDuration)
-                .SetEase(moveEase);
+            transformTween = transform.DOLocalMove(targetPosition, moveDuration)
+                .SetEase(moveEase)
+                .OnComplete(KillTween);
         }
+    }
+
+    private void KillTween()
+    {
+        transformTween?.Kill();
     }
 }
