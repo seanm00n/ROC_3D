@@ -1454,6 +1454,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1f6de90ac8555045b3d1cb51af1ad13, type: 3}
+--- !u!95 &298269138223305651 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2807354936980759421, guid: a1f6de90ac8555045b3d1cb51af1ad13,
+    type: 3}
+  m_PrefabInstance: {fileID: 2510211724912521422}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6697679659817061594 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9089636692480965652, guid: a1f6de90ac8555045b3d1cb51af1ad13,
@@ -1510,12 +1516,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cd3ccc2ad8902a4484a0b910120b573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_animator: {fileID: 298269138223305651}
   isBoss: 0
+  isBox: 0
   m_health: 450
-  m_attack: 40
+  m_attack: 25
   m_cooltime: 0
   Alliance:
     serializedVersion: 2
     m_Bits: 8
   AttactStart: {fileID: 0}
   AttackPref: {fileID: 0}
+  m_agent: {fileID: 4975100160578191228}

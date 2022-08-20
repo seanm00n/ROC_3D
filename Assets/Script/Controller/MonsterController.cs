@@ -18,16 +18,21 @@ public class MonsterController : MonoBehaviour {
     PlayerSaveData data;//설정해주어야함
     public int CurrentMonsters = 0;//MonsterAI control this value
     int WaveNum = 0;
+    float m_Time;
+    float m_Time2;//addsmonstergendelay
     
     /// 코드 수정함 (변경자 : zin)
     public GameObject endPos;
     public GameObject endcamera;
 
+    // 싱글톤
+    public static MonsterController instance;
+
     void Start () {
+        instance = this;
         Init(); 
     }
     void Update () {
-        BossMonsterGen();
         BoxMonsterGen();
         CountCurrentMonsters();
     }
@@ -41,31 +46,52 @@ public class MonsterController : MonoBehaviour {
         for (int index02 = 0; index02 < 4; index02++) {
             BossMonster[index02] = BossMonsterPref[index02];
         }
+        StartPos = new Transform[6];
         for (int index03 = 0; index03 < 6; index03++)
         {
             StartPos[index03] = StartPosTrans[index03];
         }
         CurrentMonsters = 0;
     }
-    void CountCurrentMonsters()
-    {
-        if(0 < CurrentMonsters) AddsMonsterGen();
+    void CountCurrentMonsters(){
+        if(CurrentMonsters <= 0) AddsMonsterGen();
+        if ((WaveNum + 1) % 5 == 0) BossMonsterGen(WaveNum);
     }
     void AddsMonsterGen () {
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 6; j++) {
-                Instantiate(AddsMonster[WaveNum], StartPos[j].position, StartPos[j].rotation);
-            }
-        }
+        //웨이브 몬스터를 전부 처치하면 CurrentMonsters변수로 확인 후 다음 웨이브 출격
         CurrentMonsters = 30;
         WaveNum++;
+        StartCoroutine(WaveGen());      
+    }
+    private int count;
+    IEnumerator WaveGen()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            Instantiate(AddsMonster[WaveNum], StartPos[i].position, StartPos[i].rotation);
+        }
+        yield return new WaitForSeconds(10.0f);
+        count++;
+        if (count >= 5)
+        {
+            yield break;
+        }
+        StartCoroutine(WaveGen());
+    }
+    void BossMonsterGen(int WaveNum){
+        //특정 웨이브를 따라 출격
+        int tmp = ((WaveNum + 1) / 5) - 1;
+        Instantiate(BossMonster[tmp],StartPos[tmp].position,StartPos[tmp].rotation);
     }
     void BoxMonsterGen() {
-
+        //시간이 지남에 따라 출격
+        m_Time += Time.deltaTime;
+        if (300f < m_Time) {
+            m_Time = 0;
+            Instantiate(BoxMonsterPref, StartPos[3]);
+        }
     }
-    void BossMonsterGen () {
 
-    }
     public void GameClear() 
     {
         //게임 클리어
@@ -86,12 +112,9 @@ public class MonsterController : MonoBehaviour {
     public void Gold (bool isBoss)
     {
         /// 코드 수정함 (변경자 : zin) 골드 수급 관련 능력 보유시 더 많이 획득
-        try
-        {
+        try {
             data = SaveManager.Load<PlayerSaveData>("PlayerData");
-        }
-        catch
-        {
+        }catch{
             data = new PlayerSaveData();
         }
         if (isBoss) {
@@ -106,7 +129,6 @@ public class MonsterController : MonoBehaviour {
             float value = 5 * (data.getMoreGold / 100f);
             PlayerSaveData.gold += (int)value;
         }
-        
     }
     public void ItemGen (Transform other) {
         Instantiate(ItemPref, other.position, other.rotation);

@@ -1454,6 +1454,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50f068eba352db147ae071389958bcf0, type: 3}
+--- !u!95 &2731078954886471600 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5692518785927374455, guid: 50f068eba352db147ae071389958bcf0,
+    type: 3}
+  m_PrefabInstance: {fileID: 7717303315091814855}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &9022935257624592601 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1598419107788765470, guid: 50f068eba352db147ae071389958bcf0,
@@ -1488,7 +1494,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cd3ccc2ad8902a4484a0b910120b573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_animator: {fileID: 2731078954886471600}
   isBoss: 0
+  isBox: 0
   m_health: 40
   m_attack: 10
   m_cooltime: 0
@@ -1497,6 +1505,7 @@ MonoBehaviour:
     m_Bits: 8
   AttactStart: {fileID: 0}
   AttackPref: {fileID: 0}
+  m_agent: {fileID: 1600391135063282863}
 --- !u!195 &1600391135063282863
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -14,34 +14,27 @@ private void OnDrawGizmosSelected () {
         Handles.DrawSolidDisc(transform.position, transform.up, m_SightDistance);
     }
 #endif
-    private enum AIState
-    {
-        None, Attack, MoveAndAttack, FlyingAttack
-    }
-
     bool m_isInRange = false;
     bool m_isDeath = false;
     bool m_isAttacked = false;
     float m_time = 0f;
     float m_SightDistance = 10f;
     GameObject m_target;
-    NavMeshAgent m_agent;
     MonsterController m_SController;
+    GameObject m_HQ;
+    GameObject m_Player;
+    GameObject m_GController;
 
-    [SerializeField] GameObject m_HQ;
-    [SerializeField] GameObject m_Player;
-    [SerializeField] GameObject m_GController;
     [SerializeField] Animator m_animator;
-
     [SerializeField] bool isBoss;
     [SerializeField] bool isBox;
-    [SerializeField] AIState aiState;
     [SerializeField] int m_health;
     [SerializeField] int m_attack;
     [SerializeField] float m_cooltime;
     [SerializeField] LayerMask Alliance;
     [SerializeField] Transform AttactStart;
     [SerializeField] GameObject AttackPref;
+    [SerializeField] NavMeshAgent m_agent;
 
     void Start(){
         Init();
@@ -54,12 +47,16 @@ private void OnDrawGizmosSelected () {
     }
 
     void Init () {
+        if (!GameObjectFind.CacheHQ)
+            GameObjectFind.CacheHQ = GameObject.Find("HQ");
+
+        m_HQ = GameObjectFind.CacheHQ;
+        m_Player = Player.instance.gameObject;
         m_target = m_HQ;
         if (!m_target) 
             m_target = m_Player;
-        m_agent = GetComponent<NavMeshAgent>();
         m_agent.speed = 6f;
-        m_SController = m_GController.GetComponent<MonsterController>();
+        m_SController = MonsterController.instance;
         m_animator.SetBool("Idle", true);
     }
     public void Hit (int damage) {
@@ -67,7 +64,6 @@ private void OnDrawGizmosSelected () {
     }
     public void Attack (Collider other) {//Move to Battle.cs
         if (m_isDeath) return;
-        if (aiState is not (AIState.Attack or AIState.MoveAndAttack)) return;
         m_time += Time.deltaTime;
         m_animator.SetBool("Attack", true);
         if (1f < m_time) {
@@ -81,24 +77,7 @@ private void OnDrawGizmosSelected () {
             }
         }
     }
-    public void FlyingAttack()
-    {
-        if (m_isDeath) return;
-        if (aiState != AIState.FlyingAttack) return;
-        m_animator.SetBool("FlyingAttack", true);//
-
-        if (m_cooltime < m_time)
-        {
-            m_isAttacked = false;
-            m_time = 0f;
-            GameObject BossA = Instantiate(AttackPref, AttactStart.position, transform.rotation);
-            BossA.GetComponent<BossAttack>().attack = m_attack;
-            Destroy(BossA, 2f);
-        }
-        m_time += Time.deltaTime;
-    }
     public void BossAttack (Collider other) {
-        if (aiState is not (AIState.Attack or AIState.MoveAndAttack)) return;
         if (m_isDeath) return;
         m_animator.SetBool("Attack", true);
 
@@ -114,7 +93,6 @@ private void OnDrawGizmosSelected () {
     
     void SelectTarget () {
         if (m_isDeath) return;
-        if (aiState == AIState.None) return;
         if(m_target == null) m_target = m_HQ;
         Collider[] result = Physics.OverlapSphere(transform.position, m_SightDistance, Alliance);
         for (int i = 0; i < result.Length; i++) {
@@ -140,12 +118,12 @@ private void OnDrawGizmosSelected () {
     }
 
     void Move () {
-        if (aiState != AIState.MoveAndAttack) return;
         m_agent.speed = 6f;
         if (m_isDeath) {
             m_agent.enabled = false;
             return;
         }
+
         if (!m_isInRange) {
             m_animator.SetBool("Run", true);
             m_agent.SetDestination(m_target.transform.position);
@@ -175,7 +153,6 @@ private void OnDrawGizmosSelected () {
     }
 
     private void OnTriggerStay (Collider other) {
-        if (aiState == AIState.None) return;
         if (IsAttackable(other)) {
             m_isInRange = true;
             if (isBoss) {
@@ -187,7 +164,6 @@ private void OnDrawGizmosSelected () {
     }
 
     private void OnTriggerExit (Collider other) {
-        if (aiState == AIState.None) return;
         if (IsAttackable(other)) {
             m_isInRange = false;
             m_animator.SetBool("Attack", false);

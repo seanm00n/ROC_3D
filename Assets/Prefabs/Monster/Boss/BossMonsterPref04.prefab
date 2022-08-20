@@ -1216,9 +1216,9 @@ GameObject:
   - component: {fileID: 485588}
   - component: {fileID: 9586004}
   - component: {fileID: 5590966550637600774}
-  - component: {fileID: 7680572240769042848}
   - component: {fileID: 536554213556658574}
   - component: {fileID: 4178243394278935148}
+  - component: {fileID: 8647707273175877327}
   m_Layer: 11
   m_Name: BossMonsterPref04
   m_TagString: Untagged
@@ -1278,28 +1278,6 @@ CapsuleCollider:
   m_Height: 14
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0.20718384}
---- !u!114 &7680572240769042848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 139696}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cd3ccc2ad8902a4484a0b910120b573, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isBoss: 1
-  m_health: 30000
-  m_attack: 40
-  m_cooltime: 1
-  Alliance:
-    serializedVersion: 2
-    m_Bits: 8
-  AttactStart: {fileID: 6452523897660703732}
-  AttackPref: {fileID: 3976297580120133674, guid: bfc7eed3170e9cb41a46186af2022213, type: 3}
-  isEndingBoss: 1
 --- !u!195 &536554213556658574
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1338,6 +1316,31 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &8647707273175877327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cd3ccc2ad8902a4484a0b910120b573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_animator: {fileID: 9586004}
+  isBoss: 1
+  isBox: 0
+  m_health: 30000
+  m_attack: 40
+  m_cooltime: 1
+  Alliance:
+    serializedVersion: 2
+    m_Bits: 8
+  AttactStart: {fileID: 6452523897660703732}
+  AttackPref: {fileID: 3976297580120133674, guid: bfc7eed3170e9cb41a46186af2022213,
+    type: 3}
+  m_agent: {fileID: 536554213556658574}
 --- !u!1 &139704
 GameObject:
   m_ObjectHideFlags: 0
