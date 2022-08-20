@@ -9,8 +9,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float slideSpeedZ = 0;
     private bool notTiltedGround; // Check Tilted Ground.
 
-    private float airSpeedX; // Player Speed while Player jumping.
-    private float airSpeedZ; // Player Speed while Player jumping.
+    public float airSpeedX; // Player Speed while Player jumping.
+    public float airSpeedZ; // Player Speed while Player jumping.
     
     [Space]
     [Header("Player Current State")]
@@ -40,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float smoothStopIntensity = 0.05f;
     [SerializeField] private float levitateMinusTime = 0.06f;
     public float antiInertia = 8;
-    private float currJumpSpeed;
+    [HideInInspector]public float currJumpSpeed;
     public bool isJumping;
 
     [Space]
