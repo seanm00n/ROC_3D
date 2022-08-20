@@ -18,6 +18,7 @@ public class MonsterController : MonoBehaviour {
     PlayerSaveData data;//설정해주어야함
     public int CurrentMonsters = 0;//MonsterAI control this value
     int WaveNum = 0;
+    int lastBossSpawnWave = 0;
     float m_Time;
     float m_Time2;//addsmonstergendelay
     
@@ -55,26 +56,30 @@ public class MonsterController : MonoBehaviour {
     }
     void CountCurrentMonsters(){
         if(CurrentMonsters <= 0) AddsMonsterGen();
-        if ((WaveNum + 1) % 5 == 0) BossMonsterGen(WaveNum);
+        if (lastBossSpawnWave != WaveNum && (WaveNum) % 5 == 0) BossMonsterGen(WaveNum);
     }
     void AddsMonsterGen () {
         //웨이브 몬스터를 전부 처치하면 CurrentMonsters변수로 확인 후 다음 웨이브 출격
+        if (20 < WaveNum) return;
         for (int i = 0; i < 6; i++)
         {
             Instantiate(AddsMonster[WaveNum], StartPos[i].position, StartPos[i].rotation);
+            Instantiate(AddsMonster[WaveNum], StartPos[i].position, StartPos[i].rotation);
         }
-        CurrentMonsters = 6;
+        CurrentMonsters += 12;
         WaveNum++;    
     }
     void BossMonsterGen(int WaveNum){
         //특정 웨이브를 따라 출격
-        int tmp = ((WaveNum + 1) / 5) - 1;
+        int tmp = ((WaveNum) / 5) - 1;
+        if (4 < tmp) return;
         Instantiate(BossMonster[tmp],StartPos[tmp].position,StartPos[tmp].rotation);
+        lastBossSpawnWave = WaveNum;
     }
     void BoxMonsterGen() {
         //시간이 지남에 따라 출격
         m_Time += Time.deltaTime;
-        if (300f < m_Time) {
+        if (60f < m_Time) {
             m_Time = 0;
             Instantiate(BoxMonsterPref, StartPos[3]);
         }
