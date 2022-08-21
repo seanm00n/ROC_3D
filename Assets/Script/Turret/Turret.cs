@@ -54,7 +54,7 @@ public class Turret : MonoBehaviour, IBattle
     public int hp = 100;
     public bool isAlive;    
     private float fullHp;
-    private bool die;
+    public bool die = false;
 
 
 #if UNITY_EDITOR
@@ -78,6 +78,21 @@ public class Turret : MonoBehaviour, IBattle
     
     private void Update()
     {
+        if (hp <= 0.01f && die == false) // Turret is die.
+        {
+            PlayerSaveData.turretAmount -= 1;
+            die = true;
+            parentObjectCollider.enabled = false;
+
+            Destroy(parentObject, 0.1f);
+            Destroy(hui);
+
+            if (emergency.Length >= 3 && emergency[2])
+            {
+                GameObject explosion = Instantiate(emergency[2], shooter.transform.position, Quaternion.identity);
+                Destroy(explosion, explosion.GetComponent<ParticleSystem>().main.duration + 5f);
+            }
+        }
         var transformPos = shooter.transform.position;
       
         if (isAlive) // Change HpBar value and show emergency effect when Hp is low. 
@@ -87,32 +102,18 @@ public class Turret : MonoBehaviour, IBattle
                 hpBar.value -= damageSpeed * Time.deltaTime;
             }
 
-            if (hp <= fullHp / 2 && emergency[0] && !emergency[0].activeSelf)
+            if (hpBar.value <= (hpBar.maxValue / 2) && emergency[0] && !emergency[0].activeSelf)
             {
                 emergency[0].SetActive(true);
             }
 
-            if (hp <= fullHp / 5 && emergency[1] && !emergency[1].activeSelf)
+            if (hpBar.value <= (hpBar.maxValue / 5) && emergency[1] && !emergency[1].activeSelf)
             {
                 emergency[1].SetActive(true);
             }
         }
 
-        if (hp <= 0 && !die) // Turret is die.
-        {
-            PlayerSaveData.turretAmount -= 1;
-            die = true;
-            parentObjectCollider.enabled = false;
-            
-            Destroy(parentObject,0.1f);
-            Destroy(hui);
-            
-            if (emergency.Length >=3 && emergency[2])
-            {
-                GameObject explosion = Instantiate(emergency[2], shooter.transform.position,Quaternion.identity);
-                Destroy(explosion, explosion.GetComponent<ParticleSystem>().main.duration + 5f);
-            }
-        }
+      
 
         if (target != null) 
         {

@@ -650,7 +650,7 @@ GameObject:
   - component: {fileID: 5514623324369507026}
   - component: {fileID: 4164452249749818997}
   - component: {fileID: 8830573298849234455}
-  m_Layer: 11
+  m_Layer: 4
   m_Name: ModMonster03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -685,7 +685,7 @@ Animator:
   m_GameObject: {fileID: 130964}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 063e65bf9ea59ea44bb459f4b7490fd3, type: 3}
-  m_Controller: {fileID: 9100000, guid: 3705d3d72efc1104fa7fa5b1ae6aa552, type: 2}
+  m_Controller: {fileID: 9100000, guid: a842565de522ff440a67584264f85a58, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -706,7 +706,7 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
@@ -718,7 +718,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 130964}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 3
   m_Speed: 3.5
@@ -762,13 +762,13 @@ MonoBehaviour:
   m_HQ: {fileID: 0}
   m_Player: {fileID: 0}
   m_GController: {fileID: 0}
-  m_animator: {fileID: 0}
+  m_animator: {fileID: 9550000}
   isBoss: 1
   isBox: 0
-  aiState: 3
-  m_health: 0
-  m_attack: 0
-  m_cooltime: 0
+  aiState: 1
+  m_health: 9999999
+  m_attack: 9999
+  m_cooltime: 1.05
   Alliance:
     serializedVersion: 2
     m_Bits: 8
@@ -2255,7 +2255,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3119127044030624434}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.49, z: 2.956}
+  m_LocalPosition: {x: 0, y: 6.78, z: 2.956}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

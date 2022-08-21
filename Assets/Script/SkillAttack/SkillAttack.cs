@@ -119,6 +119,7 @@ public class SkillAttack : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log(other);
         for (int i = 0; i < monsterLayerNumber.Length; i++)
             if (other.gameObject.layer == monsterLayerNumber[i])
             {
