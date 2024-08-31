@@ -53,11 +53,11 @@ public class PauseGame : MonoBehaviour
     {
         if (Player.instance && Player.instance.hp != 0)
         {
-                Player.instance.unbeatable = false;
-                if (Player.instance.hp != 0 && Player.instance.playerCamera && CameraManager.fpsMode)
+            Player.instance.unbeatable = false;
+            if (Player.instance.hp != 0 && Player.instance.playerCamera && CameraManager.fpsMode)
                     Player.instance.playerCamera.bookVisibleFps.SetActive(true);
-
-            Player.instance.playerCamera.GetComponent<StructureSpawn_Test>().enabled = true;
+            if(Player.instance.playerCamera)
+                Player.instance.playerCamera.GetComponent<StructureSpawn_Test>().enabled = true;
             // Can control again.
             if (playerMovement)
                 playerMovement.enabled = true;
