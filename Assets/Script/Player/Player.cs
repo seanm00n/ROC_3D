@@ -79,39 +79,46 @@ public class Player : MonoBehaviour, IBattle
     private void Awake()
     {
         startPosition = transform.position;
-        if (PlayerSaveData.goldLock)
+        if (PlayerSaveData.goldLock) // goldLock : Whether to return gold to its initial value at the start of the game / goldLock is normally true except for tests or special cases.
         {
+            // PlayerSaveData = Player Data JS The class you use to save it + temporarily saves it only while the game is running.
+            // This code that allows players to initialize their data at the start of the game 
             PlayerSaveData.goldLock = false;
-            PlayerSaveData.turretAmount = 0;
-            PlayerSaveData.gold = 200;
-            PlayerSaveData.itemList = new List<string>();
+            PlayerSaveData.turretAmount = 0; // Initialize the number of turrets
+            PlayerSaveData.gold = 200; // Gold initialization
+            PlayerSaveData.itemList = new List<string>(); // Initialize items player have
         }
 
-        try
+        try // Load data as it exists
         {
             playerSaveData = SaveManager.Load<PlayerSaveData>("PlayerData");
         }
-        catch
+        catch // In addition, you can create new data and use the initial value.
         {
             playerSaveData = new PlayerSaveData();
         }
+
+        // hp, mp initialization
         hp = playerSaveData.maxHP;
         mp = playerSaveData.maxMP;
+
+        // Save the Player object as a Static variable so that Player can be accessed from anywhere.
         if (!instance)
             instance = this;
 
+        // Store class objects with player-related functions in variables.
         animationController = GetComponent<PlayerAnimationController>();
         playerAttackSkill = GetComponent<PlayerAttackSkill>();
         movement = GetComponent<PlayerMovement>();
 
-        if (!ui)
+        if (!ui) // Create a player UI
         {
             GameObject instance = Instantiate(uiPrefab);
             ui = instance.GetComponent<UIController>();
 
             PauseGame.instance = ui.setting.GetComponent<PauseGame>();
         }
-        if (instance && !instance.playerCamera)
+        if (instance && !instance.playerCamera) // Create a player Camera
             playerCamera = Instantiate(cameraPrefab, transform.position, Quaternion.identity);
     }
 

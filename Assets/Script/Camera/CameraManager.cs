@@ -64,7 +64,7 @@ public class CameraManager : MonoBehaviour
 
     // Singleton stuff
     public static CameraManager instance { get; private set; }
-    public static bool fpsMode;
+    public static bool fpsMode; // 1인칭 모드를 관리하기 위함.
     
     private void Awake()
     {

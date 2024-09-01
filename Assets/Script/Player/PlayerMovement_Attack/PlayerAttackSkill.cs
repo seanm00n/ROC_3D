@@ -153,9 +153,9 @@ public class PlayerAttackSkill : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         // Mouse Fix.
 
-        if (fireCountdown > 0)
+        if (fireCountdown > 0) // fireCountdown : 일반 공격의 대기를 위한 값
         {
-            fireCountdown -= Time.deltaTime;
+            fireCountdown -= Time.deltaTime; // 0까지 줄어들도록 함.
         }
         if (!target) // End Attack when target is null.
         {
@@ -165,20 +165,23 @@ public class PlayerAttackSkill : MonoBehaviour
 
         #region View Distance
         // VIEW DISTANCE ----------------------------------------
-        var col = Physics.OverlapSphere(transform.position, viewDistance, monster);
-        
-        screenTargets.Clear();
-        target = null;
+        var col = Physics.OverlapSphere(transform.position, viewDistance, monster); // Create a sensing area to enable targeting of near-field enemies.
+
+        screenTargets.Clear(); // screenTargets : An automatic target and a targetable enemy on the screen.
+        target = null; // target : attack target
 
         for (int i = 0; i < col.Length; i++)
         {
-            Vector3 targetAngle = col[i].transform.position - transform.position;
+            Vector3 targetAngle = col[i].transform.position - transform.position; // targetAngle : Use this to detect if the enemy is within the player's camera view range.
+
+            // The part is to check if there is an enemy within the camera view.
+            // fieldOfView : Value indicating camera view range
             if (Vector3.Angle(transform.forward, targetAngle) < fieldOfView && col[i].GetComponent<Animator>() != null && !col[i].GetComponent<Animator>().GetBool("Death"))
                 screenTargets.Add(col[i].transform);
         }
         #endregion
         
-        if (Input.GetMouseButton(1)) // Targeting
+        if (Input.GetMouseButton(1)) // Targeting : Press the right mouse key to automatically select the enemy.
         {
             var targetIndex = TargetIndex();
             if (screenTargets.Count > targetIndex)
