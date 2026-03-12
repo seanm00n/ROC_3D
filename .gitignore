@@ -79,7 +79,7 @@ crashlytics-build.properties
 # WebGL builds
 /WebGLBuild/
 /WebGLBuilds/
-/WebGL Builds
+WebGL Builds
 
 # Large Unity build artifacts
 *.data
