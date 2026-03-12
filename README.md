@@ -75,8 +75,7 @@ https://www.youtube.com/watch?v=BxrM-qGS3-Q
 
 ### Screenshots
 
-| <img src="image/ingameskill.png" width="300"> |
-| <img src="image/ingameshop.png" width="300"> |
+| <img src="image/ingameskill.png" width="300"> | <img src="image/ingameshop.png" width="300"> |
 |:--:|:--:|
 | In-game Combat | Shop System |
 
