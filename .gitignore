@@ -75,4 +75,31 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
+
+# WebGL builds
+/WebGLBuild/
+/WebGLBuilds/
+
+# Large Unity build artifacts
+*.data
+*.wasm
+*.js.mem
+*.symbols.json
+*.br
+*.gz
+
+# Addressables build output
+/ServerData/
+
+# Unity cache
+/[Cc]ache/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+connectwebgl.zip
+
 # End of https://www.toptal.com/developers/gitignore/api/unity
