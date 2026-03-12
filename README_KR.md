@@ -73,7 +73,7 @@ https://www.youtube.com/watch?v=BxrM-qGS3-Q
 
 ### 스크린샷
 
-| <img src="image/ingameskill.png" width="600"> | <img src="image/ingameshop.png" width="600"> |
+| <img src="image/ingameskill.png" width="300"> | <img src="image/ingameshop.png" width="300"> |
 |:--:|:--:|
 | 인게임 플레이 | 상점 시스템 |
 
